@@ -13,3 +13,7 @@ def UserEdit(request, pk):
     else:
         form = UserForm(instance=user)
     return render(request, 'login/user_edit.html', {'form': form})
+
+def UserShow(request, pk) :
+    qs = UserInfo.objects.get(stdID = pk)
+    return render(request, 'login/user_show.html', {'user': qs})
