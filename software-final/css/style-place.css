@@ -1,0 +1,416 @@
+@media screen and (min-width:996px){
+    body{
+        font-family:NanumGothic;
+    }
+    input[id="desk1"] + label {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #796c5e;
+        cursor: pointer;
+    }
+    input[id="desk1"]:checked + label {
+        background-color: #2e201b;
+    }
+    input[id="desk1"] {
+        display: none;
+    }
+    input[id="desk2"] + label {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #796c5e;
+        cursor: pointer;
+    }
+    input[id="desk2"]:checked + label {
+        background-color: #2e201b;
+    }
+    input[id="desk2"] {
+        display: none;
+    }
+    input[id="desk3"] + label {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #796c5e;
+        cursor: pointer;
+    }
+    input[id="desk3"]:checked + label {
+        background-color: #2e201b;
+    }
+    input[id="desk3"] {
+        display: none;
+    }
+    input[id="desk4"] + label {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #796c5e;
+        cursor: pointer;
+    }
+    input[id="desk4"]:checked + label {
+        background-color: #2e201b;
+    }
+    input[id="desk4"] {
+        display: none;
+    }
+    input[id="desk5"] + label {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #796c5e;
+        cursor: pointer;
+    }
+    input[id="desk5"]:checked + label {
+        background-color: #2e201b;
+    }
+    input[id="desk5"] {
+        display: none;
+    }
+    input[id="desk6"] + label {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #796c5e;
+        cursor: pointer;
+    }
+    input[id="desk6"]:checked + label {
+        background-color: #2e201b;
+    }
+    input[id="desk6"] {
+        display: none;
+    }
+    input[id="desk7"] + label {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #796c5e;
+        cursor: pointer;
+    }
+    input[id="desk7"]:checked + label {
+        background-color: #2e201b;
+    }
+    input[id="desk7"] {
+        display: none;
+    }
+    input[id="desk8"] + label {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #796c5e;
+        cursor: pointer;
+    }
+    input[id="desk8"]:checked + label {
+        background-color: #2e201b;
+    }
+    input[id="desk8"] {
+        display: none;
+    }
+    input[id="desk9"] + label {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #796c5e;
+        cursor: pointer;
+    }
+    input[id="desk9"]:checked + label {
+        background-color: #2e201b;
+    }
+    input[id="desk9"] {
+        display: none;
+    }
+    input[id="desk10"] + label {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #796c5e;
+        cursor: pointer;
+    }
+    input[id="desk10"]:checked + label {
+        background-color: #2e201b;
+    }
+    input[id="desk10"] {
+        display: none;
+    }
+    input[id="time9.5"] + label {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border: 5px solid #796c5e;
+        cursor: pointer;
+    }
+    input[id="time9.5"]:checked + label {
+        background-color: #2e201b;
+    }
+    input[id="time9.5"] {
+        display: none;
+    }
+    input[id="time10"] + label {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border: 5px solid #796c5e;
+        cursor: pointer;
+    }
+    input[id="time10"]:checked + label {
+        background-color: #2e201b;
+    }
+    input[id="time10"] {
+        display: none;
+    }
+    input[id="time10.5"] + label {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border: 5px solid #796c5e;
+        cursor: pointer;
+    }
+    input[id="time10.5"]:checked + label {
+        background-color: #2e201b;
+    }
+    input[id="time10.5"] {
+        display: none;
+    }
+    input[id="time11"] + label {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border: 5px solid #796c5e;
+        cursor: pointer;
+    }
+    input[id="time11"]:checked + label {
+        background-color: #2e201b;
+    }
+    input[id="time11"] {
+        display: none;
+    }
+    input[id="time11.5"] + label {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border: 5px solid #796c5e;
+        cursor: pointer;
+    }
+    input[id="time11.5"]:checked + label {
+        background-color: #2e201b;
+    }
+    input[id="time11.5"] {
+        display: none;
+    }
+    input[id="time12"] + label {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border: 5px solid #796c5e;
+        cursor: pointer;
+    }
+    input[id="time12"]:checked + label {
+        background-color: #2e201b;
+    }
+    input[id="time12"] {
+        display: none;
+    }
+    input[id="time12.5"] + label {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border: 5px solid #796c5e;
+        cursor: pointer;
+    }
+    input[id="time12.5"]:checked + label {
+        background-color: #2e201b;
+    }
+    input[id="time12.5"] {
+        display: none;
+    }
+    input[id="time13"] + label {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border: 5px solid #796c5e;
+        cursor: pointer;
+    }
+    input[id="time13"]:checked + label {
+        background-color: #2e201b;
+    }
+    input[id="time13"] {
+        display: none;
+    }
+    input[id="time13.5"] + label {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border: 5px solid #796c5e;
+        cursor: pointer;
+    }
+    input[id="time13.5"]:checked + label {
+        background-color: #2e201b;
+    }
+    input[id="time13.5"] {
+        display: none;
+    }
+    input[id="time14"] + label {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border: 5px solid #796c5e;
+        cursor: pointer;
+    }
+    input[id="time14"]:checked + label {
+        background-color: #2e201b;
+    }
+    input[id="time14"] {
+        display: none;
+    }   
+    input[id="time14.5"] + label {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border: 5px solid #796c5e;
+        cursor: pointer;
+    }
+    input[id="time14.5"]:checked + label {
+        background-color: #2e201b;
+    }
+    input[id="time14.5"] {
+        display: none;
+    }   
+    input[id="time15"] + label {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border: 5px solid #796c5e;
+        cursor: pointer;
+    }
+    input[id="time15"]:checked + label {
+        background-color: #2e201b;
+    }
+    input[id="time15"] {
+        display: none;
+    }
+    input[id="time15.5"] + label {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border: 5px solid #796c5e;
+        cursor: pointer;
+    }
+    input[id="time15.5"]:checked + label {
+        background-color: #2e201b;
+    }
+    input[id="time15.5"] {
+        display: none;
+    }
+    input[id="time16"] + label {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border: 5px solid #796c5e;
+        cursor: pointer;
+    }
+    input[id="time16"]:checked + label {
+        background-color: #2e201b;
+    }
+    input[id="time16"] {
+        display: none;
+    }
+    input[id="time16.5"] + label {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border: 5px solid #796c5e;
+        cursor: pointer;
+    }
+    input[id="time16.5"]:checked + label {
+        background-color: #2e201b;
+    }
+    input[id="time16.5"] {
+        display: none;
+    }
+    input[id="time17"] + label {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border: 5px solid #796c5e;
+        cursor: pointer;
+    }
+    input[id="time17"]:checked + label {
+        background-color: #2e201b;
+    }
+    input[id="time17"] {
+        display: none;
+    }
+    input[id="time17.5"] + label {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border: 5px solid #796c5e;
+        cursor: pointer;
+    }
+    input[id="time17.5"]:checked + label {
+        background-color: #2e201b;
+    }
+    input[id="time17.5"] {
+        display: none;
+    }
+    input[id="time18"] + label {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border: 5px solid #796c5e;
+        cursor: pointer;
+    }
+    input[id="time18"]:checked + label {
+        background-color: #2e201b;
+    }
+    input[id="time18"] {
+        display: none;
+    }
+    .place_section{
+        width:95%;
+        height:550px;
+        margin-top:5%;
+    }
+    .left_click{
+        width:45%;
+        height:400px;
+        margin-top:-2%;
+        margin-left:2%;
+    }
+    .place {
+        margin-left:2%;
+        padding-top:0.02%;
+    }
+    .link_mypage{
+        margin-top:15%;
+        margin-left:18%;
+    }
+    .right_click{
+        width:45%;
+        float:right;
+        height:400px;
+        position:relative;
+        margin-top:-31.09%;
+    }
+    .upper{
+        padding-top:1%;
+        margin-left:-45%;
+    }
+    .check_table{
+        height:200px;
+        margin-top:5%;
+        margin-left:-43.5%;
+        
+    }
+    .btn_time{
+        margin-top:5%;
+        margin-left:25%;
+    }
+    .check_time{
+        margin-top:10%;
+        margin-left:10%;
+    }
+    .btn_reservation{
+        margin-left:-15%;
+    }
+}

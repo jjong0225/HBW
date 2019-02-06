@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="utf-8">
+        <title>소프트웨어 복지사업</title>
+        <link rel="shortcut icon" href="images/upper-logo.png">
+        <style>
+             /* ★ */
+            /* 사이드바 디자인 */
+            input[id="menuicon"] {
+                display:none;
+                }
+            input[id="menuicon"] + label {
+                display:block;
+                margin:40px;
+                width:50px;
+                height:50px;
+                position: absolute; 
+                right:0; 
+                transition:all .35s;
+                cursor:pointer;
+                }
+            input[id="menuicon"] + label span {
+                display:block;
+                position:absolute;
+                width:100%;
+                height:5px;
+                border-radius:30px;
+                background:rgb(122,192,224);
+                transition:all .35s;
+                }
+            input[id="menuicon"] + label span:nth-child(1) {
+                top:0;
+                }
+            input[id="menuicon"] + label span:nth-child(2) {
+                top:50%;
+                transform:translateY(-50%);
+                }  
+            input[id="menuicon"] + label span:nth-child(3) {
+                bottom:0;
+                }
+            input[id="menuicon"]:checked + label {
+                z-index:2;
+                right:200px;
+                position:fixed;
+                }
+            input[id="menuicon"]:checked + label span {
+                background:rgb(122,192,224);
+                }
+            input[id="menuicon"]:checked + label span:nth-child(1) {
+                top:50%;
+                transform:translateY(-50%) rotate(45deg);
+                }
+            input[id="menuicon"]:checked + label span:nth-child(2) {
+                opacity:0;
+                }
+            input[id="menuicon"]:checked + label span:nth-child(3) {
+                bottom:50%;
+                transform:translateY(50%) rotate(-45deg);
+                }
+            div[class="sidebar"] {
+                width:300px;
+                height:100%;
+                background:#fff;
+                position:fixed;
+                top:0;
+                right:-300px;
+                z-index:1;
+                transition:all .35s;
+                }
+            input[id="menuicon"]:checked + label + div {
+                right:0;
+                }
+            /* 사이드바 디자인 끝 */
+
+            /* 텍스트 & 영역 디자인 */
+            a {
+                text-decoration:none;
+                color:rgb(121,108,94);
+            }
+            body{
+                width:100%;
+                height:100%;
+            }
+            hr{
+                margin-top:3%;
+            }
+            .menu_logo{
+                width:250px;
+                height:150px;
+            }
+            nav.navi{
+                width:300px;
+                height:300px;
+            }
+            .navi ul{
+                list-style:none;
+                height:40px;
+            }
+            .menu_title{
+                text-align:center!important;
+                padding-top:80px!important;
+                padding-bottom:20px!important;
+            }
+            .navi li{
+                font-size:20px;
+                color:rgb(121,108,94);
+                text-align:center;
+                padding-top:5px!important;
+                padding-bottom:5px!important;
+            }
+            .header{
+                width:945px;
+                height:100px;
+            }
+            span.menu_logo{
+                width:251px;
+                height:110px;
+                text-align:center;
+            }
+            div{
+                display:block;
+            }
+            .checkbox{
+                float:right;
+                margin-left:75%;
+                width:75px;
+                height:75px;
+                margin-top:-16%;
+            }
+            /* -★- */
+
+            /* 로그인 창 디자인 */
+            .login_tab{
+                width:100%;
+                height:450px;
+                margin-top:5%;
+            }
+            .login_text p{
+                color:rgb(121,108,94);
+                font-weight:bold;
+                margin-left:10%;
+                font-size:20pt;
+                margin-top:-2.5%;
+            }
+            .login_logo{
+                width:271px;
+                height:172px;
+                margin-left:40%;
+                margin-top:-2%;
+            }
+
+            .real_login{
+                width:100%;
+                height:300px;
+                margin-left:27.5%;
+                margin-top:4%;
+            }
+            .real_login ul{
+                list-style:none;  
+                }
+
+            .real_login li {
+                margin:20px;
+                }
+
+            li label {   
+                width:70px;   
+                float:left;  
+                font-size:14px;  
+                font-weight:bold;  
+                line-height:25px;  
+                margin-left:3%
+                }
+
+            #id,#pw{
+                width:27.5%;
+                height:20px;
+            }    
+
+            #login_button{
+                margin-left:9.5%;
+                margin-top:1%;
+                padding-right:3.6%;
+                width:50px;
+                height:40px;
+            }
+            /* 로그인 창 디자인 끝 */
+
+            /* footer 디자인 */
+
+            div.footer{
+                margin:0 auto;
+                width:100%;
+                height:110px;
+                margin-left:-0.6%;
+                text-align:left;
+                margin-top:5%;
+                zoom:1;
+                background:rgb(121,108,94);
+                font-family:sans-serif;
+                color:#fff;
+                position:absolute;
+            }
+            .row1, .row2{
+                width:100%;
+                height:20px;
+                padding-top:5px!important;
+                padding-bottom:20px!important;
+                padding-left:1%;
+            }
+            /* footer 디자인 끝 */
+
+            </style>
+    </head>
+    <body>
+        <!-- ★ -->
+        <!-- 사이드바 구성 -->
+        <div class ="header">
+               <div class="menu_logo">
+                   <img for = "logo_narrow" src="images/logo1_narrow.png" alt="" usemap="#main_logo">
+                   <map name="main_logo">
+                       <area shape="rect" coords="33,10,211,120" href="main.html" alt="메인메뉴로 가기">
+                   </map>
+                </div>
+                <div class = "checkbox">
+                <input type="checkbox" id="menuicon">
+                <label for="menuicon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </label>
+
+                <div class="sidebar" style="font-weight:bold;display:block;">
+                    <nav class="navi">
+                        <br>
+                        <h3 class="menu_title">
+                                <img src="images/logo_narrow.png" alt="">
+                            </b>
+                        </h3>
+                        <ul>
+                            <li><a href="main.html">홈</a></li>
+                            <li><a href="login.html">로그인</a></li>
+                            <li><a href="place-reservation.html">실습실 예약</a></li>
+                            <li><a href="my-page.html">마이페이지</a></li>
+                        </ul>
+                    </nav>
+                </div>  
+            </div>      
+        </div>
+
+        <hr>
+        <!-- 사이드바 구성 끝 -->
+        <!-- -★- -->
+
+        <div class = "login_tab">
+            <div class ="login_text">
+                <p>로그인</p>
+            </div>
+                <div class ="login_logo">
+                        <img src="images/logo_narrow.png">
+                </div>
+        <div class ="real_login">
+        <form action="login.php" method="post">
+            <ul>
+                <li>
+                    <label for ="id">아이디</label>
+                    <input type="text" id="id">
+                </li>
+                <li>
+                    <label for ="pw">비밀번호</label>
+                    <input type="password" id="pw">
+                </li>
+                <li>
+                        　　　　　　　
+                    <input type="submit" title="로그인" value="로그인" id="login_button">
+                </li>
+            </ul>
+        </form>
+    </div>
+
+    </div>
+        <!-- ★ -->
+            <!-- footer 구성 -->
+            <div class = "footer">
+                    <div class ="row1">
+                        <div class="copyright">
+                            <p>　　　© 2019 All Rights Reserved.</p>
+                        </div>
+                    </div>
+                    <div class="row2">
+                        <div class ="creater">
+                            <p>　　　<b>제작자</b> 김민근, 김 산, 이진우, 변지현, 안종훈, 최민성, 허예은</p>
+                        </div>
+                    </div>
+
+            </div>
+            <!-- footer 구성 끝 -->
+            <!-- -★- -->
+    </body>
+
+</html>
