@@ -55,13 +55,45 @@ class Unbrella(models.Model):
         return str(self.number)
 
 
+#실습실 테이블 모델
 class StudyTable(models.Model):
     number = models.PositiveSmallIntegerField()
     is_borrowed = models.BooleanField(default = False)
-    start_time = models.TimeField(blank=True, null=True)
-    end_time = models.TimeField(blank=True, null=True)
-    lender = models.ForeignKey(Student, null=True, blank=True, on_delete=models.DO_NOTHING, db_constraint=False)
+
+    #각 시간대별로 누가 쓰는지 체크하면 아래 3개는 생략해도 괜찮지 않을까
+    #start_time = models.TimeField(blank=True, null=True)
+    #end_time = models.TimeField(blank=True, null=True)
+    #lender = models.ForeignKey(Student, null=True, blank=True, on_delete=models.DO_NOTHING, db_constraint=False)
+
+    #시간표(10:00 ~ 18:00, 1시간 간격)
+    first_time = models.OneToOneField(Student, null=True, blank=True, on_delete=DO_NOTHING)
+    second_time = models.OneToOneField(Student, null=True, blank=True, on_delete=DO_NOTHING)
+    third_time = models.OneToOneField(Student, null=True, blank=True, on_delete=DO_NOTHING)
+    fourth_time = models.OneToOneField(Student, null=True, blank=True, on_delete=DO_NOTHING)
+    fifth_time = models.OneToOneField(Student, null=True, blank=True, on_delete=DO_NOTHING)
+    sixth_time = models.OneToOneField(Student, null=True, blank=True, on_delete=DO_NOTHING)
+    seventh_time = models.OneToOneField(Student, null=True, blank=True, on_delete=DO_NOTHING)
+    eighth_time = models.OneToOneField(Student, null=True, blank=True, on_delete=DO_NOTHING)
+
 
     def __str__(self):
         return "Table "+str(self.number)
+
+
+#베터리 모델
+class Battery(models.Model):
+    number = models.PositiveSmallIntegerField()
+    is_borrowed = models.BooleanField(default = False)
+
+    def __str__(self):
+        return str(self.number)+"th Battery"
+        
+
+#랜선 모델
+class Lan(models.Model):
+    number = models.PositiveSmallIntegerField()
+    is_borrowed = models.BooleanField(default = False)
+
+    def __str__(self):
+        return str(self.number)+"th Lan"
         
