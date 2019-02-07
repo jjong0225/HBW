@@ -49,7 +49,7 @@ class Student(models.Model):
 class Unbrella(models.Model):
     number = models.PositiveSmallIntegerField()
     is_borrowed = models.BooleanField(default = False)
-    borrowed_by = models.OneToOneField(Student, null=True, blank=True, on_delete=models.CASCADE)
+    borrowed_by = models.OneToOneField(Student, null=True, blank=True, on_delete=models.CASCADE, related_name="unbrella_borrwed_by")
 
     def __str__(self):
         return str(self.number)
@@ -66,14 +66,14 @@ class StudyTable(models.Model):
     #lender = models.ForeignKey(Student, null=True, blank=True, on_delete=models.DO_NOTHING, db_constraint=False)
 
     #시간표(10:00 ~ 18:00, 1시간 간격)
-    first_time = models.OneToOneField(Student, null=True, blank=True, on_delete=DO_NOTHING)
-    second_time = models.OneToOneField(Student, null=True, blank=True, on_delete=DO_NOTHING)
-    third_time = models.OneToOneField(Student, null=True, blank=True, on_delete=DO_NOTHING)
-    fourth_time = models.OneToOneField(Student, null=True, blank=True, on_delete=DO_NOTHING)
-    fifth_time = models.OneToOneField(Student, null=True, blank=True, on_delete=DO_NOTHING)
-    sixth_time = models.OneToOneField(Student, null=True, blank=True, on_delete=DO_NOTHING)
-    seventh_time = models.OneToOneField(Student, null=True, blank=True, on_delete=DO_NOTHING)
-    eighth_time = models.OneToOneField(Student, null=True, blank=True, on_delete=DO_NOTHING)
+    first_time = models.OneToOneField(Student, null=True, blank=True, on_delete=models.DO_NOTHING, related_name="table_first_time", db_constraint=False)
+    second_time = models.OneToOneField(Student, null=True, blank=True, on_delete=models.DO_NOTHING, related_name="table_second_time", db_constraint=False)
+    third_time = models.OneToOneField(Student, null=True, blank=True, on_delete=models.DO_NOTHING, related_name="table_third_time", db_constraint=False)
+    fourth_time = models.OneToOneField(Student, null=True, blank=True, on_delete=models.DO_NOTHING, related_name="table_fourth_time", db_constraint=False)
+    fifth_time = models.OneToOneField(Student, null=True, blank=True, on_delete=models.DO_NOTHING, related_name="table_fifth_time", db_constraint=False)
+    sixth_time = models.OneToOneField(Student, null=True, blank=True, on_delete=models.DO_NOTHING, related_name="table_sixth_time", db_constraint=False)
+    seventh_time = models.OneToOneField(Student, null=True, blank=True, on_delete=models.DO_NOTHING, related_name="table_seventh_time", db_constraint=False)
+    eighth_time = models.OneToOneField(Student, null=True, blank=True, on_delete=models.DO_NOTHING, related_name="table_eighth_time", db_constraint=False)
 
 
     def __str__(self):
@@ -84,6 +84,7 @@ class StudyTable(models.Model):
 class Battery(models.Model):
     number = models.PositiveSmallIntegerField()
     is_borrowed = models.BooleanField(default = False)
+    borrowed_by = models.OneToOneField(Student, null=True, blank=True, on_delete=models.CASCADE, related_name="battery_borrowed_by")
 
     def __str__(self):
         return str(self.number)+"th Battery"
@@ -93,6 +94,7 @@ class Battery(models.Model):
 class Lan(models.Model):
     number = models.PositiveSmallIntegerField()
     is_borrowed = models.BooleanField(default = False)
+    borrowed_by = models.OneToOneField(Student, null=True, blank=True, on_delete=models.CASCADE, related_name="lan_borrowed_by")
 
     def __str__(self):
         return str(self.number)+"th Lan"
