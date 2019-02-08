@@ -1,0 +1,270 @@
+@media screen and (min-width:1063px){
+    .container{
+        margin : 0 auto;
+    }
+    .header{
+        z-index: 99;
+        position: relative;
+        background:#fff;
+        border-bottom: solid 4px #eee;
+        margin-bottom:2%;
+    }
+    body{
+        font-family:'나눔고딕'
+    }
+    .logo{
+        top:0px;
+        margin:1%;
+        z-index:10000;
+        height:100%;
+        width:280px;
+        position:relative;
+    }
+    .login_button{
+        float:left;
+        margin-top:-5%;
+        margin-left:87%;
+        /* height:100%; */
+        width:150px;
+
+    }
+    .section{
+        position:relative;
+        z-index:99;
+        height:650px;
+    }
+    .menubar{
+        width:100%;
+        height:60px;
+        margin-top:-2%;
+    }
+    .nav {
+        text-align: center;
+        overflow: hidden;
+        margin: 2em auto;
+        width: 100%;
+        margin-left:13%;
+        position: relative;
+    }
+
+    .nav a {
+        display: block;
+        position: relative;
+        float: left;
+        padding: 1em 0 2em;
+        width: 25%;
+        margin-bottom:0.5%;
+        font-size:20px;
+        text-decoration: none;
+        color: #393939;
+        -webkit-transition: .7s;
+        -moz-transition: .7s;
+        -o-transition: .7s;
+        -ms-transition: .7s;
+        transition: .7s;
+    }
+
+    .nav a:hover {
+        font-weight:bold;
+    }
+
+    .effect {
+        position: absolute;
+        left: -12.5%;
+        -webkit-transition: 0.7s ease-in-out;
+        -moz-transition: 0.7s ease-in-out;
+        -o-transition: 0.7s ease-in-out;
+        -ms-transition: 0.7s ease-in-out;
+        transition: 0.7s ease-in-out;
+    }
+
+    .nav a:nth-child(1):hover~.effect {
+        left: 11%;
+    }
+
+    .nav a:nth-child(2):hover~.effect {
+        left: 35.7%;
+    }
+
+    .nav a:nth-child(3):hover~.effect {
+        left: 60.7%;
+    }
+    /* ----- line example -----*/
+
+    .ph-line-nav .effect {
+        width: 140px;
+        height: 2px;
+        bottom: 36px;
+        background:black;
+        box-shadow: 0 1px 0 white;
+        margin-left: -45px;
+    }
+    .container li{
+        float:left;
+        width:auto;
+        margin-left:20%;
+    }
+    .container li a{
+        display:block;
+        padding:14px 16px;
+        text-decoration:none;
+    }
+    .container hr{
+        margin-top:-2%;
+    }
+    .column_left{
+        margin-top:-44%;
+        float:left;
+        width:50%;
+    }
+    #poster{
+        margin-left:2%;
+        position:relative;
+        height:470px;
+        width:95%;
+        min-width:500px;
+    }
+    .slider{
+        margin-left:2%;
+        position:relative;
+        height:450px;
+        width:95%;
+        min-width:470px;
+    }
+    .slider div p{
+        width:40em;
+        height:40em;
+        margin:5em 0;
+    }
+    #font{
+        font-family:NanumGothic;
+        margin-bottom:-2%;
+        margin-left:2.5%;
+    }
+    .column_right{
+        margin-top:-44%;
+        float:right;
+        width:50%;
+        position:relative;
+    }
+    #lent{
+        position:relative;
+        height:225px;
+        width:95%;
+        min-width:250px;
+        margin-bottom:17.5px;
+    }
+    .lent_logo{
+        margin-top:5%;
+    }
+    .lent_umbrella{
+        width:25%;
+        height:50%;
+        float:left;
+        margin-top:0.7%;
+        margin-left:5%;
+        /* border:1px solid #ccc; */
+    }
+    div .umbrella{
+        margin-left:10%;
+    }
+    div .umbrella_data{
+        margin-top:5%;
+        margin-left:36.5%;
+    }
+    .lent_lan{
+        width:35%;
+        float:right;
+        margin-top:0.7%;
+        position:relative;
+        /* border:1px solid #ccc; */
+    }
+    div .lan{
+        margin-left:20%;
+    }
+    div .lan_data{
+        margin-top:5%;
+        margin-left:40.5%;
+    }
+    .lent_charger{
+        width:30%;
+        float:right;
+        position:relative;
+        margin-top:0.7%;
+        /* border:1px solid #ccc; */
+    }
+    div .charger{
+        margin-left:15%;
+    }
+    div .charger_data{
+        margin-top:5%;
+        margin-left:37%;
+    }
+
+    #time{
+        position:relative;
+        height:225px;
+        width:95%;
+        margin-top:9%;
+        min-width:250px;
+    }
+    .table p{
+        font-size:17px;
+    }
+    .table hr{
+        margin-left:-1.5%;
+    }
+    .table dl{
+        margin-left:8%;
+        display:table;
+        box-sizing:border-box;
+    }
+    .table dt{
+        background:#e3e7ec;
+        color:#333;
+        display:table-cell;
+        padding:5px 12px 5px 12px;
+        box-sizing:border-box;
+    }
+    .left_table{
+        margin-left:5%;
+        font-family:NanumGothic;
+        float:left;
+        width:45%;
+        margin-top:-1%;
+    }
+    .right_table{
+        margin-top:-1%;
+        font-family:NanumGothic;
+        float:right;
+        width:45%;
+        position:relative;
+    }
+    
+    .footer{
+        margin:0 auto;
+        width:100%;
+        height:110px;
+        margin-top:2%;
+        margin-left:-0.6%;
+        text-align:left;
+        zoom:1;
+        background:rgb(121,108,94);
+        font-family:나눔고딕;
+        position: absolute;
+        color:#fff;
+    }
+    .left_footer{
+        margin-top:0.2%;
+        margin-left:3%;
+        float:left;
+        width:450px;
+        font-size:11px;
+    }
+    .right_footer{
+        margin-left:50%;
+        float:right;
+        font-size:11px;
+        position:absolute;
+    }
+}
