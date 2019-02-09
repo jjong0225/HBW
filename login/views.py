@@ -94,10 +94,21 @@ def MyPage(request):
 @login_required
 def LendUnbrella(request):
     unbrella_set = models.Unbrella.objects.all()
+    battery_set = models.Battery.objects.all()
+    lan_set = models.Lan.objects.all()
     unbrella_count = 0
+    battery_count = 0
+    lan_count = 0
     for unbrella in unbrella_set:
         if unbrella.is_borrowed:
             unbrella_count = unbrella_count + 1
+    for item in battery_set:
+        if item.is_borrowed:
+            battery_count = battery_count + 1
+    for item in lan_set:
+        if item.is_borrowed:
+            lan_count = lan_count + 1
+
     ans=request.POST.get('ans', 'No')
     if unbrella_count < 10:
         for item in unbrella_set:
@@ -108,6 +119,9 @@ def LendUnbrella(request):
             return render(request, 'login/main_lendunbrella.html', {
                 'message': message,
                 'yesno':True,
+                'battery_count':battery_count,
+                'lan_count':lan_count,
+                
             })
         else :
             if ans=='Yes':
@@ -121,17 +135,29 @@ def LendUnbrella(request):
             return redirect('login:main')
         return render(request, 'login/main_lendunbrella.html', {
             'message': message,
-            'yesno': False
+            'yesno': False,
+            'battery_count':battery_count,
+            'lan_count':lan_count,
             })
 
 #배터리대여
 @login_required
 def LendBattery(request):
+    unbrella_set = models.Unbrella.objects.all()
     battery_set = models.Battery.objects.all()
+    lan_set = models.Lan.objects.all()
+    unbrella_count = 0
     battery_count = 0
-    for battery in battery_set:
-        if battery.is_borrowed:
+    lan_count = 0
+    for unbrella in unbrella_set:
+        if unbrella.is_borrowed:
+            unbrella_count = unbrella_count + 1
+    for item in battery_set:
+        if item.is_borrowed:
             battery_count = battery_count + 1
+    for item in lan_set:
+        if item.is_borrowed:
+            lan_count = lan_count + 1
     ans=request.POST.get('ans', 'No')
     if battery_count < 10:
         for item in battery_set:
@@ -142,6 +168,8 @@ def LendBattery(request):
             return render(request, 'login/main_lendbattery.html', {
                 'message': message,
                 'yesno':True,
+                'lan_count':lan_count,
+                'unbrella_count':unbrella_count,
             })
         else :
             if ans=='Yes':
@@ -155,17 +183,30 @@ def LendBattery(request):
             return redirect('login:main')
         return render(request, 'login/main_lendbattery.html', {
             'message': message,
-            'yesno': False
+            'yesno': False,
+            'lan_count':lan_count,
+            'unbrella_count':unbrella_count,
             })
 
 #랜선대여
 @login_required
 def LendLan(request):
+    unbrella_set = models.Unbrella.objects.all()
+    battery_set = models.Battery.objects.all()
     lan_set = models.Lan.objects.all()
+    unbrella_count = 0
+    battery_count = 0
     lan_count = 0
-    for lan in lan_set:
-        if lan.is_borrowed:
+    for unbrella in unbrella_set:
+        if unbrella.is_borrowed:
+            unbrella_count = unbrella_count + 1
+    for item in battery_set:
+        if item.is_borrowed:
+            battery_count = battery_count + 1
+    for item in lan_set:
+        if item.is_borrowed:
             lan_count = lan_count + 1
+
     ans=request.POST.get('ans', 'No')
     if lan_count < 10:
         for item in lan_set:
@@ -176,6 +217,8 @@ def LendLan(request):
             return render(request, 'login/main_lendlan.html', {
                 'message': message,
                 'yesno':True,
+                'unbrella_count':unbrella_count,
+                'battery_count':battery_count,
             })
         else :
             if ans=='Yes':
@@ -189,5 +232,7 @@ def LendLan(request):
             return redirect('login:main')
         return render(request, 'login/main_lendlan.html', {
             'message': message,
-            'yesno': False
+            'yesno': False,
+            'unbrella_count':unbrella_count,
+            'battery_count':battery_count,
             })

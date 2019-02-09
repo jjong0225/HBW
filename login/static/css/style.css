@@ -250,4 +250,15 @@
         font-size:11px;
         position:absolute;
     }
+    .message{
+        font-family:NanumGothic;
+        text-align:center;
+        font-size:18px;
+    }
+    #battery{
+        font-family:NanumGothic;
+        text-align:center;
+        font-size:18px;
+        margin-right:12%;
+    }
 }
