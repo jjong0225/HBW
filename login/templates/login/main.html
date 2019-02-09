@@ -63,9 +63,9 @@
         <div class="section">
             <div class="menu_bar">
                 <ul>
-                    <li><a href="main.html">홈</a></li>
+                    <li><a href="{% url "login:main" %}">홈</a></li>
                     <li><a href="place_reservation.html">실습실 예약</a></li>
-                    <li><a href="mypage.html">마이페이지</a></li>
+                    <li><a href="{% url "login:mypage" %}">마이페이지</a></li>
                 </ul>
                 <!-- <hr width="85%" color="black" 0.5px> -->
                 <!-- <div class ="menu_bar_line">
