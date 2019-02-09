@@ -1,0 +1,20 @@
+<head>
+        <meta charset="utf-8">
+    <title>소프트웨어 복지사업</title>
+</head>
+
+<body> 
+        <form action="/login/reservation/" method="post">{% csrf_token %}
+            {{ form.selected_table.label_tag }}
+            {{ form.selected_table }}
+            {{ form.selected_table.errors }}
+            <div class="btn_time">
+                    <p>
+                        <pre>
+                            <input type="submit" value="예약 가능시간 확인">												
+                        </pre>
+                    </p>
+                </div>
+            </div>
+        </form>	
+</body>

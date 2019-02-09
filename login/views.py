@@ -1,10 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Student
+from .models import StudyTable
 from .forms import UserForm
+from .forms import TableForm
 from django.http import HttpResponse
-from django.contrib.auth import login, authenticate
 from django.template import RequestContext
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 
 
@@ -39,6 +43,37 @@ def Signin(request):
     else:
         form = UserForm()
         return render(request, 'login/final_login.html', {'form': form})
+
+
+def TableLend(request):
+    tables = StudyTable.objects.all()
+    return render(request, 'login/place_reservation.html', {'tables':tables})
+
+def TableSelect(request):
+    if request.method == "POST":
+        form = TableForm(request.POST)
+        if form.is_valid():
+            selected_number = request.POST['selected_table']
+            table_q = StudyTable.objects.all().filter(number=selected_number)
+            return render(request, 'login/place_reservation.html', {'tables' : table_q})
+    else:
+        form = TableForm()
+        return render(request, 'login/place_reservation.html', {'form': form})
+
+def testsel(request):
+    if request.method == "POST":
+        sel_time = request.POST.getlist('time[]')
+        sel_table = request.POST.getlist('number[]')
+        table_q = StudyTable.objects.all().filter(start_time__in=sel_time).filter(number__in=sel_table)
+        for sel in table_q:
+                sel.is_borrowed = True
+                sel.lender = request.user.user_data
+                sel.save()
+        return render(request, 'login/place_reservation.html', {'tables':table_q})
+    else:
+        form = TimeForm()
+        return render(request, 'login/place_reservation.html', {'form' : form})
+
 
 from django.contrib.auth.decorators import login_required
 

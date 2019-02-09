@@ -1,0 +1,51 @@
+<head>
+        <meta charset="utf-8">
+        <title>소프트웨어 복지사업</title>
+</head>
+
+<body>
+    <form action="/login/sel/" method="POST" onsubmit="_submit(this);">{% csrf_token %}
+        {% if tables %}
+            {% for table in tables %}
+                {% if table.is_borrowed == 0 %}
+                    <input type="checkbox" id={{ table.number }} value={{ table.start_time }} name="time[]" onClick="count_ck(this)"><label for=table.start_time></label>
+                    <input type="hidden" name="number[]" value={{ table.number }} />
+                {% else %}
+                    <input type="checkbox" disabled id={{ table.number }} value={{ table.start_time }} name="time[]" onClick="count_ck(this)"><label for=table.start_time></label>
+                    <input type="hidden" name="number[]" value={{ table.number }} />
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        <div class="btn_reservation">
+            <p>
+                <pre>
+                    <input type="submit" name="Submit" id="button" value="예약하기">
+                </pre>
+            </p>
+        </div>
+    </form>
+</body>
+
+
+<script language='JavaScript'>
+    function _submit(f)
+    {
+        //같이 보낼 값 정리
+        if (typeof(f.elements['time[]'].length) == 'undefined') //단일
+        {
+            if (f.elements['time[]'].checked==false)
+            {
+                f.elements['number[]'].disabled=true;
+            }
+        } else { //다중
+            for (i=0; i<f.elements['time[]'].length; i++)
+            {
+                if (f.elements['time[]'][i].checked==false)
+                {
+                    f.elements['number[]'][i].disabled=true;
+                }
+            }
+        }
+        return true;
+    }
+    </script>

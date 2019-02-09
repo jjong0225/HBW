@@ -1,6 +1,6 @@
 <h2>로그인</h2>
-<form method="post" action="">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="로그인" />
-</form>
+{% for table in tables %}
+    <p>{{ table.number }}</p>
+    <p>{{ table.is_borrowed }}</p>
+    <p>{{ table.start_time }}</p>
+{% endfor %}

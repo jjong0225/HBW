@@ -38,6 +38,9 @@ class Student(models.Model):
     # 배터리 대여 여부
 
     lan = models.BooleanField(default = False)
+
+    table_counter = models.PositiveIntegerField(default = 0)
+
     # 랜선 대여 여부
 
     def __str__(self):
@@ -49,53 +52,19 @@ class Student(models.Model):
 class Unbrella(models.Model):
     number = models.PositiveSmallIntegerField()
     is_borrowed = models.BooleanField(default = False)
-    borrowed_by = models.OneToOneField(Student, null=True, blank=True, on_delete=models.CASCADE, related_name="unbrella_borrwed_by")
+    borrowed_by = models.OneToOneField(Student, null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.number)
 
 
-#실습실 테이블 모델
 class StudyTable(models.Model):
     number = models.PositiveSmallIntegerField()
     is_borrowed = models.BooleanField(default = False)
-
-    #각 시간대별로 누가 쓰는지 체크하면 아래 3개는 생략해도 괜찮지 않을까
-    #start_time = models.TimeField(blank=True, null=True)
-    #end_time = models.TimeField(blank=True, null=True)
-    #lender = models.ForeignKey(Student, null=True, blank=True, on_delete=models.DO_NOTHING, db_constraint=False)
-
-    #시간표(10:00 ~ 18:00, 1시간 간격)
-    first_time = models.OneToOneField(Student, null=True, blank=True, on_delete=models.DO_NOTHING, related_name="table_first_time", db_constraint=False)
-    second_time = models.OneToOneField(Student, null=True, blank=True, on_delete=models.DO_NOTHING, related_name="table_second_time", db_constraint=False)
-    third_time = models.OneToOneField(Student, null=True, blank=True, on_delete=models.DO_NOTHING, related_name="table_third_time", db_constraint=False)
-    fourth_time = models.OneToOneField(Student, null=True, blank=True, on_delete=models.DO_NOTHING, related_name="table_fourth_time", db_constraint=False)
-    fifth_time = models.OneToOneField(Student, null=True, blank=True, on_delete=models.DO_NOTHING, related_name="table_fifth_time", db_constraint=False)
-    sixth_time = models.OneToOneField(Student, null=True, blank=True, on_delete=models.DO_NOTHING, related_name="table_sixth_time", db_constraint=False)
-    seventh_time = models.OneToOneField(Student, null=True, blank=True, on_delete=models.DO_NOTHING, related_name="table_seventh_time", db_constraint=False)
-    eighth_time = models.OneToOneField(Student, null=True, blank=True, on_delete=models.DO_NOTHING, related_name="table_eighth_time", db_constraint=False)
-
+    start_time = models.CharField(max_length=100, blank=True, null=True)
+    end_time = models.TimeField(blank=True, null=True)
+    lender = models.ForeignKey(Student, null=True, blank=True, on_delete=models.DO_NOTHING, db_constraint=False)
 
     def __str__(self):
         return "Table "+str(self.number)
-
-
-#베터리 모델
-class Battery(models.Model):
-    number = models.PositiveSmallIntegerField()
-    is_borrowed = models.BooleanField(default = False)
-    borrowed_by = models.OneToOneField(Student, null=True, blank=True, on_delete=models.CASCADE, related_name="battery_borrowed_by")
-
-    def __str__(self):
-        return str(self.number)+"th Battery"
-        
-
-#랜선 모델
-class Lan(models.Model):
-    number = models.PositiveSmallIntegerField()
-    is_borrowed = models.BooleanField(default = False)
-    borrowed_by = models.OneToOneField(Student, null=True, blank=True, on_delete=models.CASCADE, related_name="lan_borrowed_by")
-
-    def __str__(self):
-        return str(self.number)+"th Lan"
         
