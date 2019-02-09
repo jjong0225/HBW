@@ -84,12 +84,13 @@ def UserShow(request, pk) :
     return render(request, 'login/user_show.html', {'user': qs})
 
 
-#여기서부터 새로 짬
 
+#마이페이지
 @login_required
 def MyPage(request):
     return render(request, 'login/mypage.html')
-#우산대여 작업중
+
+#우산대여
 @login_required
 def LendUnbrella(request):
     unbrella_set = models.Unbrella.objects.all()
@@ -97,7 +98,7 @@ def LendUnbrella(request):
     for unbrella in unbrella_set:
         if unbrella.is_borrowed:
             unbrella_count = unbrella_count + 1
-
+    ans=request.POST.get('ans', 'No')
     if unbrella_count < 10:
         for item in unbrella_set:
                 if not item.is_borrowed:
@@ -108,21 +109,85 @@ def LendUnbrella(request):
                 'message': message,
                 'yesno':True,
             })
-        elif request.method == "POST":
-            ans = request.POST.get('ans', 'No')
+        else :
             if ans=='Yes':
                 item.borrowed_by = request.user.user_data
                 item.is_borrowed = True
                 item.save()
-                return redirect('login:main')
-            elif ans=='No' or ans=='OK':
-                return redirect('login:main')
+            return redirect('login:main')
     else :
         message = "현재 대여 가능한 우산이 없습니다."
-        ans=request.POST.get('ans', 'No')
         if ans=="OK":
             return redirect('login:main')
         return render(request, 'login/main_lendunbrella.html', {
+            'message': message,
+            'yesno': False
+            })
+
+#배터리대여
+@login_required
+def LendBattery(request):
+    battery_set = models.Battery.objects.all()
+    battery_count = 0
+    for battery in battery_set:
+        if battery.is_borrowed:
+            battery_count = battery_count + 1
+    ans=request.POST.get('ans', 'No')
+    if battery_count < 10:
+        for item in battery_set:
+                if not item.is_borrowed:
+                    break
+        if request.method == "GET":
+            message = str(item.number)+"번 배터리를 빌리시겠습니까?"
+            return render(request, 'login/main_lendbattery.html', {
+                'message': message,
+                'yesno':True,
+            })
+        else :
+            if ans=='Yes':
+                item.borrowed_by = request.user.user_data
+                item.is_borrowed = True
+                item.save()
+            return redirect('login:main')
+    else :
+        message = "현재 대여 가능한 배터리가 없습니다."
+        if ans=="OK":
+            return redirect('login:main')
+        return render(request, 'login/main_lendbattery.html', {
+            'message': message,
+            'yesno': False
+            })
+
+#랜선대여
+@login_required
+def LendLan(request):
+    lan_set = models.Lan.objects.all()
+    lan_count = 0
+    for lan in lan_set:
+        if lan.is_borrowed:
+            lan_count = lan_count + 1
+    ans=request.POST.get('ans', 'No')
+    if lan_count < 10:
+        for item in lan_set:
+                if not item.is_borrowed:
+                    break
+        if request.method == "GET":
+            message = str(item.number)+"번 랜선을 빌리시겠습니까?"
+            return render(request, 'login/main_lendlan.html', {
+                'message': message,
+                'yesno':True,
+            })
+        else :
+            if ans=='Yes':
+                item.borrowed_by = request.user.user_data
+                item.is_borrowed = True
+                item.save()
+            return redirect('login:main')
+    else :
+        message = "현재 대여 가능한 랜선이 없습니다."
+        if ans=="OK":
+            return redirect('login:main')
+        return render(request, 'login/main_lendlan.html', {
             'message': message,
             'yesno': False
             })

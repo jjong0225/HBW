@@ -13,4 +13,6 @@ urlpatterns = [
     path('', views.Main),
     path('mypage/', views.MyPage, name='mypage'),
     path('lendunbrella/', views.LendUnbrella, name='lendunbrella'),
+    path('lendbattery/', views.LendBattery, name='lendbattery'),
+    path('lendlan/', views.LendLan, name='lendlan'),
 ]
