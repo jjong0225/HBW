@@ -97,24 +97,32 @@ def LendUnbrella(request):
     for unbrella in unbrella_set:
         if unbrella.is_borrowed:
             unbrella_count = unbrella_count + 1
+
     if unbrella_count < 10:
         for item in unbrella_set:
                 if not item.is_borrowed:
                     break
         if request.method == "GET":
             message = str(item.number)+"번 우산을 빌리시겠습니까?"
-            return render(request, 'login/main_lendunbrella.html', {'message': message})
+            return render(request, 'login/main_lendunbrella.html', {
+                'message': message,
+                'yesno':True,
+            })
         elif request.method == "POST":
             ans = request.POST.get('ans', 'No')
             if ans=='Yes':
                 item.borrowed_by = request.user.user_data
                 item.is_borrowed = True
-                message = str(item.number)+"번 우산을 빌리셨습니다."
-                return render(request, 'login/main_lendunbrella.html', {'message': message})
-            elif ans=='No':
+                item.save()
                 return redirect('login:main')
-                
-
+            elif ans=='No' or ans=='OK':
+                return redirect('login:main')
     else :
         message = "현재 대여 가능한 우산이 없습니다."
-        return render(request, 'login/main_lendunbrella.html', {'message': message})
+        ans=request.POST.get('ans', 'No')
+        if ans=="OK":
+            return redirect('login:main')
+        return render(request, 'login/main_lendunbrella.html', {
+            'message': message,
+            'yesno': False
+            })

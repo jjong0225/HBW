@@ -102,12 +102,24 @@
                     <hr width="95%" color="black">
                     <div class="lent_logo">
                         <div class="lent_umbrella">
-                            <div class="message">    
+                            <div class="message">
+                                {% if user.user_data.unbrella %} 
+                                    <h5>이미 대여중인 우산이 있습니다.</h5>
+                                    <form action="{% url "login:main" %}" method=POST>
+                                        {% csrf_token %}
+                                        <button type="submit" name=ans value=OK>돌아가기</button>
+                                    </form>
+                                {% else %}   
                                 <form action="" method="post">
                                   {% csrf_token %}
                                   <h5>{{ message }}</h5>
-                                  <button type="submit" name=ans value=Yes>Yes</button>
-                                  <button type="submit" name=ans value=No>No</button>
+                                  {% if yesno %}
+                                    <button type="submit" name=ans value=Yes>Yes</button>
+                                    <button type="submit" name=ans value=No>No</button>
+                                  {% else %}
+                                    <button type="submit" name=ans value=OK>돌아가기</button>
+                                  {% endif %}
+                                {% endif %}
                                 </form>
                             </div>
                         </div>
