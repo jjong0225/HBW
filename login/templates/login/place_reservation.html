@@ -91,80 +91,82 @@
 					</div>
 				</div>
 				<div class="right_click">
-					<form action="/login/reservation/" method="post">{% csrf_token %}
 						<div class="place_click">
 							<div id="font">
 								<h3>자리 선택</h3>
 							</div>
 							<hr width="95%" color="black">
 							<div id="table_div" class="reservation">
-								<div class="upper">
-									<p>
-										<pre>
-											<form id="table_sel" action="/login/reservation/" method="post">{% csrf_token %}
-												{{ form.selected_table.label_tag }}
-												{{ form.selected_table }}
-												{{ form.selected_table.errors }}
-												<div class="btn_time">
-														<p>
-															<pre>
-																<input type="submit" value="예약 가능시간 확인">												
-															</pre>
-														</p>
-													</div>
-												</div>
-											</form>																					<!--
-											input type="radio" id="desk1" value="1" name="desk"><label for="desk1"></label> 1     <input type="radio" id="desk2" value="2" name="desk"><label for="desk2"></label> 2     <input type="radio" id="desk3" value="3" name="desk"><label for="desk3"></label> 3     <input type="radio" id="desk4" value="4" name="desk"><label for="desk4"></label> 4     <input type="radio" id="desk5" value="5" name="desk"><label for="desk5"></label> 5
-
-											<input type="radio" id="desk6" value="6" name="desk"><label for="desk6"></label> 6     <input type="radio" id="desk7" value="7" name="desk"><label for="desk7"></label> 7     <input type="radio" id="desk8" value="8" name="desk"><label for="desk8"></label> 8     <input type="radio" id="desk9" value="9" name="desk"><label for="desk9"></label> 9     <input type="radio" id="desk10" value="10" name="desk"><label for="desk10"></label> 10 
-											-->
-										</pre>
-									</p>
-								</div>
-								<div class="btn_time">
-									<p>
-										<pre>
-											<input type="submit" value="예약 가능시간 확인">												
-										</pre>
-									</p>
+									<form id="table_sel" action="/login/reservation/" method="post">{% csrf_token %}
+										<div class="upper">
+											<p>
+												<pre>
+													<input type="radio" id="desk1" value="1" name="desk"><label for="desk1"></label> 1     <input type="radio" id="desk2" value="2" name="desk"><label for="desk2"></label> 2     <input type="radio" id="desk3" value="3" name="desk"><label for="desk3"></label> 3     <input type="radio" id="desk4" value="4" name="desk"><label for="desk4"></label> 4     <input type="radio" id="desk5" value="5" name="desk"><label for="desk5"></label> 5
+													<input type="radio" id="desk6" value="6" name="desk"><label for="desk6"></label> 6     <input type="radio" id="desk7" value="7" name="desk"><label for="desk7"></label> 7     <input type="radio" id="desk8" value="8" name="desk"><label for="desk8"></label> 8     <input type="radio" id="desk9" value="9" name="desk"><label for="desk9"></label> 9     <input type="radio" id="desk10" value="10" name="desk"><label for="desk10"></label> 10
+												</pre>
+											</p>
+										</div>					
+										<div class="btn_time">
+											<p>
+												<pre>
+													<input type="submit" value="예약 가능시간 확인">												
+												</pre>
+											</p>
+										</div>
+									</form>
 								</div>
 							</div>
-						</div>
-					</form>	
 					<div class="lower">
 						<div id="font">
 							<h3>예약 시간 선택</h3>
 						</div>
 						<hr width="95%" color="black">
-						<div class="check_time">
-							<p>
-								<pre>
-									<form action="/login/sel/" method="POST" onsubmit="_submit(this);">{% csrf_token %}
+						<form action="/login/sel/" method="POST" onsubmit="_submit(this);">{% csrf_token %}
+							<div class="check_time">
+								<p>
+									<pre>			
 										{% if tables %}
+											{% spaceless %}
 											{% for table in tables %}
-												{% if table.is_borrowed == 0 %}
-													<input type="checkbox" id={{ table.number }} value={{ table.start_time }} name="time[]" onClick="count_ck(this)"><label for=table.start_time></label>
-													<input type="hidden" name="number[]" value={{ table.number }} />
-												{% else %}
-													<input type="checkbox" disabled id={{ table.number }} value={{ table.start_time }} name="time[]" onClick="count_ck(this)"><label for=table.start_time></label>
-													<input type="hidden" name="number[]" value={{ table.number }} />
+												{% if table.is_borrowed == 0 %} 
+													<input type="checkbox" id={{ "time"|add:table.start_time }} value={{ table.start_time }} name="time[]" onClick="count_ck(this)"><label for={{ "time"|add:table.start_time }}></label><input type="hidden" name="number[]" value={{ table.number }} />
+												{% else %} 
+													<input type="checkbox" checked disabled id={{ "time"|add:table.start_time }} value={{ table.start_time }} name="time[]" onClick="count_ck(this)"><label for={{ "time"|add:table.start_time }}></label><input type="hidden" name="number[]" value={{ table.number }} />
 												{% endif %}
 											{% endfor %}
-
+											{% endspaceless %}
 										{% else %}
 											<p>좌석을 선택해 주세요</p>
 										{% endif %}
-
-										<div class="btn_reservation">
-											<p>
-												<pre>
-													<input type="submit" id="button" value="예약하기">
-												</pre>
-											</p>
-										</div>
-									</form>
+									</pre>
+								</p>
+							</div>								
+							<div class="btn_reservation">
+								<p>
+									<pre>
+										<input type="submit" id="button" value="예약하기">
+									</pre>
+								</p>
+							</div>
+						</form>
 					</div>
 				</div>
+			</div>
+			<div class="footer">
+					<div class="left_footer">
+						<div class="tel">
+							<p><strong>연락처</strong></p>
+							<p><b>회장 </b>윤동주 010-xxxx-xxxx id</p>
+							<p><b>부회장 </b>노진주 010-xxxx-xxxx id</p>
+							<p><b>부회장 </b>김상엽 010-xxxx-xxxx id</p>
+						</div>
+					</div>
+					<div class="right_footer">
+						<p>　</p>
+						<p>　</p>
+						<p>　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　© 2019 All Rights Reserved.</p>
+						<p>　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　<b>제작자</b> 김민근, 김 산, 이진우, 변지현, 안종훈, 최민성, 허예은</p>
+					</div>
 			</div>
 </body>
 
