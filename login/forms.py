@@ -8,6 +8,11 @@ class UserForm(forms.ModelForm):
         model =  User
         fields = ['username', 'password']
 
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.update({'id':'id'})
+        self.fields['password'].widget.attrs.update({'id':'pw'})
+
 ONE = 1
 TWO = 2
 THREE = 3
