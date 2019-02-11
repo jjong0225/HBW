@@ -16,7 +16,7 @@
       <div class="logo">
         <img for="logo" src="{% static "images/header_logo.png" %}" alt="" usemap="#main_logo">
         <map name="main_logo">
-          <area shape="rect" coords="5,5,250,80" href="main.html" alt="메인메뉴로 가기">
+          <area shape="rect" coords="5,5,250,80" href="{% url "login:main" %}" alt="메인메뉴로 가기">
         </map>
       </div>
       {% if user.is_authenticated %}

@@ -14,7 +14,7 @@
     <body>
         <div class = "container">
             <div class ="logo">
-                <a href="main.html">
+                <a href="{% url "login:main" %}">
                 {% load staticfiles %}
                 <img for="logo" src="{% static "images/header_logo_narrow.png" %}" alt="" >
                 </a>
