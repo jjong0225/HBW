@@ -75,11 +75,13 @@ def TableLend(request):
 
 def TableSelect(request):
     if request.method == "POST":
-        form = TableForm(request.POST)
-        if form.is_valid():
-            selected_number = request.POST['selected_table']
+        if request.POST.get('desk') is not None:
+            selected_number = request.POST['desk']
             table_q = StudyTable.objects.all().filter(number=selected_number)
             return render(request, 'login/place_reservation.html', {'tables' : table_q})
+        else:
+            form = TableForm()
+            return render(request, 'login/place_reservation.html', {'form': form})            
     else:
         form = TableForm()
         return render(request, 'login/place_reservation.html', {'form': form})
