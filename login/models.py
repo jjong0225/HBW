@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 
 class Student(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE,related_name='user_data')
+    user = models.OneToOneField(User, on_delete=models.CASCADE,related_name='user_data', null=True, blank=True)
     # 장고의 User모델에서 username(학번 즉 ID), password first_name, last_name, user_permissions, last_login을 사용
     # user 모델의 필드들
         # username
@@ -32,6 +32,7 @@ class Student(models.Model):
     # 오늘 수령한 A4 매수
 
     month_A4 = models.PositiveIntegerField(default = 0)
+
     # 이번달 수령한 A4 매수
 
     #battery = models.BooleanField(default = False)

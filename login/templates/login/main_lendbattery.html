@@ -104,13 +104,13 @@
                         <div class="lent_umbrella">
                             <div class="umbrella"><a href="{% url "login:lendunbrella" %}"><img src="{% static "images/umbrella.png" %}" onmouseover="this.src='{% static "images/umbrella_onmouse.png" %}'"
                                         onmouseout="this.src='{% static "images/umbrella.png" %}'" alt=""></a></div>
-                            <div class="umbrella_data"><strong>{{ unbrella_count }} </strong>| 10</div>
+                            <div class="umbrella_data"><strong>{{ unbrella_count }} </strong>| {{ unbrella_total }}</div>
 
                         </div>
                         <div class="lent_lan">
                             <div class="lan"><a href="{% url "login:lendlan" %}"><img src="{% static "images/lan.png" %}" onmouseover="this.src='{% static "images/lan_onmouse.png" %}'"
                                         onmouseout="this.src='{% static "images/lan.png" %}'" alt=""></a></div>
-                            <div class="lan_data"><strong>{{ lan_count }} </strong>| 10</div>
+                            <div class="lan_data"><strong>{{ lan_count }} </strong>| {{ lan_total }}</div>
 
                         </div>
                         <div class="lent_charger">

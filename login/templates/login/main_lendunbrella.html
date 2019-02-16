@@ -126,13 +126,13 @@
                         <div class="lent_lan">
                             <div class="lan"><a href="{% url "login:lendlan" %}"><img src="{% static "images/lan.png" %}" onmouseover="this.src='{% static "images/lan_onmouse.png" %}'"
                                         onmouseout="this.src='{% static "images/lan.png" %}'" alt=""></a></div>
-                            <div class="lan_data"><strong>{{ lan_count }} </strong>| 10</div>
+                            <div class="lan_data"><strong>{{ lan_count }} </strong>| {{ lan_total }}</div>
 
                         </div>
                         <div class="lent_charger">
                             <div class="charger"><a href="{% url "login:lendbattery" %}"><img src="{% static "images/charger.png" %}" onmouseover="this.src='{% static "images/charger_onmouse.png" %}'"
                                         onmouseout="this.src='{% static "images/charger.png" %}'" alt=""></a></div>
-                            <div class="charger_data"><strong>{{ battery_count }} </strong>| 10</div>
+                            <div class="charger_data"><strong>{{ battery_count }} </strong>| {{ battery_total }}</div>
 
                         </div>
                     </div>

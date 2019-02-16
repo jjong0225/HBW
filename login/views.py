@@ -1,9 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Student
-from .forms import UserForm
-from .forms import TableForm
-from .models import StudyTable
-from . import models
+from login.models import Student, StudyTable
+from login import models
+from login.forms import UserForm, TableForm, TimeForm
 from django.http import HttpResponse
 from django.contrib.auth import login, authenticate
 from django.template import RequestContext
@@ -36,6 +34,9 @@ def Main(request):
         'battery_count': battery_count,
         'unbrella_count': unbrella_count,
         'lan_count': lan_count,
+        'battery_total' : battery_set.count(),
+        'unbrella_total': unbrella_set.count(),
+        'lan_total': lan_set.count(),
     })
 
 
@@ -100,7 +101,7 @@ def LendTable(request):
         form = TimeForm()
         return render(request, 'login/place_reservation.html', {'form' : form})
 
-def CancelTable(requset):
+def CancelTable(request):
     if request.method == "POST":
         sel_time = request.POST.getlist('time[]')
         sel_table = request.POST.getlist('number[]')
@@ -113,24 +114,6 @@ def CancelTable(requset):
     else:
         form = TimeForm()
         return render(request, 'login/place_reservation.html', {'form' : form})
-
-
-@login_required
-def UserEdit(request, pk):
-    user = get_object_or_404(UserInfo, pk=pk)
-    if request.method == "POST":
-        form = UserForm(request.POST, instance = user)
-        if form.is_valid() :
-            form.save()
-            return render(request, 'login/user_edit_detail.html', {'user':user})
-    else:
-        form = UserForm(instance=user)
-    return render(request, 'login/user_edit.html', {'form': form})
-
-@login_required
-def UserShow(request, pk) :
-    qs = UserInfo.objects.get(stdID = pk)
-    return render(request, 'login/user_show.html', {'user': qs})
 
 
 
@@ -159,7 +142,7 @@ def LendUnbrella(request):
             lan_count = lan_count + 1
 
     ans=request.POST.get('ans', 'No')
-    if unbrella_count < 10:
+    if unbrella_count < unbrella_set.count():
         for item in unbrella_set:
                 if not item.is_borrowed:
                     break
@@ -170,7 +153,9 @@ def LendUnbrella(request):
                 'yesno':True,
                 'battery_count':battery_count,
                 'lan_count':lan_count,
-                
+                'battery_total' : battery_set.count(),
+                'unbrella_total': unbrella_set.count(),
+                'lan_total': lan_set.count(),
             })
         else :
             if ans=='Yes':
@@ -187,6 +172,9 @@ def LendUnbrella(request):
             'yesno': False,
             'battery_count':battery_count,
             'lan_count':lan_count,
+            'battery_total' : battery_set.count(),
+            'unbrella_total': unbrella_set.count(),
+            'lan_total': lan_set.count(),
             })
 
 #배터리대여
@@ -208,7 +196,7 @@ def LendBattery(request):
         if item.is_borrowed:
             lan_count = lan_count + 1
     ans=request.POST.get('ans', 'No')
-    if battery_count < 10:
+    if battery_count < battery_set.count():
         for item in battery_set:
                 if not item.is_borrowed:
                     break
@@ -219,6 +207,9 @@ def LendBattery(request):
                 'yesno':True,
                 'lan_count':lan_count,
                 'unbrella_count':unbrella_count,
+                'battery_total' : battery_set.count(),
+                'unbrella_total': unbrella_set.count(),
+                'lan_total': lan_set.count(),
             })
         else :
             if ans=='Yes':
@@ -235,6 +226,9 @@ def LendBattery(request):
             'yesno': False,
             'lan_count':lan_count,
             'unbrella_count':unbrella_count,
+            'battery_total' : battery_set.count(),
+            'unbrella_total': unbrella_set.count(),
+            'lan_total': lan_set.count(),
             })
 
 #랜선대여
@@ -257,7 +251,7 @@ def LendLan(request):
             lan_count = lan_count + 1
 
     ans=request.POST.get('ans', 'No')
-    if lan_count < 10:
+    if lan_count < lan_set.count():
         for item in lan_set:
                 if not item.is_borrowed:
                     break
@@ -268,6 +262,9 @@ def LendLan(request):
                 'yesno':True,
                 'unbrella_count':unbrella_count,
                 'battery_count':battery_count,
+                'battery_total' : battery_set.count(),
+                'unbrella_total': unbrella_set.count(),
+                'lan_total': lan_set.count(),
             })
         else :
             if ans=='Yes':
@@ -284,4 +281,7 @@ def LendLan(request):
             'yesno': False,
             'unbrella_count':unbrella_count,
             'battery_count':battery_count,
+            'battery_total' : battery_set.count(),
+            'unbrella_total': unbrella_set.count(),
+            'lan_total': lan_set.count(),
             })

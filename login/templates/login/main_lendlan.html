@@ -104,7 +104,7 @@
                         <div class="lent_umbrella">
                             <div class="umbrella"><a href="{% url "login:lendunbrella" %}"><img src="{% static "images/umbrella.png" %}" onmouseover="this.src='{% static "images/umbrella_onmouse.png" %}'"
                                         onmouseout="this.src='{% static "images/umbrella.png" %}'" alt=""></a></div>
-                            <div class="umbrella_data"><strong>{{ unbrella_count }} </strong>| 10</div>
+                            <div class="umbrella_data"><strong>{{ unbrella_count }} </strong>| {{ unbrella_total }}</div>
 
                         </div>
                         <div class="lent_lan">
@@ -132,7 +132,7 @@
                         <div class="lent_charger">
                             <div class="charger"><a href="{% url "login:lendbattery" %}"><img src="{% static "images/charger.png" %}" onmouseover="this.src='{% static "images/charger_onmouse.png" %}'"
                                         onmouseout="this.src='{% static "images/charger.png" %}'" alt=""></a></div>
-                            <div class="charger_data"><strong>{{ battery_count }} </strong>| 10</div>
+                            <div class="charger_data"><strong>{{ battery_count }} </strong>| {{ battery_total }}</div>
 
                         </div>
                     </div>
