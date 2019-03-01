@@ -121,9 +121,9 @@ USE_TZ = True
 # 로그인 부분
 from django.urls import reverse_lazy
 
-LOGIN_URL = '/login/login/'
-LOGIN_REDIRECT_URL = '/login/home/'
-LOGOUT_REDIRECT_URL = '/login/home/'
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = 'login:main'
+LOGOUT_REDIRECT_URL = 'login:main'
 
 # 나중에 홈페이지로 변경
 # LOGIN_REDIRECT_URL = reverse_lazy('/main/hompage')

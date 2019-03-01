@@ -50,16 +50,16 @@
             <div class="logo">
                 <img for="logo" src="{% static "images/header_logo.png" %}" alt="" usemap="#main_logo">
                 <map name="main_logo">
-                    <area shape="rect" coords="5,5,250,80" href="/login/home" alt="메인메뉴로 가기">
+                    <area shape="rect" coords="5,5,250,80" href="{% url "login:main" %}" alt="메인메뉴로 가기">
                 </map>
             </div>
             {% if user.is_authenticated %}
             <div class="login_button">
-                    <a href="/login/logout"><img for ="logout_button" src="{% static "images/logout.png" %}" alt=""></a>
+                    <a href="{% url "login:logout" %}"><img for ="logout_button" src="{% static "images/logout.png" %}" alt=""></a>
             </div>
             {% else %}
             <div class="login_button">
-                <a href="/login/login">
+                <a href="{% url "login:login" %}">
                     <img for ="login_button" src="{% static "images/login.png" %}" alt=""></a>
             </div>
             {% endif %}
@@ -69,7 +69,7 @@
             <div class="menu_bar">
                 <ul>
                     <li><a href="{% url "login:main" %}">홈</a></li>
-                    <li><a href="/login/reservation">실습실 예약</a></li>
+                    <li><a href="{% url "login:seltable" %}">실습실 예약</a></li>
                     <li><a href="{% url "login:mypage" %}">마이페이지</a></li>
                 </ul>
                 <!-- <hr width="85%" color="black" 0.5px> -->

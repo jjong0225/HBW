@@ -48,7 +48,7 @@ def Signup(request):
         if form.is_valid():
             new_user = User.objects.create_user(**form.cleaned_data)
             login(request, new_user)
-            return redirect('/login/final_main/')
+            return redirect('login:main')
     else:
         form = UserForm()
         return render(request, 'login/signup.html', {'form': form})
@@ -61,14 +61,14 @@ def Signin(request):
         user = authenticate(username = username, password = password)
         if user is not None:
             login(request, user)
-            return redirect('/login/final_main/')
+            return redirect('login:main')
         else:
             return HttpResponse(user)
     else:
         form = UserForm()
         return render(request, 'login/final_login.html', {'form': form})
 
-from django.contrib.auth.decorators import login_required
+
 
 def TableLend(request):
     tables = StudyTable.objects.all()
@@ -96,7 +96,7 @@ def LendTable(request):
                 sel.is_borrowed = True
                 sel.lender = request.user.user_data
                 sel.save()
-        return redirect('/login/reservation')
+        return redirect('login:seltable')
     else:
         form = TimeForm()
         return render(request, 'login/place_reservation.html', {'form' : form})
@@ -110,7 +110,7 @@ def CancelTable(request):
                 sel.is_borrowed = True
                 sel.lender = request.user.user_data
                 sel.save()
-        return redirect('/login/reservation')
+        return redirect('login:seltable')
     else:
         form = TimeForm()
         return render(request, 'login/place_reservation.html', {'form' : form})

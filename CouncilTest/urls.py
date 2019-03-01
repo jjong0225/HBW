@@ -23,7 +23,7 @@ from api import views as api_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', include('login.urls', namespace="login")),
+    path('', include('login.urls', namespace="login")),
     path('api/', include('api.urls')),
     
 ]
