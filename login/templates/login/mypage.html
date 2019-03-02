@@ -86,14 +86,22 @@
             </tr>
             <tr>
               <th>실습실</th>
-              <td>
-                <select size="1" id="class" style="height:30px">
-                  <option value="time1" selected>대여시간1</option>
-                  <option value="time2">대여시간2</option>
-                  <option value="time3">대여시간3</option>
-                  <option value="time4">대여시간4</option>
-                </select></td>
-              <td><input type="submit" name="예약취소" value="예약취소"></td>
+              <form action="{% url "login:mypage" %}" method="POST" onsubmit="_submit(this);">{% csrf_token %}                  {% if times %}
+                  <td>
+                    <select size="1" id="class" name="cancel" style="height:30px">
+                    {% for time in times %}
+                      <option value="{{ "time"|add:time.start_time }}">{{ forloop.counter }}번째 예약 : {{ time.number }}번 테이블 {{ time.start_time }}시</option>
+                    {% endfor %}
+                    </select>
+                  </td>
+                  <td><input type="submit" name="예약취소" value="예약취소"></td>
+                  {% else %}
+                  <td>
+                    <p>예약하신 이력이 없습니다.</p>
+                  </td>
+                  <td><input type="submit" name="예약취소" value="예약취소" disabled></td>
+                  {% endif %}
+              </form>
             </tr>
             <tr>
           </table>
