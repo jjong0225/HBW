@@ -101,26 +101,26 @@ def LendTable(request):
         form = TimeForm()
         return render(request, 'login/place_reservation.html', {'form' : form})
 
-def CancelTable(request):
-    if request.method == "POST":
-        sel_time = request.POST.getlist('time[]')
-        sel_table = request.POST.getlist('number[]')
-        table_q = StudyTable.objects.all().filter(start_time__in=sel_time).filter(number__in=sel_table)
-        for sel in table_q:
-                sel.is_borrowed = True
-                sel.lender = request.user.user_data
-                sel.save()
-        return redirect('login:seltable')
-    else:
-        form = TimeForm()
-        return render(request, 'login/place_reservation.html', {'form' : form})
-
 
 
 #마이페이지
 @login_required
 def MyPage(request):
-    return render(request, 'login/mypage.html')
+    current_user = request.user
+    if request.method == "POST":
+        sel_time = request.POST.get('cancel')
+        cur_time = sel_time[4:]
+        print(cur_time)
+        time_q = StudyTable.objects.all().filter(lender_id=current_user.id).filter(start_time=cur_time)
+        for time in time_q:
+                time.is_borrowed = False
+                time.lender_id = None
+                time.save()
+        time_q = StudyTable.objects.all().filter(lender_id=current_user.id)
+        return render(request, 'login/mypage.html', {'times' : time_q})
+    else:
+        time_q = StudyTable.objects.all().filter(lender_id=current_user.id)
+        return render(request, 'login/mypage.html', {'times' : time_q})
 
 #우산대여
 @login_required
