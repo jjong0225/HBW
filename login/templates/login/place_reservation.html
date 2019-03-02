@@ -83,7 +83,7 @@
 							</div>
 							<hr width="95%" color="black">
 							<div id="table_div" class="reservation">
-									<form id="table_sel" action="/login/reservation/" method="post">{% csrf_token %}
+									<form id="table_sel" action="" method="post">{% csrf_token %}
 										<div class="upper">
 											<p>　</p>
 											<p>     
@@ -107,7 +107,7 @@
 							<h3>예약 시간 선택</h3>
 						</div>
 						<hr width="95%" color="black">
-						<form action="/login/sel/" method="POST" onsubmit="_submit(this);">{% csrf_token %}
+						<form action="{% url "login:lendtable" %}" method="POST" onsubmit="_submit(this);">{% csrf_token %}
 							<div class="check_time">
 								<p>
 									<pre>			
