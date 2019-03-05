@@ -32,14 +32,11 @@ class Student(models.Model):
     # 오늘 수령한 A4 매수
 
     month_A4 = models.PositiveIntegerField(default = 0)
-
     # 이번달 수령한 A4 매수
 
-    #battery = models.BooleanField(default = False)
-    # 배터리 대여 여부
+    status = models.BooleanField(default=True)
+    #재학여부
 
-    #lan = models.BooleanField(default = False)
-    # 랜선 대여 여부
 
     def __str__(self):
         return self.user.username
