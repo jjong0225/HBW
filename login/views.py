@@ -20,13 +20,13 @@ def Main(request):
     
     
     for item in unbrella_set:
-        if item.is_borrowed:
+        if not item.is_available():
             unbrella_count = unbrella_count + 1
     for item in battery_set:
-        if item.is_borrowed:
+        if not item.is_available():
             battery_count = battery_count + 1
     for item in lan_set:
-        if item.is_borrowed:
+        if not item.is_available():
             lan_count = lan_count + 1
     
 
@@ -131,20 +131,20 @@ def LendUnbrella(request):
     unbrella_count = 0
     battery_count = 0
     lan_count = 0
-    for unbrella in unbrella_set:
-        if unbrella.is_borrowed:
+    for item in unbrella_set:
+        if not item.is_available():
             unbrella_count = unbrella_count + 1
     for item in battery_set:
-        if item.is_borrowed:
+        if not item.is_available():
             battery_count = battery_count + 1
     for item in lan_set:
-        if item.is_borrowed:
+        if not item.is_available():
             lan_count = lan_count + 1
 
     ans=request.POST.get('ans', 'No')
     if unbrella_count < unbrella_set.count():
         for item in unbrella_set:
-                if not item.is_borrowed:
+                if item.is_available():
                     break
         if request.method == "GET":
             message = str(item.number)+"번 우산을 빌리시겠습니까?"
@@ -160,7 +160,6 @@ def LendUnbrella(request):
         else :
             if ans=='Yes':
                 item.borrowed_by = request.user.user_data
-                item.is_borrowed = True
                 item.save()
             return redirect('login:main')
     else :
@@ -186,19 +185,19 @@ def LendBattery(request):
     unbrella_count = 0
     battery_count = 0
     lan_count = 0
-    for unbrella in unbrella_set:
-        if unbrella.is_borrowed:
+    for item in unbrella_set:
+        if not item.is_available():
             unbrella_count = unbrella_count + 1
     for item in battery_set:
-        if item.is_borrowed:
+        if not item.is_available():
             battery_count = battery_count + 1
     for item in lan_set:
-        if item.is_borrowed:
+        if not item.is_available():
             lan_count = lan_count + 1
     ans=request.POST.get('ans', 'No')
     if battery_count < battery_set.count():
         for item in battery_set:
-                if not item.is_borrowed:
+                if item.is_available():
                     break
         if request.method == "GET":
             message = str(item.number)+"번 배터리를 빌리시겠습니까?"
@@ -214,7 +213,6 @@ def LendBattery(request):
         else :
             if ans=='Yes':
                 item.borrowed_by = request.user.user_data
-                item.is_borrowed = True
                 item.save()
             return redirect('login:main')
     else :
@@ -240,20 +238,20 @@ def LendLan(request):
     unbrella_count = 0
     battery_count = 0
     lan_count = 0
-    for unbrella in unbrella_set:
-        if unbrella.is_borrowed:
+    for item in unbrella_set:
+        if not item.is_available():
             unbrella_count = unbrella_count + 1
     for item in battery_set:
-        if item.is_borrowed:
+        if not item.is_available():
             battery_count = battery_count + 1
     for item in lan_set:
-        if item.is_borrowed:
+        if not item.is_available():
             lan_count = lan_count + 1
 
     ans=request.POST.get('ans', 'No')
     if lan_count < lan_set.count():
         for item in lan_set:
-                if not item.is_borrowed:
+                if item.is_available():
                     break
         if request.method == "GET":
             message = str(item.number)+"번 랜선을 빌리시겠습니까?"
@@ -269,7 +267,6 @@ def LendLan(request):
         else :
             if ans=='Yes':
                 item.borrowed_by = request.user.user_data
-                item.is_borrowed = True
                 item.save()
             return redirect('login:main')
     else :

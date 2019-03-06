@@ -45,13 +45,34 @@ class Student(models.Model):
 
 
 class Unbrella(models.Model):
+    status_available = '대여가능'
+    status_borrowed = '대여중'
+    status_unavailable = '대여불가'
+    status_choices = (
+        (status_available, '대여가능'),
+        (status_borrowed, '대여중'),
+        (status_unavailable, '대여불가'),
+    )
     number = models.PositiveSmallIntegerField()
-    is_borrowed = models.BooleanField(default = False)
     borrowed_by = models.OneToOneField(Student, null=True, blank=True, on_delete=models.CASCADE)
+    status = models.CharField(max_length = 4, choices=status_choices, default=status_available)
 
     def __str__(self):
         return str(self.number)
 
+    def save(self, *args, **kwargs):
+        if self.status != self.status_unavailable:
+            if self.borrowed_by is not None:
+                self.status = self.status_borrowed
+            else:
+                self.status = self.status_available
+        super().save(*args, **kwargs)
+
+    def is_available(self):
+        if self.status == self.status_available:
+            return True
+        else:
+            return False
 
 #실습실 테이블 모델
 class StudyTable(models.Model):
@@ -64,23 +85,69 @@ class StudyTable(models.Model):
     def __str__(self):
         return "Table "+str(self.number)
 
+    
+
 
 #배터리 모델
 class Battery(models.Model):
+    status_available = '대여가능'
+    status_borrowed = '대여중'
+    status_unavailable = '대여불가'
+    status_choices = (
+        (status_available, '대여가능'),
+        (status_borrowed, '대여중'),
+        (status_unavailable, '대여불가'),
+    )
     number = models.PositiveSmallIntegerField()
-    is_borrowed = models.BooleanField(default = False)
     borrowed_by = models.OneToOneField(Student, null=True, blank=True, on_delete=models.DO_NOTHING)
+    status = models.CharField(max_length = 4, choices=status_choices, default=status_available)
 
     def __str__(self):
         return str(self.number)+"th Battery"
+
+    def save(self, *args, **kwargs):
+        if self.status != self.status_unavailable:
+            if self.borrowed_by is not None:
+                self.status = self.status_borrowed
+            else:
+                self.status = self.status_available
+        super().save(*args, **kwargs)
+
+    def is_available(self):
+        if self.status == self.status_available:
+            return True
+        else:
+            return False
         
 
 #랜선 모델
 class Lan(models.Model):
+    status_available = '대여가능'
+    status_borrowed = '대여중'
+    status_unavailable = '대여불가'
+    status_choices = (
+        (status_available, '대여가능'),
+        (status_borrowed, '대여중'),
+        (status_unavailable, '대여불가'),
+    )
     number = models.PositiveSmallIntegerField()
-    is_borrowed = models.BooleanField(default = False)
     borrowed_by = models.OneToOneField(Student, null=True, blank=True, on_delete=models.DO_NOTHING)
+    status = models.CharField(max_length = 4, choices=status_choices, default=status_available)
 
     def __str__(self):
         return str(self.number)+"th Lan"
+
+    def save(self, *args, **kwargs):
+        if self.status != self.status_unavailable:
+            if self.borrowed_by is not None:
+                self.status = self.status_borrowed
+            else:
+                self.status = self.status_available
+        super().save(*args, **kwargs)
+
+    def is_available(self):
+        if self.status == self.status_available:
+            return True
+        else:
+            return False
         

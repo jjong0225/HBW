@@ -31,7 +31,7 @@ class UnbrellaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Unbrella
-        fields = ('url', 'number', 'is_borrowed', 'borrowed_by')
+        fields = ('url', 'number', 'status', 'borrowed_by')
 
 
 class BatterySerializer(serializers.ModelSerializer):
@@ -39,7 +39,7 @@ class BatterySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Battery
-        fields = ('url', 'number', 'is_borrowed', 'borrowed_by')
+        fields = ('url', 'number', 'status', 'borrowed_by')
 
 
 class LanSerializer(serializers.ModelSerializer):
@@ -47,7 +47,7 @@ class LanSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Lan
-        fields = ('url', 'number', 'is_borrowed', 'borrowed_by')
+        fields = ('url', 'number', 'status', 'borrowed_by')
 
 
 class StudyTableSerializer(serializers.ModelSerializer):
