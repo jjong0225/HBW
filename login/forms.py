@@ -1,6 +1,23 @@
 from django import forms
 from .models import Student
 from django.contrib.auth.models import User
+
+
+import unicodedata
+from django.contrib.auth import (
+    authenticate, get_user_model, password_validation,
+)
+from django.contrib.auth.hashers import (
+    UNUSABLE_PASSWORD_PREFIX, identify_hasher,
+)
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMultiAlternatives
+from django.template import loader
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
+from django.utils.text import capfirst
+from django.utils.translation import gettext, gettext_lazy as _
 # from django.contrib.auth.models import User
 
 class UserForm(forms.ModelForm):
@@ -60,3 +77,65 @@ class TimeForm(forms.Form):
             choices=TIME_HOOBO,
         )
     
+
+
+class SetPasswordForm(forms.Form):
+    error_messages = {
+        'password_mismatch': _("두 비밀번호가 일치하지 않습니다. 다시 확인해 주세요"),
+    }
+    new_password1 = forms.CharField(
+        label=_("새 비밀번호"),
+        widget=forms.PasswordInput,
+        strip=False,
+    )
+    new_password2 = forms.CharField(
+        label=_("새 비밀번호 확인"),
+        strip=False,
+        widget=forms.PasswordInput,
+    )
+
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super().__init__(*args, **kwargs)
+
+    def clean_new_password2(self):
+        password1 = self.cleaned_data.get('new_password1')
+        password2 = self.cleaned_data.get('new_password2')
+        if password1 and password2:
+            if password1 != password2:
+                raise forms.ValidationError(
+                    self.error_messages['password_mismatch'],
+                    code='password_mismatch',
+                )
+        password_validation.validate_password(password2, self.user)
+        return password2
+
+    def save(self, commit=True):
+        password = self.cleaned_data["new_password1"]
+        self.user.set_password(password)
+        if commit:
+            self.user.save()
+        return self.user
+
+
+class PasswordChangeForm(SetPasswordForm):
+    error_messages = {
+        **SetPasswordForm.error_messages,
+        'password_incorrect': _("이전 비밀번호가 올바르지 않습니다. 다시 시도해 주세요."),
+    }
+    old_password = forms.CharField(
+        label=_("이전 비밀번호"),
+        strip=False,
+        widget=forms.PasswordInput(attrs={'autofocus': True}),
+    )
+
+    field_order = ['old_password', 'new_password1', 'new_password2']
+
+    def clean_old_password(self):
+        old_password = self.cleaned_data["old_password"]
+        if not self.user.check_password(old_password):
+            raise forms.ValidationError(
+                self.error_messages['password_incorrect'],
+                code='password_incorrect',
+            )
+        return old_password
