@@ -14,4 +14,5 @@ urlpatterns = [
     path('lendlan/', views.LendLan, name='lendlan'),
     path('reservation/', views.TableSelect, name='seltable'),
     path('sel/', views.LendTable, name='lendtable'),
+    path('sel/', views.LendTable, name='lendtable'),
 ]
