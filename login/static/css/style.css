@@ -55,7 +55,6 @@
     .section{
         position:relative;
         z-index:99;
-        height:650px;
     }
     .menu_bar{
         border:none;
@@ -79,6 +78,8 @@
         height:30px;
         
         font-size:20px;
+        display: flex;
+        justify-content: center;
     }
     .menu_bar li{
         float:left;
@@ -109,7 +110,6 @@
     .container li{
         float:left;
         width:auto;
-        margin-left:10%;
     }
     .container li a{
         display:block;
@@ -341,7 +341,6 @@
     .section{
         position:relative;
         z-index:99;
-        height:650px;
     }
     .menu_bar{
         border:none;
@@ -365,6 +364,8 @@
         height:30px;
         
         font-size:20px;
+        display: flex;
+        justify-content: center;
     }
     .menu_bar li{
         float:left;
@@ -393,7 +394,6 @@
     .container li{
         float:left;
         width:auto;
-        margin-left:20%;
     }
     .container li a{
         display:block;
