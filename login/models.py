@@ -86,4 +86,9 @@ class Lan(models.Model):
 
     def __str__(self):
         return str(self.number)+"th Lan"
-        
+
+
+class Poster(models.Model):  
+    title = models.CharField(max_length=100)
+    photo = models.ImageField(blank=True)
+    number = models.PositiveSmallIntegerField()

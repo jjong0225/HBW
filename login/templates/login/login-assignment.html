@@ -16,6 +16,8 @@
                 <img for="logo" src="images/header_logo_narrow.png" alt="">
             </a>
         </div>
+        <form action="" method="post">
+        {% csrf_token %}
         <div class="login_tab">
             <div class="checkbox">
                 <ul>
@@ -26,27 +28,32 @@
                 </ul>
             </div>
             <div class="login_assignment">
-                <form action="login.php" method="post">
-                    <ul>
+                <form action="" method="post">{% csrf_token %}
+                    <table>
                         <li>
-                            <label for="pw1">변경 비밀번호</label>
-                            <input type="pasword" id="pw1">
+                            <label for="pw1">이전 비밀번호   </label>
+                            {{ form.old_password }}
                         </li>
                         <li>
-                            <label for="pw2">비밀번호 확인</label>
-                            <input type="password" id="pw2">
+                            <label for="pw1">새 비밀번호     </label>
+                            {{ form.new_password1 }}
                         </li>
                         <li>
-                            <a href="login.html">
-                                <img for="login_button" src="images/change.png" alt="" id="login_button"></a> 　　　　　　
+                            <label for="pw2">새 비밀번호 확인</label>
+                            {{ form.new_password2 }}
                         </li>
-                    </ul>
+                        <li>
+                            {% load staticfiles %}
+                            <input type = "image" for ="login_button" src="{% static "images/login.png" %}" alt="" id="login_button"></a>              
+                        </li>
+                    </table >
                 </form>
             </div>
             <div class="footer">
                 <p><strong>제작자</strong> 김민근, 김 산, 이진우, 변지현, 안종훈, 최민성, 허예은</p>
             </div>
         </div>
+    </form>
     </div>
 </body>
 

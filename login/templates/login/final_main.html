@@ -87,9 +87,11 @@
                     <hr width="95%" color="black">
                     <div class="home_slider">
                         <div class="bxslider">
-                            <div><img src= "{% static "images/poster1_center.png" %}" alt="그림1"></div>
-                            <div><img src="{% static "images/poster2_center.png" %}" alt="그림2"></div>
-                            <div><img src="{% static "images/poster3_center.png" %}" alt="그림3"></div>
+                            {% for post in posts %}
+                                {% if post.photo %}
+                                    <div><img src="{{ post.photo.url }}" alt="그림2"></div>
+                                {% endif %}
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
