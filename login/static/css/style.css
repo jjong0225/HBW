@@ -298,10 +298,29 @@
         border-bottom: solid 4px #eee;
         margin-bottom:2%;
         width:100%;
-        height:80px;
+        height:110px;
     }
     body{
         font-family:'나눔고딕'
+    }
+    .login_section{
+        width:100%;
+        height:30px;
+        background:#0C3C6D;
+    }
+    .login_section a{
+        float:right;
+        color:white;
+        z-index:1;
+        text-decoration:none;
+        margin-top:0.6%;
+        margin-right:2%;
+        bottom:5%;
+    }
+    .menu_section{
+        width:100%;
+        height:110px;
+        margin-top:-2%;
     }
     .section{
         width:100%;
@@ -312,57 +331,30 @@
     .logo{
         display:inline-block;
         position:absolute;
-        top:60%;
+        top:75%;
         left:0;
         margin-top:-40px;   
     }
     .logo >img{
-        display:block;
-    }
-    .login_button{
-       position:absolute;
-       top:50%;
-       right:0;
-       margin-top:-23px; 
-    }
-
-    .login_button_a{
-        display:block;
-    }
-
-    .login_button_a img{
-        display:block;
-    }
-    
-    .menu_bar_line img{
-        margin-top:-300px;
-        margin-left:25%;
-    }
-    .section{
-        position:relative;
-        z-index:99;
+        display:block;  
     }
     .menu_bar{
         border:none;
         border:0px;
-        margin:0px;
         font:67.5% "NanumGothic";
         font-size: 20px;
         font-weight:bold;
-        margin-left:10%;
+        margin-left:11%;
         width:80%;
-        height:90px;
-        border-bottom:1px solid #000;
-        bottom:20px;
-        padding-bottom:0px;
+        height:120px;
+        bottom:30px;
     }
     .menu_bar ul{
-        margin-top:-3.8%;
-        margin-left:-12%;
+        margin-top:-6%;
+        margin-left:-5%;
         padding:0;
         list-style-type:none;
         height:30px;
-        
         font-size:20px;
         display: flex;
         justify-content: center;
@@ -370,10 +362,12 @@
     .menu_bar li{
         float:left;
         padding:20px;
+        margin-top:5.3%;
+        margin-left:20%;
     }
     .menu_bar li a{
         color:black;
-        display:block;
+        display:inline-block;
         font-weight:normal;
         line-height:50px;
         margin:0px;
@@ -391,6 +385,29 @@
     .menu_bar li a:hover{
         font-weight:bold;
     }
+    .login_button{
+       position:absolute;
+       top:80%;
+       right:0;
+       margin-top:-23px; 
+    }
+    .login_button_a{
+        display:block;
+    }
+
+    .login_button_a img{
+        display:block;
+    }
+    
+    .menu_bar_line img{
+        margin-top:-300px;
+        margin-left:25%;
+    }
+    .section{
+        position:relative;
+        z-index:99;
+    }
+    
     .container li{
         float:left;
         width:auto;
@@ -411,7 +428,7 @@
     #poster{
         margin-left:2%;
         position:relative;
-        height:470px;
+        height:500px;
         width:95%;
         min-width:500px;
         border:1px solid #ccc;
