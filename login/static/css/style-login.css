@@ -72,7 +72,7 @@
         line-height:25px;  
         margin-left:3%;
     }
-    #id,#pw{
+    #id_username,#id_password{
         width:38%;
         height:20px;
     }    
