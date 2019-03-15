@@ -83,19 +83,50 @@ class Unbrella(models.Model):
             return True
         else:
             return False
-            
+
     def __str__(self):
         return str(self.number)
 
 
 #배터리 모델
 class Battery(models.Model):
+    status_available = '대여가능'
+    status_borrowed = '대여중'
+    status_unavailable = '대여불가'
+    status_reserved = '대여신청중'
+    status_choices = (
+        (status_available, '대여가능'),
+        (status_borrowed, '대여중'),
+        (status_unavailable, '대여불가'),
+        (status_reserved, '대여신청중'),
+    )
+
     number = models.PositiveSmallIntegerField()
     is_borrowed = models.BooleanField(default = False)
     borrowed_by = models.OneToOneField(Student, null=True, blank=True, on_delete=models.DO_NOTHING)
     borrowed_time = models.DateTimeField(auto_now_add=True)
     is_reserved = models.BooleanField(default = False)
     reservation_time = models.DateTimeField(auto_now_add=True)
+    status=models.CharField(max_length=5, choices=status_choices, default=status_available)
+
+    def save(self, *args, **kwargs):
+        if self.is_reserved :
+            self.status = self.status_reserved
+        else :
+            if self.status != self.status_unavailable:
+                if self.borrowed_by is not None:
+                    self.status = self.status_borrowed
+                    self.is_borrowed = True
+                else :
+                    self.status = self.status_available
+                    self.is_borrowed = False
+        super().save(*args, **kwargs)
+
+    def is_available(self):
+        if self.status == self.status_available:
+            return True
+        else:
+            return False
 
     def __str__(self):
         return str(self.number)+"th Battery"
@@ -103,12 +134,43 @@ class Battery(models.Model):
 
 #랜선 모델
 class Lan(models.Model):
+    status_available = '대여가능'
+    status_borrowed = '대여중'
+    status_unavailable = '대여불가'
+    status_reserved = '대여신청중'
+    status_choices = (
+        (status_available, '대여가능'),
+        (status_borrowed, '대여중'),
+        (status_unavailable, '대여불가'),
+        (status_reserved, '대여신청중'),
+    )
+
     number = models.PositiveSmallIntegerField()
     is_borrowed = models.BooleanField(default = False)
     borrowed_by = models.OneToOneField(Student, null=True, blank=True, on_delete=models.DO_NOTHING)
     borrowed_time = models.DateTimeField(auto_now_add=True)
     is_reserved = models.BooleanField(default = False)
     reservation_time = models.DateTimeField(auto_now_add=True)
+    status=models.CharField(max_length=5, choices=status_choices, default=status_available)
+
+    def save(self, *args, **kwargs):
+        if self.is_reserved :
+            self.status = self.status_reserved
+        else :
+            if self.status != self.status_unavailable:
+                if self.borrowed_by is not None:
+                    self.status = self.status_borrowed
+                    self.is_borrowed = True
+                else :
+                    self.status = self.status_available
+                    self.is_borrowed = False
+        super().save(*args, **kwargs)
+
+    def is_available(self):
+        if self.status == self.status_available:
+            return True
+        else:
+            return False
 
     def __str__(self):
         return str(self.number)+"th Lan"
