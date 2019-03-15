@@ -1,9 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 # Create your models here.
 
-
+# 대여 (학생회 측)
+# 예약 (학생 측)
 
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,related_name='user_data', null=True, blank=True)
@@ -51,9 +53,44 @@ class Unbrella(models.Model):
     number = models.PositiveSmallIntegerField()
     is_borrowed = models.BooleanField(default = False)
     borrowed_by = models.OneToOneField(Student, null=True, blank=True, on_delete=models.CASCADE)
+    borrowed_time = models.DateTimeField(auto_now_add=True)
+    is_reserved = models.BooleanField(default = False)
+    reservation_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return str(self.number)
+
+
+#배터리 모델
+class Battery(models.Model):
+    number = models.PositiveSmallIntegerField()
+    is_borrowed = models.BooleanField(default = False)
+    borrowed_by = models.OneToOneField(Student, null=True, blank=True, on_delete=models.DO_NOTHING)
+    borrowed_time = models.DateTimeField(auto_now_add=True)
+    is_reserved = models.BooleanField(default = False)
+    reservation_time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.number)+"th Battery"
+        
+
+#랜선 모델
+class Lan(models.Model):
+    number = models.PositiveSmallIntegerField()
+    is_borrowed = models.BooleanField(default = False)
+    borrowed_by = models.OneToOneField(Student, null=True, blank=True, on_delete=models.DO_NOTHING)
+    borrowed_time = models.DateTimeField(auto_now_add=True)
+    is_reserved = models.BooleanField(default = False)
+    reservation_time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.number)+"th Lan"
+
+
+class Poster(models.Model):  
+    title = models.CharField(max_length=100)
+    photo = models.ImageField(blank=True)
+    number = models.PositiveSmallIntegerField()
 
 
 #실습실 테이블 모델
@@ -68,27 +105,18 @@ class StudyTable(models.Model):
         return "Table "+str(self.number)
 
 
-#배터리 모델
-class Battery(models.Model):
+class timetest(models.Model):
+    timea = models.DateTimeField(auto_now_add=True)
+    timeb = models.DateTimeField(auto_now_add=True)
+    diff = models.FloatField()
+
+
+#케이블 모델, 오로지 하나의 케이블을 식별하기 위해선 number, cable_type이 필요하다 (차라리 타입말고, 번호로만 타입을 식별해본다?)
+class Cable(models.Model):
     number = models.PositiveSmallIntegerField()
     is_borrowed = models.BooleanField(default = False)
     borrowed_by = models.OneToOneField(Student, null=True, blank=True, on_delete=models.DO_NOTHING)
-
-    def __str__(self):
-        return str(self.number)+"th Battery"
-        
-
-#랜선 모델
-class Lan(models.Model):
-    number = models.PositiveSmallIntegerField()
-    is_borrowed = models.BooleanField(default = False)
-    borrowed_by = models.OneToOneField(Student, null=True, blank=True, on_delete=models.DO_NOTHING)
-
-    def __str__(self):
-        return str(self.number)+"th Lan"
+    borrowed_time = models.DateTimeField(auto_now_add=True)
+    cable_type = models.PositiveSmallIntegerField() # 0 : 5핀 케이블, 1 : 8핀 케이블, 2 : C타입 케이블
 
 
-class Poster(models.Model):  
-    title = models.CharField(max_length=100)
-    photo = models.ImageField(blank=True)
-    number = models.PositiveSmallIntegerField()
