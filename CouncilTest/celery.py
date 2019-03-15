@@ -22,7 +22,8 @@ app.autodiscover_tasks()
 
 app.conf.beat_schedule = {
     'empty-month_A4-every-month-contrab': {
-j           'schedule': 360.0,
+        'task' : 'empty_A4',
+        'schedule': crontab(0, 0, day_of_month='1'),
     },
     'unbrella_expired_check_every_min' : {
         'task' : 'expired_check',

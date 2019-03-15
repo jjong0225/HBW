@@ -1,5 +1,5 @@
 from .serializers import StudentSerializer, UserSerializer
-from rest_framework import viewsets
+from rest_framework import viewsets, filters
 from login import models
 from rest_framework import generics, permissions
 from django.contrib.auth.models import User
@@ -22,7 +22,8 @@ class StudentViewSet(viewsets.ModelViewSet):
     queryset = models.Student.objects.all()
     serializer_class = StudentSerializer
     permission_classes = (CustomIsAdmin, permissions.IsAdminUser)      
-    
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('user__username',)
     
     #def perform_create(self, serializer):
      #   serializer.save(user=self.request.user)
@@ -43,18 +44,24 @@ class UnbrellaViewSet(viewsets.ModelViewSet):
     queryset = models.Unbrella.objects.all()
     serializer_class = serializers.UnbrellaSerializer
     permission_classes = (CustomIsAdmin, permissions.IsAdminUser)
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('number',)
 
 
 class BatteryViewSet(viewsets.ModelViewSet):
     queryset = models.Battery.objects.all()
     serializer_class = serializers.BatterySerializer
     permission_classes = (CustomIsAdmin, permissions.IsAdminUser)
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('number',)
 
 
 class LanViewSet(viewsets.ModelViewSet):
     queryset = models.Lan.objects.all()
     serializer_class = serializers.LanSerializer
     permission_classes = (CustomIsAdmin, permissions.IsAdminUser)
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('number',)
 
 
 class StudyTableViewSet(viewsets.ModelViewSet):

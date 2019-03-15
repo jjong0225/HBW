@@ -1,7 +1,13 @@
 from __future__ import absolute_import, unicode_literals
 from celery.decorators import task
 from login.models import Student
+from django.conf import settings
 from CouncilTest.celery import app
+from django.utils import timezone
+from login import models
+import datetime
+import logging
+logger = logging.getLogger(__name__)
  
  
 
@@ -15,13 +21,17 @@ def ExpiredCheck():
             item.is_reserved = False
             item.borrowed_by = None
             item.save()
-    return redirect('login:main') # no reservation for unbrella
 
 
 @task(name="a4_update")
 def EveryDayStudentReset():
     student_q = models.Student.objects.all().update(today_A4 = 0)
-    return redirect('login:main') # 
+
+
+@task(name="empty_A4")
+def empty():
+    models.Student.objects.all().update(month_A4=0)
+    
 
 # 매일 쿼리셋의 오류체크 
 @task(name="error_check_all")
@@ -131,7 +141,6 @@ def EveryDayErrorCheck ():
     if(studytable_q.count() != studytable_table_count):
         print("Server Error : 중복된 실습실 레코드가 존재합니다. Admin 사이트에서 이를 직접 관리하거나 서버 관리자에게 문의해주세요")
 
-    return redirect('login:main') # 
 
 
 @task(name="logging_admin")

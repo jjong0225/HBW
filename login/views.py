@@ -161,7 +161,7 @@ class LendBusinessClass() :
         ans=request.POST.get('ans', 'No')
         if unbrella_count < unbrella_set.count():
             for item in unbrella_set:
-                    if item.is_borrowed == False and item.is_reserved == False :
+                    if item.is_available():
                         break
             if request.method == "GET":
                 message = str(item.number)+"번 우산을 예약하시겠습니까?"
@@ -206,7 +206,7 @@ class LendBusinessClass() :
         ans=request.POST.get('ans', 'No')
         if battery_count < battery_set.count():
             for item in battery_set:
-                    if item.is_borrowed == False and item.is_reserved == False :
+                    if item.is_available() :
                         break
             if request.method == "GET":
                 message = str(item.number)+"번 배터리를 빌리시겠습니까?"
@@ -251,7 +251,7 @@ class LendBusinessClass() :
         ans=request.POST.get('ans', 'No')
         if lan_count < lan_set.count():
             for item in lan_set:
-                    if item.is_borrowed == False and item.is_reserved == False :
+                    if item.is_available() :
                         break
             if request.method == "GET":
                 message = str(item.number)+"번 랜선을 빌리시겠습니까?"

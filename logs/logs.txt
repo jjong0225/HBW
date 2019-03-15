@@ -3,3 +3,7 @@
 [2019Mar/12/ 19:01:52][Log Line : login.views:133] ????? ??? : [?й?:root| ????? ????? ???:1| ????? ?뿩 ?ð?:13] ???? ???
 [2019Mar/12/ 21:08:17][Log Line : login.views:186] ??? ??? : [?й?:root|??? ???:3] ?뿩 ???
 [2019Mar/12/ 21:33:30][Log Line : login.views:229] 배터리 사업 : [학번:root| 배터리 번호:1] 대여 완료
+[2019Mar/15/ 23:26:22][Log Line : login.views:220] 배터리 사업 : [학번:admin| 배터리 번호:2] 대여 완료
+[2019Mar/15/ 23:26:26][Log Line : login.views:265] 랜선 사업 : [학번:admin| 랜선 번호:2] 대여 완료
+[2019Mar/16/ 01:03:45][Log Line : login.views:175] 우산 사업 : [학번:admin|우산 번호:1] 대여 완료
+[2019Mar/16/ 01:05:04][Log Line : login.views:175] 우산 사업 : [학번:admin|우산 번호:1] 대여 완료

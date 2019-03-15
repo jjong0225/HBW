@@ -11,7 +11,7 @@ class StudentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Student
         fields = ('url', 'user_info', 'user', 'std_year', 'is_paid',
-                'today_A4', 'month_A4')
+                'today_A4', 'month_A4', 'is_attend')
 
 
 
@@ -31,7 +31,7 @@ class UnbrellaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Unbrella
-        fields = ('url', 'number', 'is_borrowed', 'borrowed_by')
+        fields = ('url', 'number',  'borrowed_by', 'is_reserved', 'status')
 
 
 class BatterySerializer(serializers.ModelSerializer):
@@ -39,7 +39,7 @@ class BatterySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Battery
-        fields = ('url', 'number', 'is_borrowed', 'borrowed_by')
+        fields = ('url', 'number', 'is_reserved', 'borrowed_by')
 
 
 class LanSerializer(serializers.ModelSerializer):
@@ -47,7 +47,7 @@ class LanSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Lan
-        fields = ('url', 'number', 'is_borrowed', 'borrowed_by')
+        fields = ('url', 'number', 'is_reserved', 'borrowed_by')
 
 
 class StudyTableSerializer(serializers.ModelSerializer):
