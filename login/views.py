@@ -11,6 +11,7 @@ from django.utils import timezone
 import datetime
 from django.db.models import Q
 import logging
+from django.contrib import messages
 logger = logging.getLogger(__name__)
 
 
@@ -339,3 +340,77 @@ def ReturnUnbrella(request):
 
 
 
+# POST의 각 Field들인 XXX를 정의해야함 
+def GetComplain(request):
+    if request.method == "POST":
+        anonymous_check  = request.POST['is_anonymous']
+        updater_name = ""
+        updater_id = ""
+        current_time = timezone.localtime()
+        if models.Complain.objects.all().count() <= 1 :
+            updated_number = 2
+        else :
+            updated_number = str(int(models.Complain.objects.all().order_by('-number')[0].number) + 1)
+        if anonymous_check == "True" :
+            updater_name = "anonymous"
+            updater_id = "00000000"
+        else :
+            updater_name = request.user.username
+            updater_id = request.user.user_data.std_year
+        models.Complain.objects.create(username = updater_name, updated_text = request.POST['updated_text'], updated_date = current_time, is_anonymous = anonymous_check, number = updated_number)
+        logger.info('컴플레인 : [익명여부 :' + anonymous_check +'이름:'+updater_name+'| 학번:'+updater_id+'| 컴플레인 번호:' + str(updated_number) + '] 업로드 완료') # 담당자:{}
+        return render(request, 'login/Test_for_jong.html')
+    else : 
+        return render(request, 'login/Test_for_jong.html')
+
+def LendUn(request) :
+    unbrella_set = models.Unbrella.objects.all()
+    battery_set = models.Battery.objects.all()
+    lan_set = models.Lan.objects.all()
+    post_q = models.Poster.objects.all().order_by('number')
+    unbrella_count = unbrella_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
+    battery_count = battery_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
+    lan_count = lan_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
+    message = ""
+    yes_no = False
+
+    if(models.Unbrella.objects.filter(borrowed_by = request.user.user_data.id).count() > 0) :
+        message = "현재 예약하신 우산이 이미 존재합니다."
+        yes_no = True
+        return render(request, 'login/home.html', {
+            'message': message,
+            'yes_no': yes_no,
+            'battery_count': battery_count,
+            'unbrella_count': unbrella_count,
+            'lan_count': lan_count,
+            'posts':post_q,
+            'battery_total' : battery_set.count(),
+            'unbrella_total': unbrella_set.count(),
+            'lan_total': lan_set.count(),
+        })
+
+
+    if unbrella_count < unbrella_set.count():
+        for item in unbrella_set.order_by('number'):
+                if item.is_available():
+                    break
+        item.borrowed_by = request.user.user_data
+        item.is_reserved = True
+        item.reservation_time = timezone.localtime()
+        item.save()
+        logger.info('우산 사업 : [학번:'+request.user.username+'|우산 번호:'+str(item.number)+'] 대여 완료') # 담당자:{}
+        return redirect('login:main')
+    else :
+        messages.add_message(request, messages.INFO, '현재 예약 가능한 우산이 없습니다.')
+        yes_no = True
+
+    return render(request, 'login/main_lendunbrella.html', {
+        'messages': messages,
+        'yesno': yes_no,
+        'battery_count':battery_count,
+        'lan_count':lan_count,
+        'posts':post_q,
+        'battery_total' : battery_set.count(),
+        'unbrella_total': unbrella_set.count(),
+        'lan_total': lan_set.count(),
+        })

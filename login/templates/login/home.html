@@ -34,8 +34,7 @@
   var elems = document.querySelectorAll('.carousel');
   var instances = M.Carousel.init(elems);
 });
-
-      </script>
+      </script>    
     <!-- /container -->
   </div>
   <!-- /headerwrap -->
@@ -46,24 +45,31 @@
 	 ***************************************************************************************************************** -->
   <div id="service">
     <div class="container">
+    
       <div class="row centered">
         <div class="col-lg-3">
           <i class="fas fa-umbrella fa-5x"></i>
           <h4>우산</h4>
-          <p>0　|　<strong>10</strong></p>
-          <p><a onclick="alert('1번 우산이 대여되었습니다')" class="btn btn-theme">대여</a></p>
+          <p>{{ unbrella_count }}　|　<strong>{{ unbrella_total }}</strong></p> <!-- 수정됨 -->
+          {% if user.user_data.un.is_reserved == False and  user.user_data.un.is_borrowed == False %}
+            <p><a href = "/lendun" onclick="alert( {{ unbrel.number }} +'번 우산이 대여되었습니다')" class="btn btn-theme" value="대여">대여</a></p> <!-- 수정됨 -->
+          {% else %}
+            <p><a href = "" onclick="alert('이미 대여중인 우산이 존재합니다')" class="btn btn-theme" value="대여">대여</a></p> <!-- 수정됨 -->
+          {% endif %}
         </div>
         <div class="col-lg-3">
           <i class="fas fa-battery-full fa-5x"></i>
           <h4>보조배터리</h4>
-          <p>0　|　<strong>10</strong></p>
-          <p><a onclick="alert('1번 보조 배터리가 대여되었습니다')" class="btn btn-theme">대여</a></p>
+          <p>{{ battery_count }}　|　<strong>{{ battery_total }}</strong></p> <!-- 수정됨 -->
+          <form action="/login/jong" method="POST"> <!-- 수정됨 -->
+            <p><a onclick="alert('1번 보조 배터리가 대여되었습니다')" class="btn btn-theme">대여</a></p> <!-- 수정됨 -->
+            </form> <!-- 수정됨 -->
         </div>
         <div class="col-lg-3">
           <i class="fas fa-ethernet fa-5x"></i>
           <div class="lan_lent">
             <h4>랜선</h4>
-            <p>0　|　<strong>10</strong></p>
+            <p>{{ lan_count }}　|　<strong>{{ lan_total }}</strong></p> <!-- 수정됨 -->
             <p><a onclick="alert('1번 랜선이 대여되었습니다')" class="btn btn-theme">대여</a></p>
           </div>
         </div>

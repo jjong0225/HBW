@@ -59,7 +59,7 @@ class Unbrella(models.Model):
 
     number = models.PositiveSmallIntegerField()
     is_borrowed = models.BooleanField(default = False)
-    borrowed_by = models.OneToOneField(Student, null=True, blank=True, on_delete=models.CASCADE)
+    borrowed_by = models.OneToOneField(Student, null=True, related_name = "un", blank=True, on_delete=models.CASCADE)
     borrowed_time = models.DateTimeField(auto_now_add=True)
     is_reserved = models.BooleanField(default = False)
     reservation_time = models.DateTimeField(auto_now_add=True)
@@ -209,3 +209,10 @@ class Cable(models.Model):
     cable_type = models.PositiveSmallIntegerField() # 0 : 5핀 케이블, 1 : 8핀 케이블, 2 : C타입 케이블
 
 
+class Complain(models.Model):
+    number = models.CharField(max_length=1000)
+    updated_text = models.TextField()
+    updated_date = models.DateTimeField(auto_now=True)
+    is_anonymous = models.BooleanField(default = True)
+    username = models.CharField(max_length = 10)
+    userid = models.CharField(max_length = 8)
