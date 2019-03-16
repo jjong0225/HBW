@@ -81,7 +81,7 @@ def Main(request):
     battery_count = battery_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
     lan_count = lan_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
     
-    return render(request, 'login/final_main.html', {
+    return render(request, 'login/home.html', {
         'battery_count': battery_count,
         'unbrella_count': unbrella_count,
         'lan_count': lan_count,

@@ -1,0 +1,53 @@
+{% extends 'login/layout.html' %}
+
+{% block content %}
+    <!-- *****************************************************************************************************************
+	 BLUE WRAP
+	 ***************************************************************************************************************** -->
+    <div id="blue">
+        <div class="container">
+            <div class="row">
+                <h3>비밀번호 변경</h3>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /blue -->
+
+
+
+    <!--Login Form-->
+
+    <div class="container">
+        <form action="" method="POST">
+            <div class="row">
+                <div class="input-field ">
+                    <input id="user_id" type="password" class="validate" required>
+                    <label for="user_id">변경 비밀번호</label>
+                </div>
+                <div class="input-field ">
+                    <input id="user_pw" type="text" class="validate" required>
+                    <label for="user_pw">비밀변호 확인</label>
+                </div>
+                <p><a href="{% url "login:main" %}" class="btn btn-theme btn-block">비밀번호 변경</a></p>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+
+    
+{% block copyrights %}
+    <div id="copyrights">
+        <div class="container">
+            <p>
+                &copy; Copyrights <strong>Solid</strong>. All Rights Reserved
+            </p>
+            <div class="credits">
+                Created with Solid template by <a href="https://templatemag.com/">TemplateMag</a>
+            </div>
+        </div>
+    </div>
+    <!-- / copyrights -->
+{% endblock %}

@@ -1,188 +1,198 @@
-<!doctype html>
-<html lang="ko">
+{% extends 'login/layout.html' %}
+{% block jquery %}
+  <!-- jQuery -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+{% endblock %}
+{% block header %}
+  <!-- Checkbox Css-->
+  <link rel="stylesheet" type="text/css" href="css/checkbox.css">
 
-<head>
-	<meta charset="utf-8">
-	{% load staticfiles %}
-	<link rel="shortcut icon" href="{% static "images/upper-logo.png" %}">
-	<link rel="stylesheet" href="{% static "css/style.css" %}">
-	<link rel="stylesheet" href="{% static "css/style-place.css" %}" type="text/css">
-	<title>소프트웨어학부 복지사업</title>
+  <script>
+    //2개만 체크되게 하기
+    // 체크 박스 이름 수정해주세요!
+    // 시간 체크 부분 원래 어떻게 생겼었는지 기억이 안나서 직접 안만들고 스크립트만 남겨놔요
+    var timecnt = 0;
+    $('체크박스이름').on('click', function () {
+      if (this.checked == true) {
+        timecnt++;
+      }
+      if (timecnt > 4) {
+        alert("최대 2시간까지 예약 가능합니다.");
+        return false;
+      }
+    })
+  </script>
+{% endblock %}
 
-	<script>
-		//2개만 체크되게 하기
-		function count_ck(obj) {
-			var chkbox = document.getElementsByName("time");
-			var chkCnt = 0;
-			for (var i = 0; i < chkbox.length; i++) {
-				if (chkbox[i].checked) {
-					chkCnt++;
-				}
-			}
-			if (chkCnt > 4) {
-				alert("최대 2시간까지 예약 가능합니다.");
-				obj.checked = false;
-				return false;
-			}
-		}
-	</script>
-</head>
+{% block content %}
+  <!-- *****************************************************************************************************************
+	 BLUE WRAP
+	 ***************************************************************************************************************** -->
+  <div id="blue">
+    <div class="container">
+      <div class="row">
+        <h3>실습실 예약</h3>
+      </div>
+      <!-- /row -->
+    </div>
+    <!-- /container -->
+  </div>
+  <!-- /blue -->
 
-<body>
-	<div class="container">
-		<div class="header">
-			<div class="logo">
-				<img for="logo" src="{% static "images/header_logo.png" %}" alt="" usemap="#main_logo">
-				<map name="main_logo">
-					<area shape="rect" coords="5,5,250,80" href="{% url "login:main" %}" alt="메인메뉴로 가기">
-				</map>
-			</div>
-            {% if user.is_authenticated %}
-            <div class="login_button">
-                    <a href="{% url "login:logout" %}"><img for ="logout_button" src="{% static "images/logout.png" %}" alt=""></a>
+  <div class="container mtb">
+    <div class="time_check">
+      <select id="class">
+        <option value="monday" selected>2019-03-10</option>
+        <option value="tuesday">2019-03-11</option>
+        <option value="wednesday">2019-03-12</option>
+        <option value="thursday">2019-03-13</option>
+        <option value="friday">2019-03-14</option>
+      </select>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-lg-6 col-12">
+        <h1>자리배치도</h1>
+        <div class="hline"></div>
+        <div class="table_container">
+          {% load staticfiles %}
+          <div class="upper_table">
+            <div id="table_set" class="table_set1">
+              <div id="reg" class="table1">
+                <a href="#"><img id="table1" src="{% static 'img/desk1.png' %}" onmouseover="this.src='{% static 'img/desk1_onmouse.png' %}'"
+                    onmouseout="this.src='{% static 'img/desk1.png' %}'"></a>
+              </div>
+              <div id="reg" class="table2">
+                <a href="#"><img id="table2" src="{% static 'img/desk2.png' %}" onmouseover="this.src='{% static 'img/desk2_onmouse.png' %}'"
+                    onmouseout="this.src='{% static 'img/desk2.png' %}'"></a>
+              </div>
             </div>
-            {% else %}
-            <div class="login_button">
-                <a href="{% url "login:login" %}">
-                    <img for ="login_button" src="{% static "images/login.png" %}" alt=""></a>
+            <div id="table_set" class="table_set2">
+              <div id="reg" class="table3">
+                <a href="#"><img id="table3" src="{% static 'img/desk3.png' %}" onmouseover="this.src='{% static 'img/desk3_onmouse.png' %}'"
+                    onmouseout="this.src='{% static 'img/desk3.png' %}'"></a>
+              </div>
+              <div id="reg" class="table4">
+                <a href="#"><img id="table4" src="{% static "img/desk4.png" %}" onmouseover="this.src='{% static 'img/desk4_onmouse.png' %}'"
+                    onmouseout="this.src='{% static 'img/desk4.png' %}'"></a>
+              </div>
             </div>
-            {% endif %}
+            <div id="table_set" class="table_set3">
+              <div id="reg" class="table5">
+                <a href="#"><img id="table3" src="{% static "img/desk5.png" %}" onmouseover="this.src='{% static 'img/desk5_onmouse.png' %}'"
+                    onmouseout="this.src='{% static 'img/desk5.png' %}'"></a>
+              </div>
+              <div id="reg" class="table6">
+                <a href="#"><img id="table3" src="{% static "img/desk6.png" %}" onmouseover="this.src='{% static 'img/desk6_onmouse.png' %}'"
+                    onmouseout="this.src='{% static 'img/desk6.png' %}'"></a>
+              </div>
+            </div>
+          </div>
+          <div class="lower_table">
+            <div id="table_set" class="table_set4">
+              <div id="reg" class="table7">
+                <a href="#"><img id="table7" src="{% static "img/desk7.png" %}" onmouseover="this.src='{% static 'img/desk7_onmouse.png' %}'"
+                    onmouseout="this.src='{% static "img/desk7.png" %}'"></a>
+              </div>
+              <div id="reg" class="table8">
+                <a href="#"><img id="table8" src="{% static "img/desk8.png" %}" onmouseover="this.src='{% static 'img/desk8_onmouse.png' %}'"
+                    onmouseout="this.src='{% static "img/desk8.png" %}'"></a>
+              </div>
+            </div>
 
-		</div>
-		<div class="section">
-			<div class="menu_bar">
-				<ul>
-					<li><a href="{% url "login:main" %}">홈</a></li>
-					<li><a href="{% url "login:seltable" %}">실습실 예약</a></li>
-					<li><a href="{% url "login:mypage" %}">마이페이지</a></li>
-				</ul>
-				<!-- <hr width="85%" color="black" 0.5px> -->
-				<!-- <div class ="menu_bar_line">
-							<img for="menu_bar" src="images/menu_bar.png" alt="">
-							</div> -->
-			</div>
-			<div class="place_section">
-				<div class="left_click">
-					<div class="place">
-						<div id="font">
-							<h3>실습실 자리 배치도</h3>
-						</div>
-						<hr width="95%" color="black">
-						<div class="place_image">
-							<img for="place" src="{% static "images/place.png" %}" alt="">
-						</div>
-					</div>
-					<div class="link_mypage">
-						<h3>실습실 예약 취소는 <a href="{% url "login:mypage" %}">마이페이지</a>에서 가능합니다.</h3>
-					</div>
-				</div>
-				<div class="right_click">
-						<div class="place_click">
-							<div id="font">
-								<h3>자리 선택</h3>
-							</div>
-							<hr width="95%" color="black">
-							<div id="table_div" class="reservation">
-									<form id="table_sel" action="" method="post">{% csrf_token %}
-										<div class="upper">
-											<p>　</p>
-											<p>     
-													　　　　　　　　　　　　　　　　　　　　　　　　　　<input type="radio" id="desk1" value="1" name="desk"><label for="desk1"></label> 1     　<input type="radio" id="desk2" value="2" name="desk"><label for="desk2"></label> 2          　<input type="radio" id="desk3" value="3" name="desk"><label for="desk3"></label> 3         　 <input type="radio" id="desk4" value="4" name="desk"><label for="desk4"></label> 4       　   <input type="radio" id="desk5" value="5" name="desk"><label for="desk5"></label> 5        　  　
-											</p>
-											<p>	
-													　　　　　　　　　　　　　　　　　　　　　　　　　　<input type="radio" id="desk6" value="6" name="desk"><label for="desk6"></label> 6     　<input type="radio" id="desk7" value="7" name="desk"><label for="desk7"></label> 7          　<input type="radio" id="desk8" value="8" name="desk"><label for="desk8"></label> 8         　 <input type="radio" id="desk9" value="9" name="desk"><label for="desk9"></label> 9       　   <input type="radio" id="desk10" value="10" name="desk"><label for="desk10"></label> 10     　
-												
-											</p>
-										</div>					
-										<div class="btn_time">
-											<p>
-												　　　　　<input type="submit" value="예약 가능시간 확인">												
-										</p>
-										</div>
-									</form>
-								</div>
-							</div>
-					<div class="lower">
-						<div id="font">
-							<h3>예약 시간 선택</h3>
-						</div>
-						<hr width="95%" color="black">
-						<form action="{% url "login:lendtable" %}" method="POST" onsubmit="_submit(this);">{% csrf_token %}
-							<div class="check_time">
-								<p>
-									<pre>			
-										{% if tables %}
-											{% spaceless %}
-											{% for table in tables %}
-												{% if table.is_borrowed == 0 %} 
-													<input type="checkbox" id={{ "time"|add:table.start_time }} value={{ table.start_time }} name="time[]" onClick="count_ck(this)"><label for={{ "time"|add:table.start_time }}></label><input type="hidden" name="number[]" value={{ table.number }} />
-												{% else %} 
-													<input type="checkbox" checked disabled id={{ "time"|add:table.start_time }} value={{ table.start_time }} name="time[]" onClick="count_ck(this)"><label for={{ "time"|add:table.start_time }}></label><input type="hidden" name="number[]" value={{ table.number }} />
-												{% endif %}
-											{% endfor %}
-											{% endspaceless %}
-										{% else %}
-											<p>좌석을 선택해 주세요</p>
-										{% endif %}
-									</pre>
-								</p>
-							</div>								
-							<div class="btn_reservation">
-								<p>
-									<pre>
-										<input type="submit" id="button" value="예약하기">
-									</pre>
-								</p>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-			<div class="footer">
-					<div class="left_footer">
-						<div class="tel">
-							<p><strong>연락처</strong></p>
-							<p><b>회장 </b>윤동주 010-xxxx-xxxx id</p>
-							<p><b>부회장 </b>노진주 010-xxxx-xxxx id</p>
-							<p><b>부회장 </b>김상엽 010-xxxx-xxxx id</p>
-						</div>
-					</div>
-					<div class="right_footer">
-						<p>　</p>
-						<p>　</p>
-						<p>　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　© 2019 All Rights Reserved.</p>
-						<p>　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　<b>제작자</b> 김민근, 김 산, 이진우, 변지현, 안종훈, 최민성, 허예은</p>
-					</div>
-			</div>
-</body>
+            <div id="table_set" class="table_set5">
+              <div id="reg" class="table9">
+                <a href="#"><img id="table9" src="{% static "img/desk9.png" %}" onmouseover="this.src='{% static 'img/desk9_onmouse.png' %}'"
+                    onmouseout="this.src='{% static "img/desk9.png" %}'"></a>
+              </div>
+            </div>
+            <div id="reg" class="table10">
+              <a href="#"><img id="table10" src="{% static "img/desk10.png" %}" onmouseover="this.src='{% static 'img/desk10_onmouse.png' %}'""
+                  onmouseout="this.src='{% static "img/desk10.png" %}'"></a>
+            </div>
+            <div class="door">
+              <p>D O O R</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <h1>예약 가능 시간</h1>
+        <div class="hline"></div>
+        <div class="place_time_check">
+          <div class="ikc-tablelist-listup ikc-smuf-form">
+            <p>
+              <span class="ikc-reserved-status" style="margin-bottom:2.5%;">
+                <span class="ik-reserved-off" style="background:#ffffff; border:1px solid grey;"></span>
+                예약 가능
+                <span class="ikc-reserved-inactive"></span>
+                예약 불가능
+              </span>
+            </p>
+          </div>
+          <form action="" method="POST">
+            <table class="table" cellpadding="0" cellspacing="0">
+              <thead>
+                <tr>
+                  <th style="width:11%;">10</th>
+                  <th style="width:11%;">11</th>
+                  <th style="width:11%;">12</th>
+                  <th style="width:11%;">1</th>
+                  <th style="width:11%;">2</th>
+                  <th style="width:11%;">3</th>
+                  <th style="width:11%;">4</th>
+                  <th style="width:11%;">5</th>
+                  <th style="width:11%;">6</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="height:30px;padding: 0;"><input class="styled-checkbox" type="checkbox" checked="false"
+                      style=""></td>
+                  <td style="height:30px;padding: 0;"><input class="styled-checkbox" type="checkbox" checked="false"
+                      style=""></td>
+                  <td style="height:30px;padding: 0;"><input class="styled-checkbox" type="checkbox" checked="false"
+                      style=""></td>
+                  <td style="height:30px;padding: 0;"><input class="styled-checkbox" type="checkbox" checked="false"
+                      style=""></td>
+                  <td style="height:30px;padding: 0;"><input class="styled-checkbox" type="checkbox" checked="false"
+                      style=""></td>
+                  <td style="height:30px;padding: 0;"><input class="styled-checkbox" type="checkbox" checked="false"
+                      style=""></td>
+                  <td style="height:30px;padding: 0;"><input class="styled-checkbox" type="checkbox" checked="false"
+                      style=""></td>
+                  <td style="height:30px;padding: 0;"><input class="styled-checkbox" type="checkbox" checked="false"
+                      style=""></td>
+                  <td style="height:30px;padding: 0;"><input class="styled-checkbox" type="checkbox" checked="false"
+                      style=""></td>
+                </tr>
+              </tbody>
+            </table>
+          </form>
 
-<script language='JavaScript'>
-    function _submit(f)
-    {
-        //같이 보낼 값 정리
-        if (typeof(f.elements['time[]'].length) == 'undefined') //단일
-        {
-            if (f.elements['time[]'].checked==false)
-            {
-                f.elements['number[]'].disabled=true;
-            }
-        } else { //다중
-            for (i=0; i<f.elements['time[]'].length; i++)
-            {
-                if (f.elements['time[]'][i].checked==false)
-                {
-                    f.elements['number[]'][i].disabled=true;
-                }
-            }
-        }
-        return true;
-    }
-	</script>
-	
-	<script language="JavaScript">
-		function showInput() {
-			document.getElementById('display').innerHTML = 
-						document.getElementById("user_input").value;
-		}
-	  </script>
-	</html>
+        </div>
+        <a class="btn btn-theme" id="reservation_button" style="margin-top:0.5%;">자리 예약</a>
+
+        <div class="row">
+          <div class="col-lg-12" style="width:100%">
+            <p class="cancel_message">실습실 예약 취소는 <a href="{% url "login:mypage" %}">마이페이지</a>로</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  {% endblock %}
+
+{% block copyrights %}
+  <div id="copyrights">
+    <div class="container">
+      <p>
+        &copy; Copyrights <strong>Solid</strong>. All Rights Reserved
+      </p>
+      <div class="credits">
+        Created with Solid template by <a href="https://templatemag.com/">TemplateMag</a>
+      </div>
+    </div>
+  </div>
+  <!-- / copyrights -->
+{% endblock %}

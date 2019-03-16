@@ -1,0 +1,282 @@
+{% extends 'login/layout.html '%}
+{% load staticfiles %}
+
+{% block header %}
+<!-- Font-Awesome -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+{% endblock %}
+
+
+{% block content %}
+  <!-- *****************************************************************************************************************
+	 HEADERWRAP
+	 ***************************************************************************************************************** -->
+  <div id="headerwrap">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12" id="logo_content">
+          <span class ="logo_content" ><h3 style="margin-bottom:3%;">언제나, 늘, 당신곁에</h3></span>
+          <h1 style="margin-top:-0.1%;">제4대 소프트웨어학부 학생회 </h1>
+          <h1 style="margin-top:-0.25%;"><span class= "logo">SUPPORT.</span> 입니다.</h1>
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="carousel" style="width:100%;">
+          <a class="carousel-item" href="#one!"><img src="{% static "img/poster1.jpg" %}"></a>
+          <a class="carousel-item" href="#two!"><img src="{% static "img/poster2.jpg" %}"></a>
+          <a class="carousel-item" href="#two!"><img src="{% static "img/poster3.jpg" %}"></a>
+        </div>
+      </div>
+    </div>
+      <script>
+          document.addEventListener('DOMContentLoaded', function() {
+  var elems = document.querySelectorAll('.carousel');
+  var instances = M.Carousel.init(elems);
+});
+
+      </script>
+    <!-- /container -->
+  </div>
+  <!-- /headerwrap -->
+  </div>
+
+  <!-- *****************************************************************************************************************
+	 SERVICE LOGOS
+	 ***************************************************************************************************************** -->
+  <div id="service">
+    <div class="container">
+      <div class="row centered">
+        <div class="col-lg-3">
+          <i class="fas fa-umbrella fa-5x"></i>
+          <h4>우산</h4>
+          <p>0　|　<strong>10</strong></p>
+          <p><a onclick="alert('1번 우산이 대여되었습니다')" class="btn btn-theme">대여</a></p>
+        </div>
+        <div class="col-lg-3">
+          <i class="fas fa-battery-full fa-5x"></i>
+          <h4>보조배터리</h4>
+          <p>0　|　<strong>10</strong></p>
+          <p><a onclick="alert('1번 보조 배터리가 대여되었습니다')" class="btn btn-theme">대여</a></p>
+        </div>
+        <div class="col-lg-3">
+          <i class="fas fa-ethernet fa-5x"></i>
+          <div class="lan_lent">
+            <h4>랜선</h4>
+            <p>0　|　<strong>10</strong></p>
+            <p><a onclick="alert('1번 랜선이 대여되었습니다')" class="btn btn-theme">대여</a></p>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <i class="fas fa-plug fa-5x"></i>
+          <div class="lan_lent">
+            <h4>케이블</h4>
+            <p>0　|　<strong>10</strong></p>
+            <p><a onclick="alert('1번 케이블이 대여되었습니다')" class="btn btn-theme">대여</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- *****************************************************************************************************************
+	 PORTFOLIO SECTION
+	 ***************************************************************************************************************** -->
+  <div id="portfoliowrap">
+    <div class="time_now">
+      <p>　</p>
+      <h3>실습실 현재 예약 현황</h3>
+      <div class ="ikc-tablelist-listup ikc-smuf-form">
+        <p>
+          <span class = "ikc-reserved-status">
+            <span class = "ik-reserved-off" style="background:#dddddd; border:1px solid grey;"></span>
+            예약 가능
+            <span class = "ikc-reserved-inactive"></span>
+            예약 불가능
+          </span>
+        </p>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <table class="table" border="0" cellpadding="1" cellspacing="0">
+            <thead>
+              <th>번호/시간</td>
+              <th>　10　</th>
+              <th>　11　</th>
+              <th>　12　</th>
+              <th>　1　</th>
+              <th>　2　</th>
+              <th>　3　</th>
+              <th>　4　</th>
+              <th>　5　</th>
+              <th>　6　</th>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>  
+                <!-- 표 하나하나 색깔 바꾸고 싶으면 bgcolor해서 바꾸면 됨! -->
+                <!-- style="background-color:rgb(233, 181, 49)" -->
+                <td class="occupied"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>10</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+
+     <!-- *****************************************************************************************************************
+	 건의사항
+   ***************************************************************************************************************** -->
+   <div class = "container mtb"> 
+    <div class = "row">
+  <div class = "portfoliowrap" id="wrap"> 
+     <div class = "col-12" id="complain_wrap">
+        <h4>건의사항</h4>
+        <div class = "hline"></div>
+        <div class = "col-12">
+          <form role="form" action="contactform/contactform.php(수정바람)" method="POST">
+            <div class="col-12">
+              <textarea class = "form-control btn-block" name="message" id="contact-message" placeholder="건의사항 남기기" row="10" data-rule="required" style="margin-top:2.5%;"></textarea>
+              <button type="submit" class="btn btn-theme btn-block" id="complain_button">건의사항 보내기</button>
+            </div>
+          </form>
+     </div>
+   </div>
+ </div>
+ </div>
+ </div>
+ {% endblock %}
+
+ {% block copyrights %}
+
+    <div id="copyrights">
+      <div class="container">
+        <p><strong>제작자　|</strong>　김 산　박성철　안종훈　이진우　허예은 </p>
+        <p>
+          &copy; Copyrights <strong>Solid</strong> All Rights Reserved
+        </p>
+        <div class="credits">
+          Created with Solid template by <a href="https://templatemag.com/">TemplateMag</a>
+        </div>
+      </div>
+    </div>
+    <!-- / copyrights -->
+  {% endblock %}
