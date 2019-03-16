@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+
+    <head>
+        <meta charset="utf-8">
+        <title>소프트웨어 복지사업</title>
+        {% load staticfiles %}
+        <link rel="shortcut icon" href="{% static "images/upper-logo.png" %}">
+        <link rel="stylesheet" href="{% static "css/style-login.css" %}">
+
+    </head>
+
+    <body>
+        <div class = "container">
+            <div class ="logo">
+                <a href="{% url "login:main" %}">
+                {% load staticfiles %}
+                <img for="logo" src="{% static "images/header_logo_narrow.png" %}" alt="" >
+                </a>
+            </div>
+            <div class = "login_tab">
+                <div class ="real_login">
+                    <form action="" method="POST">{% csrf_token %}
+                        <ul> 
+                            <li>
+                                <label for="id">아이디</label>                                     
+                                {{ form.username }}
+                            </li>
+                            <li>
+                                <label for="pw">비밀번호</label>
+                                {{ form.password }}
+                            </li>
+                            <li>
+                                {% load staticfiles %}
+                                <input type = "image" for ="login_button" src="{% static "images/login.png" %}" alt="" id="login_button"></a>
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+                <div class="footer">
+                    <p><strong>제작자</strong> 김민근, 김 산, 이진우, 변지현, 안종훈, 최민성, 허예은</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
