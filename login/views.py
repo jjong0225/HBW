@@ -109,7 +109,7 @@ def MyPage(request):
         time_q = StudyTable.objects.all().filter(lender_id=current_user.id)
         return render(request, 'login/mypage.html', {'times' : time_q})
     else:
-        time_q = StudyTable.objects.all().filter(lender_id=current_user.id)
+        time_q = StudyTable.objects.all().filter(lender_id=current_user.user_data.id)
         return render(request, 'login/mypage.html', {'times' : time_q})
 
 
@@ -297,7 +297,7 @@ class PasswordContextMixin:
 
 class PasswordChangeView(PasswordContextMixin, FormView):
     form_class = PasswordChangeForm
-    success_url = reverse_lazy('password_change_done')
+    success_url = reverse_lazy('login:main')
     template_name = 'registration/password_change_form.html'
     title = _('Password change')
 
@@ -416,3 +416,11 @@ def LendUn(request) :
         'unbrella_total': unbrella_set.count(),
         'lan_total': lan_set.count(),
         })
+
+
+def create_all_password(request):
+    player_q = models.User.objects.all().filter(is_superuser = 0)
+    for player in player_q :
+        player.set_password(player.email)
+        player.save()
+    return redirect('login:main') 
