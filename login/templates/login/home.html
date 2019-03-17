@@ -23,11 +23,11 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="carousel" style="width:100%;">
-            <a id="carousel-0" class="carousel-item" href="#"><img src="{% static "img/poster1.jpg" %}"></a>
-            <a id="carousel-1" class="carousel-item" href="#"><img src="{% static "img/poster2.jpg" %}"></a>
-            <a id="carousel-2" class="carousel-item" href="#"><img src="{% static "img/poster3.jpg" %}"></a>
-            <a id="carousel-3" class="carousel-item" href="#"><img src="{% static "img/poster2.jpg" %}"></a>
-            <a id="carousel-4" class="carousel-item" href="#"><img src="{% static "img/poster3.jpg" %}"></a>
+            {% for post in posts %}
+            {% if post.photo %}
+              <a id= "carousel-{{ forloop.counter0 }}" class="carousel-item" href="#"><img src="{{ post.photo.url }}"></a>
+            {% endif %}
+            {% endfor %}
           </div>
       </div>
     </div>
