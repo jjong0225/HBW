@@ -109,7 +109,7 @@ def MyPage(request):
         time_q = StudyTable.objects.all().filter(lender_id=current_user.id)
         return render(request, 'login/mypage.html', {'times' : time_q})
     else:
-        time_q = StudyTable.objects.all().filter(lender_id=current_user.id)
+        time_q = StudyTable.objects.all().filter(lender_id=current_user.user_data.id)
         return render(request, 'login/mypage.html', {'times' : time_q})
 
 
