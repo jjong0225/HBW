@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.core.validators import MaxValueValidator
+from rest_framework.exceptions import APIException
 
 # Create your models here.
 
@@ -30,10 +32,13 @@ class Student(models.Model):
     is_paid = models.BooleanField(default = False)
     # 회비 납부 여부
 
-    today_A4 = models.PositiveIntegerField(default = 0)
+    A4_count = models.PositiveIntegerField(default = 0, validators=[MaxValueValidator(50)], error_messages={'max_value' : '하루 대여량은 50장을 넘길 수 없습니다.'})
+    # 현재 빌리려 하는 A4 매수
+
+    today_A4 = models.PositiveIntegerField(default = 0,  validators=[MaxValueValidator(50)], error_messages={'max_value' : '하루 대여량은 50장을 넘길 수 없습니다.'})
     # 오늘 수령한 A4 매수
 
-    month_A4 = models.PositiveIntegerField(default = 0)
+    month_A4 = models.PositiveIntegerField(default = 0,  validators=[MaxValueValidator(500)], error_messages={'max_value' : '한달 대여량은 500장을 넘길 수 없습니다.'})
     # 이번달 수령한 A4 매수
 
     is_attend = models.BooleanField(default = True)
@@ -41,6 +46,17 @@ class Student(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    def save(self, *args, **kwargs):
+        self.today_A4 = self.today_A4 + self.A4_count
+        if self.today_A4 > 50:
+            raise APIException("하루 대여량은 50장을 넘길 수 없습니다!")
+        self.month_A4 = self.month_A4 + self.A4_count
+        if self.month_A4 > 500:
+            raise APIException("한달 대여량은 500장을 넘길 수 없습니다!")
+        self.A4_count = 0
+        super().save(*args, **kwargs)
+
     
     objects = models.Manager()
 

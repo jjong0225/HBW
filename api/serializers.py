@@ -10,7 +10,7 @@ class StudentSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = models.Student
-        fields = ('url', 'user_info', 'user', 'std_year', 'is_paid',
+        fields = ('url', 'user_info', 'user', 'std_year', 'is_paid', 'A4_count',
                 'today_A4', 'month_A4', 'is_attend')
 
 
