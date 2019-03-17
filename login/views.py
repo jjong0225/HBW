@@ -84,52 +84,95 @@ def Main(request):
     battery_count = battery_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
     lan_count = lan_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
     cable_count = cable_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
-    message_unbrella = str(unbrella_set.filter(Q(is_borrowed = False)).first().number)+"번 우산이 대여되었습니다."
-    message_battery = str(battery_set.filter(Q(is_borrowed = False)).first().number)+"번 배터리가 대여되었습니다."
-    message_lan = str(lan_set.filter(Q(is_borrowed = False)).first().number)+"번 랜선이 대여되었습니다."
-    message_cable = str(cable_set.filter(Q(is_borrowed = False)).first().number)+"번 랜선이 대여되었습니다."
+    message_unbrella = ""
+    message_battery = ""
+    message_lan = ""
+    message_cable = ""
+    unbrella_status = 0   # 0 : 평상시상태.   1 : 대여가능.   2 : 대여중   3 : 대여가능한 물품이 없음 
+    battery_status = 0  
+    lan_status = 0
+    cable_status = 0
 
     if request.method == "POST":
         if request.POST.get('battery', 'False') == "True":
-            for item in battery_set:
-                    if item.is_available():
-                        break
-            item.borrowed_by = request.user.user_data
-            item.is_reserved = True
-            item.reservation_time = timezone.localtime()
-            item.save()
-            logger.info('보조배터리 사업 : [학번:'+request.user.username+'|보조배터리 번호:'+str(item.number)+'] 대여 완료') # 담당자:{}
-            return redirect('login:main')
-        elif request.POST.get('unbrella', 'False') == "True":
-            for item in unbrella_set:
-                    if item.is_available():
-                        break
-            item.borrowed_by = request.user.user_data
-            item.is_reserved = True
-            item.reservation_time = timezone.localtime()
-            item.save()
-            logger.info('우산 사업 : [학번:'+request.user.username+'|우산 번호:'+str(item.number)+'] 대여 완료') # 담당자:{}
-            return redirect('login:main')
-        elif request.POST.get('lan', 'False') == "True":
-            for item in lan_set:
-                    if item.is_available():
-                        break
-            item.borrowed_by = request.user.user_data
-            item.is_reserved = True
-            item.reservation_time = timezone.localtime()
-            item.save()
-            logger.info('랜선 사업 : [학번:'+request.user.username+'|랜선 번호:'+str(item.number)+'] 대여 완료') # 담당자:{}
-            return redirect('login:main')
-        elif request.POST.get('cable', 'False') == "True":
-            for item in cable_set:
-                    if item.is_available():
-                        break
-            item.borrowed_by = request.user.user_data
-            item.is_reserved = True
-            item.reservation_time = timezone.localtime()
-            item.save()
-            logger.info('케이블 사업 : [학번:'+request.user.username+'|케이블 번호:'+str(item.number)+'] 대여 완료') # 담당자:{}
-            return redirect('login:main')
+            if battery_count == battery_set.count():
+                battery_status = 3
+            else :
+                try :
+                    if request.user.user_data.ba is not None :
+                        battery_status = 2
+                except :      
+                    for item in battery_set:
+                        if item.is_available():
+                            break
+                    message_battery = str(item.number)+"번 배터리가 대여되었습니다."
+                    item.borrowed_by = request.user.user_data
+                    item.is_reserved = True
+                    item.reservation_time = timezone.localtime()
+                    item.save()
+                    logger.info('보조배터리 사업 : [학번:'+request.user.username+'|보조배터리 번호:'+str(item.number)+'] 대여 완료') # 담당자:{}
+                    battery_count = battery_count + 1
+                    battery_status = 1
+
+        if request.POST.get('unbrella', 'False') == "True":
+            if unbrella_count == unbrella_set.count():
+                unbrella_status = 3
+            else :
+                try :
+                    if request.user.user_data.un is not None :
+                        unbrella_status = 2
+                except :      
+                    for item in unbrella_set:
+                        if item.is_available():
+                            break
+                    message_unbrella = str(item.number)+"번 우산이 대여되었습니다."
+                    item.borrowed_by = request.user.user_data
+                    item.is_reserved = True
+                    item.reservation_time = timezone.localtime()
+                    item.save()
+                    logger.info('우 사업 : [학번:'+request.user.username+'|우산 번호:'+str(item.number)+'] 대여 완료') # 담당자:{}
+                    unbrella_count = unbrella_count + 1
+                    unbrella_status = 1
+
+        if request.POST.get('lan', 'False') == "True":
+            if lan_count == lan_set.count():
+                lan_status = 3
+            else :
+                try :
+                    if request.user.user_data.la is not None :
+                        lan_status = 2
+                except :      
+                    for item in lan_set:
+                        if item.is_available():
+                            break
+                    message_lan = str(item.number)+"번 랜선이 대여되었습니다."
+                    item.borrowed_by = request.user.user_data
+                    item.is_reserved = True
+                    item.reservation_time = timezone.localtime()
+                    item.save()
+                    logger.info('랜선 사업 : [학번:'+request.user.username+'|랜선 번호:'+str(item.number)+'] 대여 완료') # 담당자:{}
+                    lan_count = lan_count + 1
+                    lan_status = 1
+
+        if request.POST.get('cable', 'False') == "True":
+            if cable_count == cable_set.count():
+                cable_status = 3
+            else :
+                try :
+                    if request.user.user_data.ca is not None :
+                        cable_status = 2
+                except :      
+                    for item in cable_set:
+                        if item.is_available():
+                            break
+                    message_cable = str(item.number)+"번 케이블이 대여되었습니다."
+                    item.borrowed_by = request.user.user_data
+                    item.is_reserved = True
+                    item.reservation_time = timezone.localtime()
+                    item.save()
+                    logger.info('케이블 사업 : [학번:'+request.user.username+'|케이블 번호:'+str(item.number)+'] 대여 완료') # 담당자:{}
+                    cable_count = cable_count + 1
+                    cable_status = 1
         
             
 
@@ -149,6 +192,10 @@ def Main(request):
         'message_battery': message_battery,
         'message_lan': message_lan,
         'message_cable': message_cable,
+        'unbrella_status': unbrella_status,
+        'battery_status': battery_status,
+        'lan_status': lan_status,
+        'cable_status': cable_status,
     })
 
 #마이페이지
