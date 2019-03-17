@@ -15,3 +15,27 @@
 [2019Mar/16/ 15:08:59][Log Line : login.views:360] 컴플레인 : [익명여부 :False이름:root| 학번:20170300| 컴플레인 번호6] 업로드 완료
 [2019Mar/16/ 15:09:17][Log Line : login.views:360] 컴플레인 : [익명여부 :True이름:anonymous| 학번:00000000| 컴플레인 번호7] 업로드 완료
 [2019Mar/16/ 15:48:06][Log Line : login.views:382] 우산 사업 : [학번:root|우산 번호:1] 대여 완료
+[2019Mar/17/ 19:51:40][Log Line : login.views:95] 우산 사업 : [학번:admin|우산 번호:1] 대여 완료
+[2019Mar/17/ 19:56:25][Log Line : login.views:95] 우산 사업 : [학번:admin|우산 번호:1] 대여 완료
+[2019Mar/17/ 19:57:30][Log Line : login.views:95] 우산 사업 : [학번:admin|우산 번호:1] 대여 완료
+[2019Mar/17/ 19:59:18][Log Line : login.views:95] 우산 사업 : [학번:admin|우산 번호:1] 대여 완료
+[2019Mar/17/ 20:24:56][Log Line : login.views:99] 우산 사업 : [학번:admin|우산 번호:1] 대여 완료
+[2019Mar/17/ 20:26:11][Log Line : login.views:99] 우산 사업 : [학번:admin|우산 번호:1] 대여 완료
+[2019Mar/17/ 20:26:19][Log Line : login.views:99] 우산 사업 : [학번:admin|우산 번호:1] 대여 완료
+[2019Mar/17/ 20:28:58][Log Line : login.views:99] 우산 사업 : [학번:admin|우산 번호:1] 대여 완료
+[2019Mar/17/ 20:29:26][Log Line : login.views:99] 우산 사업 : [학번:admin|우산 번호:1] 대여 완료
+[2019Mar/17/ 20:29:54][Log Line : login.views:99] 우산 사업 : [학번:admin|우산 번호:1] 대여 완료
+[2019Mar/17/ 20:40:13][Log Line : login.views:99] 우산 사업 : [학번:admin|우산 번호:1] 대여 완료
+[2019Mar/17/ 21:18:32][Log Line : login.views:99] 우산 사업 : [학번:admin|우산 번호:1] 대여 완료
+[2019Mar/17/ 21:19:43][Log Line : login.views:99] 우산 사업 : [학번:admin|우산 번호:1] 대여 완료
+[2019Mar/17/ 21:33:14][Log Line : login.views:111] 우산 사업 : [학번:admin|우산 번호:1] 대여 완료
+[2019Mar/17/ 21:33:17][Log Line : login.views:101] 보조배터리 사업 : [학번:admin|보조배터리 번호:1] 대여 완료
+[2019Mar/17/ 21:33:20][Log Line : login.views:121] 랜선 사업 : [학번:admin|랜선 번호:2] 대여 완료
+[2019Mar/17/ 21:36:49][Log Line : login.views:131] 케이블 사업 : [학번:admin|케이블 번호:1] 대여 완료
+[2019Mar/17/ 21:40:09][Log Line : login.views:131] 케이블 사업 : [학번:admin|케이블 번호:1] 대여 완료
+[2019Mar/17/ 21:41:13][Log Line : login.views:131] 케이블 사업 : [학번:admin|케이블 번호:1] 대여 완료
+[2019Mar/17/ 21:49:18][Log Line : login.views:111] 우산 사업 : [학번:admin|우산 번호:1] 대여 완료
+[2019Mar/17/ 21:50:39][Log Line : login.views:131] 케이블 사업 : [학번:admin|케이블 번호:3] 대여 완료
+[2019Mar/17/ 21:51:19][Log Line : login.views:131] 케이블 사업 : [학번:admin|케이블 번호:2] 대여 완료
+[2019Mar/17/ 22:01:58][Log Line : login.views:131] 케이블 사업 : [학번:admin|케이블 번호:2] 대여 완료
+[2019Mar/17/ 22:55:58][Log Line : login.views:111] 우산 사업 : [학번:admin|우산 번호:1] 대여 완료

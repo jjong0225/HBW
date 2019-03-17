@@ -15,8 +15,26 @@ logger = logging.getLogger(__name__)
 @task(name="expired_check")
 def ExpiredCheck():
     unbrella_set = models.Unbrella.objects.all().filter(is_reserved = True).filter(is_borrowed = False)
+    battery_set = models.Battery.objects.all().filter(is_reserved = True).filter(is_borrowed = False)
+    lan_set = models.Lan.objects.all().filter(is_reserved = True).filter(is_borrowed = False)
+    cable_set = models.Cable.objects.all().filter(is_reserved = True).filter(is_borrowed = False)
     cur_time = timezone.now()
     for item in unbrella_set :
+        if item.reservation_time+datetime.timedelta(minutes=10) < cur_time :
+            item.is_reserved = False
+            item.borrowed_by = None
+            item.save()
+    for item in battery_set :
+        if item.reservation_time+datetime.timedelta(minutes=10) < cur_time :
+            item.is_reserved = False
+            item.borrowed_by = None
+            item.save()
+    for item in lan_set :
+        if item.reservation_time+datetime.timedelta(minutes=10) < cur_time :
+            item.is_reserved = False
+            item.borrowed_by = None
+            item.save()
+    for item in cable_set :
         if item.reservation_time+datetime.timedelta(minutes=10) < cur_time :
             item.is_reserved = False
             item.borrowed_by = None

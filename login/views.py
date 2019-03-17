@@ -77,21 +77,78 @@ def Main(request):
     unbrella_set = models.Unbrella.objects.all()
     battery_set = models.Battery.objects.all()
     lan_set = models.Lan.objects.all()
+    cable_set = models.Cable.objects.all()
     post_q = models.Poster.objects.all().order_by('number')
     table_q = models.StudyTable.objects.all().order_by('number', 'start_time')
     unbrella_count = unbrella_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
     battery_count = battery_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
     lan_count = lan_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
+    cable_count = cable_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
+    message_unbrella = str(unbrella_set.filter(Q(is_borrowed = False)).first().number)+"번 우산이 대여되었습니다."
+    message_battery = str(battery_set.filter(Q(is_borrowed = False)).first().number)+"번 배터리가 대여되었습니다."
+    message_lan = str(lan_set.filter(Q(is_borrowed = False)).first().number)+"번 랜선이 대여되었습니다."
+    message_cable = str(cable_set.filter(Q(is_borrowed = False)).first().number)+"번 랜선이 대여되었습니다."
+
+    if request.method == "POST":
+        if request.POST.get('battery', 'False') == "True":
+            for item in battery_set:
+                    if item.is_available():
+                        break
+            item.borrowed_by = request.user.user_data
+            item.is_reserved = True
+            item.reservation_time = timezone.localtime()
+            item.save()
+            logger.info('보조배터리 사업 : [학번:'+request.user.username+'|보조배터리 번호:'+str(item.number)+'] 대여 완료') # 담당자:{}
+            return redirect('login:main')
+        elif request.POST.get('unbrella', 'False') == "True":
+            for item in unbrella_set:
+                    if item.is_available():
+                        break
+            item.borrowed_by = request.user.user_data
+            item.is_reserved = True
+            item.reservation_time = timezone.localtime()
+            item.save()
+            logger.info('우산 사업 : [학번:'+request.user.username+'|우산 번호:'+str(item.number)+'] 대여 완료') # 담당자:{}
+            return redirect('login:main')
+        elif request.POST.get('lan', 'False') == "True":
+            for item in lan_set:
+                    if item.is_available():
+                        break
+            item.borrowed_by = request.user.user_data
+            item.is_reserved = True
+            item.reservation_time = timezone.localtime()
+            item.save()
+            logger.info('랜선 사업 : [학번:'+request.user.username+'|랜선 번호:'+str(item.number)+'] 대여 완료') # 담당자:{}
+            return redirect('login:main')
+        elif request.POST.get('cable', 'False') == "True":
+            for item in cable_set:
+                    if item.is_available():
+                        break
+            item.borrowed_by = request.user.user_data
+            item.is_reserved = True
+            item.reservation_time = timezone.localtime()
+            item.save()
+            logger.info('케이블 사업 : [학번:'+request.user.username+'|케이블 번호:'+str(item.number)+'] 대여 완료') # 담당자:{}
+            return redirect('login:main')
+        
+            
+
     
     return render(request, 'login/home.html', {
         'tables' : table_q,
         'battery_count': battery_count,
         'unbrella_count': unbrella_count,
         'lan_count': lan_count,
+        'cable_count': cable_count,
         'posts':post_q,
         'battery_total' : battery_set.count(),
         'unbrella_total': unbrella_set.count(),
         'lan_total': lan_set.count(),
+        'cable_total': cable_set.count(),
+        'message_unbrella': message_unbrella,
+        'message_battery': message_battery,
+        'message_lan': message_lan,
+        'message_cable': message_cable,
     })
 
 #마이페이지
@@ -282,6 +339,8 @@ class LendBusinessClass() :
             'unbrella_total': unbrella_set.count(),
             'lan_total': lan_set.count(),
             })
+
+   
 
 
 class PasswordContextMixin:

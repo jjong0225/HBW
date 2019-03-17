@@ -61,3 +61,9 @@ class ComplainSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Complain
         fields = ('url', 'number', 'username', 'updated_text',)
+
+
+class CableSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Cable
+        fields = ('url', 'number', 'borrowed_by', 'borrowed_time', 'is_reserved', 'is_borrowed', 'cable_type', 'status')

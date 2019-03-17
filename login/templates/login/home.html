@@ -52,34 +52,88 @@
           <i class="fas fa-umbrella fa-5x"></i>
           <h4>우산</h4>
           <p>{{ unbrella_count }}　|　<strong>{{ unbrella_total }}</strong></p> <!-- 수정됨 -->
-          {% if user.user_data.un.is_reserved == False and  user.user_data.un.is_borrowed == False %}
-            <p><a href = "/lendun" onclick="alert('우산이 대여되었습니다')" class="btn btn-theme" value="대여">대여</a></p> <!-- 수정됨 -->
-          {% else %}
-            <p><a href = "" onclick="alert('이미 대여중인 우산이 존재합니다')" class="btn btn-theme" value="대여">대여</a></p> <!-- 수정됨 -->
+          {% if battery_count == battery_total %}
+            <p><button type="submit" onclick="alert('대여 가능한 보조배터리가 없습니다')" class="btn btn-theme">대여</button></p> <!-- 수정됨 -->
           {% endif %}
+          <!-- Button trigger modal -->
+          <p><button type="button" class="btn btn-theme" data-toggle="modal" data-target="#lendunbrella">대여</button></p> <!-- 수정됨 -->
+
+          <!-- Modal -->
+          <div class="modal fade" id="lendunbrella" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">대여사업</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  우산을 대여하시겠습니까?
+                </div>
+                <div class="modal-footer">
+                  <form action="" method="POST">{% csrf_token %}
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">아니오</button>
+                    <button type="submit" class="btn btn-primary" name="unbrella" value="True">예</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="col-lg-3">
           <i class="fas fa-battery-full fa-5x"></i>
           <h4>보조배터리</h4>
           <p>{{ battery_count }}　|　<strong>{{ battery_total }}</strong></p> <!-- 수정됨 -->
-          <form action="/login/jong" method="POST"> <!-- 수정됨 -->
-            <p><a onclick="alert('1번 보조 배터리가 대여되었습니다')" class="btn btn-theme">대여</a></p> <!-- 수정됨 -->
-            </form> <!-- 수정됨 -->
+          {% if battery_count == battery_total %}
+            <p><button type="submit" onclick="alert('대여 가능한 보조배터리가 없습니다')" class="btn btn-theme">대여</button></p> <!-- 수정됨 -->
+          {% else %}
+            {% if not user.user_data.ba %}
+              <form action="" method="POST"> <!-- 수정됨 -->
+                {% csrf_token %}
+                <p><button type="submit" onclick="alert('{{ message_battery }}')" class="btn btn-theme" name = "battery" value="True">대여</button></p> <!-- 수정됨 -->
+              </form> <!-- 수정됨 -->
+            {% else %}
+              <p><button type="submit" onclick="alert('이미 대여중인 보조배터리가 있습니다')" class="btn btn-theme">대여</button></p> <!-- 수정됨 -->
+            {% endif %}
+          {% endif %}
         </div>
         <div class="col-lg-3">
           <i class="fas fa-ethernet fa-5x"></i>
           <div class="lan_lent">
             <h4>랜선</h4>
             <p>{{ lan_count }}　|　<strong>{{ lan_total }}</strong></p> <!-- 수정됨 -->
-            <p><a onclick="alert('1번 랜선이 대여되었습니다')" class="btn btn-theme">대여</a></p>
+            {% if lan_count == lan_total %}
+              <p><button type="submit" onclick="alert('대여 가능한 랜선이 없습니다')" class="btn btn-theme">대여</button></p> <!-- 수정됨 -->
+            {% else %}
+              {% if not user.user_data.la %}
+                <form action="" method="POST"> <!-- 수정됨 -->
+                  {% csrf_token %}
+                  <p><button type="submit" onclick="alert('{{ message_lan }}')" class="btn btn-theme" name = "lan" value="True">대여</button></p> <!-- 수정됨 -->
+                </form> <!-- 수정됨 -->
+              {% else %}
+                <p><button type="submit" onclick="alert('이미 대여중인 랜선이 있습니다')" class="btn btn-theme">대여</button></p> <!-- 수정됨 -->
+              {% endif %}
+            {% endif %}
           </div>
         </div>
         <div class="col-lg-3">
           <i class="fas fa-plug fa-5x"></i>
           <div class="lan_lent">
             <h4>케이블</h4>
-            <p>0　|　<strong>10</strong></p>
-            <p><a onclick="alert('1번 케이블이 대여되었습니다')" class="btn btn-theme">대여</a></p>
+            <p>{{ cable_count }}　|　<strong>{{ cable_total }}</strong></p>
+            {% if cable_count == cable_total %}
+              <p><button type="submit" onclick="alert('대여 가능한 케이블이 없습니다')" class="btn btn-theme">대여</button></p> <!-- 수정됨 -->
+            {% else %}
+              {% if not user.user_data.ca %}
+                <form action="" method="POST"> <!-- 수정됨 -->
+                  {% csrf_token %}
+                  <p><button type="submit" onclick="alert('{{ message_cable }}')" class="btn btn-theme" name = "cable" value="True">대여</button></p> <!-- 수정됨 -->
+                </form> <!-- 수정됨 -->
+              {% else %}
+                <p><button type="submit" onclick="alert('이미 대여중인 케이블이 있습니다')" class="btn btn-theme">대여</button></p> <!-- 수정됨 -->
+              {% endif %}
+            {% endif %}
           </div>
         </div>
       </div>

@@ -86,3 +86,15 @@ class StudyTableViewSet(viewsets.ModelViewSet):
     queryset = models.StudyTable.objects.all()
     serializer_class = serializers.StudyTableSerializer
     permission_classes = (CustomIsAdmin, permissions.IsAdminUser)
+
+
+
+class CableViewSet(viewsets.ModelViewSet):
+    '''
+    케이블 대여사업
+    '''
+    queryset = models.Cable.objects.all()
+    serializer_class = serializers.CableSerializer
+    permission_classes = (CustomIsAdmin, permissions.IsAdminUser)
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('=number', '=borrowed_by__user__username')
