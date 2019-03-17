@@ -41,28 +41,46 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class UnbrellaViewSet(viewsets.ModelViewSet):
+    '''
+    우산 대여사업
+    '''
     queryset = models.Unbrella.objects.all()
     serializer_class = serializers.UnbrellaSerializer
     permission_classes = (CustomIsAdmin, permissions.IsAdminUser)
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('number',)
+    search_fields = ('=number', '=borrowed_by__user__username')
 
 
 class BatteryViewSet(viewsets.ModelViewSet):
+    '''
+    배터리 대여사업
+    '''
     queryset = models.Battery.objects.all()
     serializer_class = serializers.BatterySerializer
     permission_classes = (CustomIsAdmin, permissions.IsAdminUser)
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('number',)
+    search_fields = ('=number', '=borrowed_by__user__username')
 
 
 class LanViewSet(viewsets.ModelViewSet):
+    '''
+    랜선 대여사업
+    '''
     queryset = models.Lan.objects.all()
     serializer_class = serializers.LanSerializer
     permission_classes = (CustomIsAdmin, permissions.IsAdminUser)
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('number',)
+    search_fields = ('=number', '=borrowed_by__user__username')
 
+class ComplainViewSet(viewsets.ModelViewSet):
+    '''
+    건의사항
+    '''
+    queryset = models.Complain.objects.all()
+    serializer_class = serializers.ComplainSerializer
+    permission_classes = (CustomIsAdmin, permissions.IsAdminUser)
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('=number',)
 
 class StudyTableViewSet(viewsets.ModelViewSet):
     queryset = models.StudyTable.objects.all()

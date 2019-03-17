@@ -56,3 +56,8 @@ class StudyTableSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.StudyTable
         fields = ('url', 'number', 'is_borrowed', 'start_time', 'end_time', 'lender')
+
+class ComplainSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Complain
+        fields = ('url', 'number', 'username', 'updated_text',)

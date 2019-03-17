@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from django.core.validators import MaxValueValidator
 from rest_framework.exceptions import APIException
+from django.db import IntegrityError
 
 # Create your models here.
 
@@ -55,6 +56,7 @@ class Student(models.Model):
         if self.month_A4 > 500:
             raise APIException("한달 대여량은 500장을 넘길 수 없습니다!")
         self.A4_count = 0
+        
         super().save(*args, **kwargs)
 
     
@@ -75,7 +77,7 @@ class Unbrella(models.Model):
 
     number = models.PositiveSmallIntegerField()
     is_borrowed = models.BooleanField(default = False)
-    borrowed_by = models.OneToOneField(Student, null=True, related_name = "un", blank=True, on_delete=models.CASCADE)
+    borrowed_by = models.OneToOneField(Student, null=True, related_name = "un", blank=True, on_delete=models.CASCADE, error_messages={'unique' : '한 사람 당 한 개씩만 대여 가능합니다.'})
     borrowed_time = models.DateTimeField(auto_now_add=True)
     is_reserved = models.BooleanField(default = False)
     reservation_time = models.DateTimeField(auto_now_add=True)
@@ -92,7 +94,11 @@ class Unbrella(models.Model):
                 else :
                     self.status = self.status_available
                     self.is_borrowed = False
-        super().save(*args, **kwargs)
+        try :
+            super().save(*args, **kwargs)
+        except IntegrityError:
+            self.borrowed_by = None
+            raise APIException("같은 종류의 대여사업을 2개 이상 사용하실 수 없습니다!")
 
     def is_available(self):
         if self.status == self.status_available:
@@ -136,7 +142,11 @@ class Battery(models.Model):
                 else :
                     self.status = self.status_available
                     self.is_borrowed = False
-        super().save(*args, **kwargs)
+        try :
+            super().save(*args, **kwargs)
+        except IntegrityError:
+            self.borrowed_by = None
+            raise APIException("같은 종류의 대여사업을 2개 이상 사용하실 수 없습니다!")
 
     def is_available(self):
         if self.status == self.status_available:
@@ -180,7 +190,11 @@ class Lan(models.Model):
                 else :
                     self.status = self.status_available
                     self.is_borrowed = False
-        super().save(*args, **kwargs)
+        try :
+            super().save(*args, **kwargs)
+        except IntegrityError:
+            self.borrowed_by = None
+            raise APIException("같은 종류의 대여사업을 2개 이상 사용하실 수 없습니다!")
 
     def is_available(self):
         if self.status == self.status_available:
@@ -208,6 +222,8 @@ class StudyTable(models.Model):
     
     def __str__(self):
         return "Table "+str(self.number)
+        
+    
 
 
 class timetest(models.Model):
