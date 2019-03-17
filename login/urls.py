@@ -17,7 +17,7 @@ urlpatterns = [
     path('lendlan/', views.LendBusinessClass.LendLan, name='lendlan'),
     path('reservation/', views.StudyTableClass.TableSelect, name='seltable'),
     path('sel/', views.StudyTableClass.LendTable, name='lendtable'),
-    path('password_change/', auth_views.PasswordChangeView.as_view(template_name='login/login-assignment.html'), name='change'),
+    path('password_change/', auth_views.PasswordChangeView.as_view(template_name='login/change_pw.html'), name='change'),
     path('pc/', views.PasswordChangeView.as_view(template_name='login/pass_change.html'), name='ch'),
     path('jong/', views.GetComplain, name='jong'),
     path('lendun/', views.LendUn, name='jong'),

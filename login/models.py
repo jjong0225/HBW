@@ -103,7 +103,7 @@ class Battery(models.Model):
 
     number = models.PositiveSmallIntegerField()
     is_borrowed = models.BooleanField(default = False)
-    borrowed_by = models.OneToOneField(Student, null=True, blank=True, on_delete=models.DO_NOTHING)
+    borrowed_by = models.OneToOneField(Student,related_name='ba', null=True, blank=True, on_delete=models.DO_NOTHING)
     borrowed_time = models.DateTimeField(auto_now_add=True)
     is_reserved = models.BooleanField(default = False)
     reservation_time = models.DateTimeField(auto_now_add=True)
@@ -147,7 +147,7 @@ class Lan(models.Model):
 
     number = models.PositiveSmallIntegerField()
     is_borrowed = models.BooleanField(default = False)
-    borrowed_by = models.OneToOneField(Student, null=True, blank=True, on_delete=models.DO_NOTHING)
+    borrowed_by = models.OneToOneField(Student, related_name='la', null=True, blank=True, on_delete=models.DO_NOTHING)
     borrowed_time = models.DateTimeField(auto_now_add=True)
     is_reserved = models.BooleanField(default = False)
     reservation_time = models.DateTimeField(auto_now_add=True)
@@ -188,8 +188,8 @@ class StudyTable(models.Model):
     is_borrowed = models.BooleanField(default = False)
     start_time = models.CharField(max_length=100, blank=True, null=True)
     end_time = models.TimeField(blank=True, null=True)
-    lender = models.ForeignKey(Student, null=True, blank=True, on_delete=models.DO_NOTHING, db_constraint=False)
-
+    lender = models.ForeignKey(Student, related_name='st', null=True, blank=True, on_delete=models.DO_NOTHING, db_constraint=False)
+    
     def __str__(self):
         return "Table "+str(self.number)
 
@@ -204,7 +204,7 @@ class timetest(models.Model):
 class Cable(models.Model):
     number = models.PositiveSmallIntegerField()
     is_borrowed = models.BooleanField(default = False)
-    borrowed_by = models.OneToOneField(Student, null=True, blank=True, on_delete=models.DO_NOTHING)
+    borrowed_by = models.OneToOneField(Student, related_name='ca', null=True, blank=True, on_delete=models.DO_NOTHING)
     borrowed_time = models.DateTimeField(auto_now_add=True)
     cable_type = models.PositiveSmallIntegerField() # 0 : 5핀 케이블, 1 : 8핀 케이블, 2 : C타입 케이블
 
@@ -216,3 +216,12 @@ class Complain(models.Model):
     is_anonymous = models.BooleanField(default = True)
     username = models.CharField(max_length = 10)
     userid = models.CharField(max_length = 8)
+
+class time_table(models.Model):
+    name = models.CharField(max_length=20)
+    start_time = models.PositiveSmallIntegerField(default = 0)
+
+class now_time_table(models.Model):
+    name = models.CharField(max_length=20)
+    start_time = models.PositiveSmallIntegerField(default = 0)
+    is_manager = models.BooleanField(default = False)

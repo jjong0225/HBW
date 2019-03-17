@@ -15,25 +15,27 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-12" id="logo_content">
-          <span class ="logo_content" ><h3 style="margin-bottom:3%;">언제나, 늘, 당신곁에</h3></span>
-          <h1 style="margin-top:-0.1%;">제4대 소프트웨어학부 학생회 </h1>
-          <h1 style="margin-top:-0.25%;"><span class= "logo">SUPPORT.</span> 입니다.</h1>
+            <span class ="logo_content" ><h3 style="margin-bottom:2%;">언제나, 늘, 당신곁에</h3></span>
+            <h1 style="margin-top:-0.1%;" class = "logo_sentence">제4대 소프트웨어학부 학생회 </h1>
+            <h1 style="margin-top:-0.25%;" class = "support_font"><span class= "logo">SUPPORT.</span> 입니다.</h1>
         </div>
     </div>
     <div class="row">
       <div class="col-lg-12">
         <div class="carousel" style="width:100%;">
-          <a class="carousel-item" href="#one!"><img src="{% static "img/poster1.jpg" %}"></a>
-          <a class="carousel-item" href="#two!"><img src="{% static "img/poster2.jpg" %}"></a>
-          <a class="carousel-item" href="#two!"><img src="{% static "img/poster3.jpg" %}"></a>
-        </div>
+            <a id="carousel-0" class="carousel-item" href="#"><img src="{% static "img/poster1.jpg" %}"></a>
+            <a id="carousel-1" class="carousel-item" href="#"><img src="{% static "img/poster2.jpg" %}"></a>
+            <a id="carousel-2" class="carousel-item" href="#"><img src="{% static "img/poster3.jpg" %}"></a>
+            <a id="carousel-3" class="carousel-item" href="#"><img src="{% static "img/poster2.jpg" %}"></a>
+            <a id="carousel-4" class="carousel-item" href="#"><img src="{% static "img/poster3.jpg" %}"></a>
+          </div>
       </div>
     </div>
       <script>
-          document.addEventListener('DOMContentLoaded', function() {
-  var elems = document.querySelectorAll('.carousel');
-  var instances = M.Carousel.init(elems);
-});
+        document.addEventListener('DOMContentLoaded', function() {
+          var elems = document.querySelectorAll('.carousel');
+          var instances = M.Carousel.init(elems);
+        });
       </script>    
     <!-- /container -->
   </div>
@@ -45,14 +47,13 @@
 	 ***************************************************************************************************************** -->
   <div id="service">
     <div class="container">
-    
       <div class="row centered">
         <div class="col-lg-3">
           <i class="fas fa-umbrella fa-5x"></i>
           <h4>우산</h4>
           <p>{{ unbrella_count }}　|　<strong>{{ unbrella_total }}</strong></p> <!-- 수정됨 -->
           {% if user.user_data.un.is_reserved == False and  user.user_data.un.is_borrowed == False %}
-            <p><a href = "/lendun" onclick="alert( {{ unbrel.number }} +'번 우산이 대여되었습니다')" class="btn btn-theme" value="대여">대여</a></p> <!-- 수정됨 -->
+            <p><a href = "/lendun" onclick="alert('우산이 대여되었습니다')" class="btn btn-theme" value="대여">대여</a></p> <!-- 수정됨 -->
           {% else %}
             <p><a href = "" onclick="alert('이미 대여중인 우산이 존재합니다')" class="btn btn-theme" value="대여">대여</a></p> <!-- 수정됨 -->
           {% endif %}
@@ -115,131 +116,25 @@
               <th>　3　</th>
               <th>　4　</th>
               <th>　5　</th>
-              <th>　6　</th>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>  
+              {% for table in tables %}
+                {% if table.start_time == "10" %}
+                  <tr>
+                      <td>{{ table.number }}</td>  
+                  {% endif %}
+                  {% if table.is_borrowed %}
+                    <td class="occupied"></td>
+                  {% else %}
+                    <td></td>
+                  {% endif %}
+                {% if table.start_time == "17" %}
+                  </tr>
+                {% endif %}
+              {% endfor %}
                 <!-- 표 하나하나 색깔 바꾸고 싶으면 bgcolor해서 바꾸면 됨! -->
-                <!-- style="background-color:rgb(233, 181, 49)" -->
-                <td class="occupied"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>4</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>5</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>6</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>7</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>8</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>9</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>10</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
+                <!-- style="background-color:rgb(233, 181, 49)" => class="occupied"-->
+                <!-- 장고 DB를 받어서 확인하도록 함-->
             </tbody>
           </table>
         </div>
@@ -251,10 +146,10 @@
      <!-- *****************************************************************************************************************
 	 건의사항
    ***************************************************************************************************************** -->
-   <div class = "container mtb"> 
+  <div class = "container mtb"> 
     <div class = "row">
   <div class = "portfoliowrap" id="wrap"> 
-     <div class = "col-12" id="complain_wrap">
+      <div class = "col-12" id="complain_wrap">
         <h4>건의사항</h4>
         <div class = "hline"></div>
         <div class = "col-12">
@@ -264,11 +159,11 @@
               <button type="submit" class="btn btn-theme btn-block" id="complain_button">건의사항 보내기</button>
             </div>
           </form>
-     </div>
-   </div>
- </div>
- </div>
- </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
  {% endblock %}
 
  {% block copyrights %}

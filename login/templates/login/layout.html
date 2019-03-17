@@ -11,14 +11,19 @@
     
     {% block jquery %}
     {% endblock %}
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    
     <!-- Favicons -->
     <link rel="shortcut icon" href="{% static "img/upper-logo.png" %}">
+
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,900|Lato:400,900" rel="stylesheet">
 
     <!-- Bootstrap CSS File -->
     <link href="{% static "lib/bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 
     <!-- Libraries CSS Files -->
     <link href="{% static "lib/font-awesome/css/font-awesome.min.css" %}" rel="stylesheet">
@@ -33,7 +38,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
     <!-- Main Stylesheet File -->
-    <link href="{% static "css/style.css" %}" rel="stylesheet">
+    <link href="{% static "css/style_global.css" %}" rel="stylesheet">
+ 
+    <link href="{% static "css/home.css" %}" rel="stylesheet">
+    <link href="{% static "css/mypage.css" %}" rel="stylesheet">
 
     {% block header %}
     {% endblock %}
@@ -64,7 +72,11 @@
             <div class="navbar-collapse collapse navbar-right">
                 <ul class="nav navbar-nav">
                     <li><a href="{% url "login:main" %}">홈</a></li>
-                    <li><a href="{% url "login:login" %}">로그인</a></li>
+                    {% if user.is_authenticated %}
+                      <li><a href="{% url "login:logout" %}">로그아웃</a></li>
+                    {% else %}
+                      <li><a href="{% url "login:login" %}">로그인</a></li>
+                    {% endif %}
                     <li><a href="{% url "login:seltable" %}">실습실 예약</a></li>
                     <li><a href="{% url "login:mypage" %}">마이페이지</a></li>
                 </ul>
@@ -91,8 +103,16 @@
           <h4>운영시간</h4>
           <div class="hline-w"></div>
           <div class="table">
-            <div class="left_table">
-              <p>학생회실</p>
+            <div class="left_table" style="margin-top:-2.5%;">
+              <p>학생회실
+                  <div class="onoffswitch" id="place1">
+                      <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked disabled>
+                      <label class="onoffswitch-label" for="myonoffswitch"> 
+                          <span class="onoffswitch-inner"></span>
+                          <span class="onoffswitch-switch"></span>
+                      </label>
+                  </div>
+              </p>
               <hr width="80%">
               <dl>
                 <dt>OPEN  </dt>
@@ -103,8 +123,16 @@
                 <dd>18:00</dd>
               </dl>
             </div>
-            <div class="right_table">
-              <p>실습실</p>
+            <div class="right_table" style="margin-top:-2.5%;">
+                <p>실습실
+                    <div class="onoffswitch" id = "place2" >
+                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked disabled>
+                        <label class="onoffswitch-label" for="myonoffswitch"> 
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                        </label>
+                    </div>  
+                </p>
               <hr width="80%">
               <dl>
                 <dt>OPEN  </dt>
@@ -124,13 +152,19 @@
   {% endblock %}
 
     <!-- JavaScript Libraries -->
-    <script src="{% static "lib/jquery/jquery.min.js" %}"></script>
     <script src="{% static "lib/bootstrap/js/bootstrap.min.js" %}"></script>
     <script src="{% static "lib/php-mail-form/validate.js" %}"></script>
     <script src="{% static "lib/prettyphoto/js/prettyphoto.js" %}"></script>
     <script src="{% static "lib/isotope/isotope.min.js" %}"></script>
     <script src="{% static "lib/hover/hoverdir.js" %}"></script>
+    <script src="{% static "lib/jquery/jquery.min.js" %}"></script>
     <script src="{% static "lib/hover/hoverex.min.js" %}"></script>
+
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+    <!--
+    <script src="lib/ 이부분은 성철이에게 물어봐야함
+    -->
 
     <!-- Template Main Javascript File -->
     <script src="{% static "js/main.js" %}"></script>

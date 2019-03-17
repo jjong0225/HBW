@@ -155,3 +155,21 @@ def LoggingAdminTask() :
         action_flag = models.PositiveSmallIntegerField(_('action flag'))
         change_message = models.TextField(_('change message'), blank=True)
         logger.info('우산 사업 : [학번:'+request.user.username+'|우산 번호:'+str(item.number)+'] 대여 완료') # 담당자:{}
+
+
+def GetNowManager() :
+    models.now_time_table.objects.all().delete()
+    current_time = timezone.localtime()
+
+    num = (current_time.hour - 9) * 2
+    if current_time.minute > 30 :
+        num = num + 1
+
+    now_manager = models.time_table.objects.all().filter(start_time = num)
+    if now_manager.count() == 0 :
+        models.now_time_table.objects.create(name='blank', start_time = num, is_staff = False)    
+    else if  now_manager.count() == 1 :
+        models.now_time_table.objects.create(name=now_manager.name, start_time = num, is_manage = True)
+    else  ## 오류 상황
+        models.now_time_table.objects.create(name='blank', start_time = num, is_staff = False)    
+    

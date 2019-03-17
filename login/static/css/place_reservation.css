@@ -1,0 +1,21 @@
+.ikc-reserved-status{
+    margin-bottom:2.5%;
+}
+
+.place_time_check table th{
+    width:11%;
+}
+
+.place_time_check table td{
+    height:30px;
+    padding: 0;
+}
+
+#reservation_button{
+    margin-top:0.5%;
+}
+
+.OBJcbTime[checked=true]{
+    background-color:rgb(233, 181, 49);
+	color:rgb(233, 181, 49);
+}

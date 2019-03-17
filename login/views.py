@@ -78,11 +78,13 @@ def Main(request):
     battery_set = models.Battery.objects.all()
     lan_set = models.Lan.objects.all()
     post_q = models.Poster.objects.all().order_by('number')
+    table_q = models.StudyTable.objects.all().order_by('number', 'start_time')
     unbrella_count = unbrella_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
     battery_count = battery_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
     lan_count = lan_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
     
     return render(request, 'login/home.html', {
+        'tables' : table_q,
         'battery_count': battery_count,
         'unbrella_count': unbrella_count,
         'lan_count': lan_count,

@@ -20,17 +20,31 @@
     <!--Login Form-->
 
     <div class="container">
-        <form action="" method="POST">
+        {% if messages %}
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+        {% endif %}
+        <form action="" method="POST">{% csrf_token %}
             <div class="row">
+                <!--
                 <div class="input-field ">
-                    <input id="user_id" type="password" class="validate" required>
+                    <input id="old_password" type="password" class="validate" required>
+                    <label for="user_id">이전 비밀번호</label>
+                </div>
+                <div class="input-field ">
+                    <input id="new_password1" type="password" class="validate" required>
                     <label for="user_id">변경 비밀번호</label>
                 </div>
                 <div class="input-field ">
-                    <input id="user_pw" type="text" class="validate" required>
+                    <input id="new_password2" type="password" class="validate" required>
                     <label for="user_pw">비밀변호 확인</label>
                 </div>
-                <p><a href="{% url "login:main" %}" class="btn btn-theme btn-block">비밀번호 변경</a></p>
+                -->
+                {{ form.as_p }}
+                    <p><input type="submit" class="btn btn-theme btn-block" value = "비밀번호 변경"/>
+<!--                <p><a href="{% url "login:main" %}" class="btn btn-theme btn-block">비밀번호 변경</a></p>-->
+
             </div>
         </form>
     </div>
