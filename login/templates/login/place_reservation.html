@@ -1,42 +1,64 @@
 {% extends 'login/layout.html' %}
 {% block jquery %}
-  <!-- jQuery -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <meta content="{{ csrf_token }}" name="csrf_token">
 {% endblock %}
 {% block header %}
   <!-- Checkbox Css-->
  
 
-  <!-- =======================================================
-    Template Name: Solid
-    Template URL: https://templatemag.com/solid-bootstrap-business-template/
-    Author: TemplateMag.com
-    License: https://templatemag.com/license/
-  ======================================================= -->
   <script>
-    $(document).ready(function(){
-      var timecnt = 0;
-      $('.OBJcbTime').click( function () {
-        if (this.getAttribute("state")=="true") {
-          timecnt--;
-          this.setAttribute("state","false");
-        }
-        else{
-          if (timecnt >= 4) {
-          alert("최대 2시간까지 예약 가능합니다.");
-          return false;
+      var userTimecnt = 0;
+      var userTable=(window.location.search.split("table=")[1]=="")?-1:window.location.search.split("table=")[1];
+      $(document).ready(function(){
+        for(i=0;i<$('.OBJcbTime').length;i++){
+          if(document.getElementsByClassName("OBJcbTime")[i].getAttribute("state")=="1" || document.getElementsByClassName("OBJcbTime")[i].getAttribute("state")=="-1" ){
+            userTimecnt++;
           }
-          timecnt++;
-          this.setAttribute("state","true");
         }
+        $('.OBJcbTime').click( function () {
+          if (this.getAttribute("state")=="1") {
+            userTimecnt--;
+            this.setAttribute("state","0");
+          }
+          else if(this.getAttribute("state")=="0"){
+            if (userTimecnt >= 4) {
+              alert("최대 4시간까지 예약 가능합니다.");
+              return false;
+            }
+            userTimecnt++;
+            this.setAttribute("state","1");
+          }
+        });
       });
-    });
-    //2개만 체크되게 하기
-    // 체크 박스 이름 수정해주세요!
-    // 시간 체크 부분 원래 어떻게 생겼었는지 기억이 안나서 직접 안만들고 스크립트만 남겨놔요
-    
-  </script>
-{% endblock %}
+  
+      function applyReservation(){
+        if(userTable==-1){
+          alert('테이블을 선택해주세요');
+          return false;
+        }
+        var postdata="tableNum="+userTable;
+        var postcnt=0;
+        var time_array=["10","11","12","13","14","15","16","17"];
+        for(i=0;i<$('.OBJcbTime').length;i++){
+          if(document.getElementsByClassName("OBJcbTime")[i].getAttribute("state")=="1"){
+            postdata += "&time["+ postcnt++ + "]=" + time_array[i];
+          }
+        }
+        if (window.XMLHttpRequest)
+          xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              location.reload();
+            }
+        };
+        xmlhttp.open("POST","/reservation/submit");
+        xmlhttp.setRequestHeader("Content-Type",'application/x-www-form-urlencoded');
+        xmlhttp.setRequestHeader("X-CSRFToken",document.getElementsByName("csrf_token")[0].getAttribute("content"));
+        xmlhttp.send(postdata);
+        // alert(postdata);
+      }
+    </script>
+  {% endblock %}
 
 {% block content %}
   <!-- *****************************************************************************************************************
@@ -52,7 +74,21 @@
     <!-- /container -->
   </div>
   <!-- /blue -->
-
+  {% if yes_no == 1 %}
+    <script>
+        alert("하루 총 4시간의 예약만 가능합니다.");
+    </script>
+  {% endif %}
+  {% if yes_no == 2 %}
+  <script>
+      alert("동일한 시간대에 예약한 테이블이 이미 존재합니다. 다시 예약해주세요.");
+  </script>
+  {% endif %}
+  {% if yes_no == 3 %}
+  <script>
+      alert("다른 유저가 예약한 테이블을 예약하실 수 없습니다. 다시 예약해주세요.");
+  </script>
+  {% endif %}
   <div class="container mtb">
     <div class="time_check">
       <select id="class">
@@ -70,64 +106,64 @@
         <div class="table_container">
           {% load staticfiles %}
           <div class="upper_table">
-            <div id="table_set" class="table_set1">
-              <div id="reg" class="table1">
-                <a href="#"><img id="table1" src="{% static "img/desk1.png" %}" onmouseover="this.src='{% static "img/desk1_onmouse.png" %}'"
-                    onmouseout="this.src='{% static "img/desk1.png" %}'"></a>
+              <div id="table_set" class="table_set1">
+                  <div id="reg" class="table1">
+                    <a href = "?table=1"><img class="img_table img_table1" id="table1" src="{% static "img/desk1.png" %}"
+                        onclick="setUserTable(1);"></a>
+                  </div>
+                  <div id="reg" class="table2">
+                    <a href = "?table=2"><img class="img_table img_table2" id="table2" src="{% static "img/desk2.png" %}"
+                        onclick="setUserTable(2);"></a>
+                  </div>
+                </div>
+                <div id="table_set" class="table_set2">
+                  <div id="reg" class="table3">
+                    <a href = "?table=3"><img class="img_table img_table3" id="table3" src="{% static "img/desk3.png" %}"
+                        onclick="setUserTable(3);"></a>
+                  </div>
+                  <div id="reg" class="table4">
+                    <a href = "?table=4"><img class="img_table img_table4" id="table4" src="{% static "img/desk4.png" %}"
+                        onclick="setUserTable(4);"></a>
+                  </div>
+                </div>
+                <div id="table_set" class="table_set3">
+                  <div id="reg" class="table5">
+                    <a href = "?table=5"><img class="img_table img_table5" id="table5" src="{% static "img/desk5.png" %}"
+                        onclick="setUserTable(5);"></a>
+                  </div>
+                  <div id="reg" class="table6">
+                    <a href = "?table=6"><img class="img_table img_table6" id="table6" src="{% static "img/desk6.png" %}"
+                        onclick="setUserTable(6);"></a>
+                  </div>
+                </div>
               </div>
-              <div id="reg" class="table2">
-                <a href="#"><img id="table2" src="{% static "img/desk2.png" %}" onmouseover="this.src='{% static "img/desk2_onmouse.png" %}'"
-                    onmouseout="this.src='{% static "img/desk2.png" %}'"></a>
+              <div class="lower_table">
+                <div id="table_set" class="table_set4">
+                  <div id="reg" class="table7">
+                    <a href = "?table=7"><img class="img_table img_table7" id="table7" src="{% static "img/desk7.png" %}"
+                        onclick="setUserTable(7);"></a>
+                  </div>
+                  <div id="reg" class="table8">
+                    <a href = "?table=8"><img class="img_table img_table8" id="table8" src="{% static "img/desk8.png" %}"
+                        onclick="setUserTable(8);"></a>
+                  </div>
+                </div>
+    
+                <div id="table_set" class="table_set5">
+                  <div id="reg" class="table9">
+                    <a href = "?table=9"><img class="img_table img_table9" id="table9" src="{% static "img/desk9.png" %}"
+                        onclick="setUserTable(9);"></a>
+                  </div>
+                </div>
+                <div id="reg" class="table10">
+                  <a href = "?table=10"><img class="img_table img_table10" id="table10" src="{% static "img/desk10.png" %}"
+                      onclick="setUserTable(10);"></a>
+                </div>
+                <div class="door">
+                  <p>D O O R</p>
+                </div>
               </div>
             </div>
-            <div id="table_set" class="table_set2">
-              <div id="reg" class="table3">
-                <a href="#"><img id="table3" src="{% static "img/desk3.png" %}" onmouseover="this.src='{% static "img/desk3_onmouse.png" %}'"
-                    onmouseout="this.src='{% static "img/desk3.png" %}'"></a>
-              </div>
-              <div id="reg" class="table4">
-                <a href="#"><img id="table4" src="{% static "img/desk4.png" %}" onmouseover="this.src='{% static "img/desk4_onmouse.png" %}'"
-                    onmouseout="this.src='{% static "img/desk4.png" %}'"></a>
-              </div>
-            </div>
-            <div id="table_set" class="table_set3">
-              <div id="reg" class="table5">
-                <a href="#"><img id="table3" src="{% static "img/desk5.png" %}" onmouseover="this.src='{% static "img/desk5_onmouse.png" %}'"
-                    onmouseout="this.src='{% static "img/desk5.png" %}'"></a>
-              </div>
-              <div id="reg" class="table6">
-                <a href="#"><img id="table3" src="{% static "img/desk6.png" %}" onmouseover="this.src='{% static "img/desk6_onmouse.png" %}'"
-                    onmouseout="this.src='{% static "img/desk6.png" %}'"></a>
-              </div>
-            </div>
-          </div>
-          <div class="lower_table">
-            <div id="table_set" class="table_set4">
-              <div id="reg" class="table7">
-                <a href="#"><img id="table7" src="{% static "img/desk7.png" %}" onmouseover="this.src='{% static "img/desk7_onmouse.png" %}'"
-                    onmouseout="this.src='{% static "img/desk7.png" %}'"></a>
-              </div>
-              <div id="reg" class="table8">
-                <a href="#"><img id="table8" src="{% static "img/desk8.png" %}" onmouseover="this.src='{% static "img/desk8_onmouse.png" %}'"
-                    onmouseout="this.src='{% static "img/desk8.png" %}'"></a>
-              </div>
-            </div>
-
-            <div id="table_set" class="table_set5">
-              <div id="reg" class="table9">
-                <a href="#"><img id="table9" src="{% static "img/desk9.png" %}" onmouseover="this.src='{% static "img/desk9_onmouse.png" %}'"
-                    onmouseout="this.src='{% static "img/desk9.png" %}'"></a>
-              </div>
-            </div>
-            <div id="reg" class="table10">
-              <a href="#"><img id="table10" src="{% static "img/desk10.png" %}" onmouseover="this.src='{% static "img/desk10_onmouse.png" %}'""
-                  onmouseout="this.src='{% static "img/desk10.png" %}'"></a>
-            </div>
-            <div class="door">
-              <p>D O O R</p>
-            </div>
-          </div>
-        </div>
       </div>
       <div class="col-lg-6">
         <h1>예약 가능 시간</h1>
@@ -135,13 +171,15 @@
         <div class="place_time_check">
           <div class="ikc-tablelist-listup ikc-smuf-form">
             <p>
-              <span class="ikc-reserved-status" style="margin-bottom:2.5%;">
-                <span class="ik-reserved-off" style="background:#ffffff; border:1px solid grey;"></span>
-                예약 가능
-                <span class="ikc-reserved-inactive"></span>
-                예약 불가능
-              </span>
-            </p>
+                <span class="ikc-reserved-status">
+                    <span class="ikc-reserved-off" id="off"></span>
+                    예약 가능
+                    <span class="ikc-reserved-inactive"></span>
+                    예약 불가능
+                    <span class="ikc-reserved-active"></span>
+                    예약 선택
+                  </span>
+                </p>
           </div>
           <form action="" method="POST">
             <table class="table" cellpadding="0" cellspacing="0">
@@ -155,12 +193,24 @@
                   <th>3</th>
                   <th>4</th>
                   <th>5</th>
-                  <th>6</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td id="cbTime0" class="OBJcbTime" state="0"></td> <!-- 0: 아무도 점유 없음  -->
+                  {% if tables %} 
+                  {% for table in tables %}  <!-- 0: 아무도 점유 없음  --> <!-- 1: 내가 점유 --> <!-- 2: 다른 사람 점유 -->
+                    {% if table.is_borrowed %}
+                      {% if table.lender == user.user_data %}
+                        <td id="cbTime{{ forloop.counter0 }}" class="OBJcbTime" state="2"></td> <!-- 1: 내가 점유 -->
+                        {% else %}
+                        <td id="cbTime{{ forloop.counter0 }}" class="OBJcbTime" state="2"></td> <!-- 2: 다른 사람 점유 -->
+                      {% endif %}
+                      {% else %}
+                      <td id="cbTime{{ forloop.counter0 }}" class="OBJcbTime" state="0"></td> <!-- 0: 아무도 점유 없음  -->
+                    {% endif %}
+                  {% endfor %}
+                  {% else %}
+                  <td id="cbTime0" class="OBJcbTime" state="0"></td> <!-- 0: 아무도 점유 없음 -->
                   <td id="cbTime1" class="OBJcbTime" state="0"></td> <!-- 1: 내가 점유 -->
                   <td id="cbTime2" class="OBJcbTime" state="0"></td> <!-- 2: 다른 사람 점유 -->
                   <td id="cbTime3" class="OBJcbTime" state="0"></td>
@@ -168,7 +218,7 @@
                   <td id="cbTime5" class="OBJcbTime" state="0"></td>
                   <td id="cbTime6" class="OBJcbTime" state="0"></td>
                   <td id="cbTime7" class="OBJcbTime" state="0"></td>
-                  <td id="cbTime8" class="OBJcbTime" state="0"></td>
+                  {% endif %}
                 </tr>
               </tbody>
             </table>
@@ -177,8 +227,8 @@
         </div>
       </div>
       <div class="col-md-2 col-md-offset-2 col-xs-6 col-xs-offset-3" style="text-align:center;">
-        <a class="btn btn-theme" id="reservation_button">자리 예약</a>
-      </div>
+          <a class="btn btn-theme" id="reservation_button" onclick="applyReservation();">자리 예약</a>
+        </div>
       <div class="col-md-6 col-xs-12">
         <p class="cancel_message">실습실 예약 취소는 <a href="mypage.html">마이페이지</a>로</p>
       </div>

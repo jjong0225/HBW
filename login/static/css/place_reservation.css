@@ -15,7 +15,28 @@
     margin-top:0.5%;
 }
 
-.OBJcbTime[checked=true]{
+.OBJcbTime[state="-1"]{
     background-color:rgb(233, 181, 49);
-	color:rgb(233, 181, 49);
+}
+
+.OBJcbTime[state="0"]{
+    background-color:rgb(255, 255, 255);
+}
+
+.OBJcbTime[state="1"]{
+    background-color:#00b3fe;
+}
+
+.OBJcbTime[state="2"]{
+    background-color:rgb(233, 181, 49);
+}
+
+.ikc-reserved-active{
+	background-color: #00b3fe;
+	color:#00b3fe;
+}
+
+#off{
+    background-color: #fff;
+	color:#fff;
 }

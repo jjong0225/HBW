@@ -11,7 +11,6 @@ from django.utils import timezone
 import datetime
 from django.db.models import Q
 import logging
-from django.contrib import messages
 logger = logging.getLogger(__name__)
 
 
@@ -77,21 +76,122 @@ def Main(request):
     unbrella_set = models.Unbrella.objects.all()
     battery_set = models.Battery.objects.all()
     lan_set = models.Lan.objects.all()
+    cable_set = models.Cable.objects.all()
     post_q = models.Poster.objects.all().order_by('number')
     table_q = models.StudyTable.objects.all().order_by('number', 'start_time')
     unbrella_count = unbrella_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
     battery_count = battery_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
     lan_count = lan_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
-    
+    cable_count = cable_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
+    message_unbrella = ""
+    message_battery = ""
+    message_lan = ""
+    message_cable = ""
+    unbrella_status = 0   # 0 : 평상시상태.   1 : 대여가능.   2 : 대여중   3 : 대여가능한 물품이 없음 
+    battery_status = 0  
+    lan_status = 0
+    cable_status = 0  
+
+    if request.method == "POST":
+        if request.POST.get('battery', 'False') == "True":
+            if battery_count == battery_set.count():
+                battery_status = 3
+            else :
+                try :
+                    if request.user.user_data.ba is not None :
+                        battery_status = 2
+                except :      
+                    for item in battery_set:
+                        if item.is_available():
+                            break
+                    message_battery = str(item.number)+"번 배터리가 대여되었습니다."
+                    item.borrowed_by = request.user.user_data
+                    item.is_reserved = True
+                    item.reservation_time = timezone.localtime()
+                    item.save()
+                    logger.info('보조배터리 사업 : [학번:'+request.user.username+'|보조배터리 번호:'+str(item.number)+'] 대여 완료') # 담당자:{}
+                    battery_count = battery_count + 1
+                    battery_status = 1
+
+        if request.POST.get('unbrella', 'False') == "True":
+            if unbrella_count == unbrella_set.count():
+                unbrella_status = 3
+            else :
+                try :
+                    if request.user.user_data.un is not None :
+                        unbrella_status = 2
+                except :      
+                    for item in unbrella_set:
+                        if item.is_available():
+                            break
+                    message_unbrella = str(item.number)+"번 우산이 대여되었습니다."
+                    item.borrowed_by = request.user.user_data
+                    item.is_reserved = True
+                    item.reservation_time = timezone.localtime()
+                    item.save()
+                    logger.info('우 사업 : [학번:'+request.user.username+'|우산 번호:'+str(item.number)+'] 대여 완료') # 담당자:{}
+                    unbrella_count = unbrella_count + 1
+                    unbrella_status = 1
+
+        if request.POST.get('lan', 'False') == "True":
+            if lan_count == lan_set.count():
+                lan_status = 3
+            else :
+                try :
+                    if request.user.user_data.la is not None :
+                        lan_status = 2
+                except :      
+                    for item in lan_set:
+                        if item.is_available():
+                            break
+                    message_lan = str(item.number)+"번 랜선이 대여되었습니다."
+                    item.borrowed_by = request.user.user_data
+                    item.is_reserved = True
+                    item.reservation_time = timezone.localtime()
+                    item.save()
+                    logger.info('랜선 사업 : [학번:'+request.user.username+'|랜선 번호:'+str(item.number)+'] 대여 완료') # 담당자:{}
+                    lan_count = lan_count + 1
+                    lan_status = 1
+
+        if request.POST.get('cable', 'False') == "True":
+            if cable_count == cable_set.count():
+                cable_status = 3
+            else :
+                try :
+                    if request.user.user_data.ca is not None :
+                        cable_status = 2
+                except :      
+                    for item in cable_set:
+                        if item.is_available():
+                            break
+                    message_cable = str(item.number)+"번 케이블이 대여되었습니다."
+                    item.borrowed_by = request.user.user_data
+                    item.is_reserved = True
+                    item.reservation_time = timezone.localtime()
+                    item.save()
+                    logger.info('케이블 사업 : [학번:'+request.user.username+'|케이블 번호:'+str(item.number)+'] 대여 완료') # 담당자:{}
+                    cable_count = cable_count + 1
+                    cable_status = 1
+            
     return render(request, 'login/home.html', {
         'tables' : table_q,
         'battery_count': battery_count,
         'unbrella_count': unbrella_count,
         'lan_count': lan_count,
+        'cable_count': cable_count,
         'posts':post_q,
         'battery_total' : battery_set.count(),
         'unbrella_total': unbrella_set.count(),
         'lan_total': lan_set.count(),
+        'cable_total': cable_set.count(),
+        'message_unbrella': message_unbrella,
+        'message_battery': message_battery,
+        'message_lan': message_lan,
+        'message_cable': message_cable,
+        'unbrella_status': unbrella_status,
+        'battery_status': battery_status,
+        'lan_status': lan_status,
+        'cable_status': cable_status,        
     })
 
 #마이페이지
@@ -99,14 +199,13 @@ def Main(request):
 def MyPage(request):
     current_user = request.user
     if request.method == "POST":
-        sel_time = request.POST.get('cancel')
-        cur_time = sel_time[4:]
-        time_q = StudyTable.objects.all().filter(lender_id=current_user.id).filter(start_time=cur_time)
+        cur_time = request.POST.get('cancel')
+        time_q = StudyTable.objects.all().filter(lender_id=current_user.user_data.id).filter(start_time=cur_time)
         for time in time_q:
                 time.is_borrowed = False
                 time.lender_id = None
                 time.save()
-        time_q = StudyTable.objects.all().filter(lender_id=current_user.id)
+        time_q = StudyTable.objects.all().filter(lender_id=current_user.user_data.id)
         return render(request, 'login/mypage.html', {'times' : time_q})
     else:
         time_q = StudyTable.objects.all().filter(lender_id=current_user.user_data.id)
@@ -114,37 +213,69 @@ def MyPage(request):
 
 
 class StudyTableClass() :
-    def TableLend(request):
-        tables = StudyTable.objects.all()
-        return render(request, 'login/place_reservation.html', {'tables':tables})
-
     def TableSelect(request):
         if request.method == "POST":
-            if request.POST.get('desk') is not None:
-                selected_number = request.POST['desk']
-                table_q = StudyTable.objects.all().filter(number=selected_number)
-                return render(request, 'login/place_reservation.html', {'tables' : table_q})
-            else:
-                form = TableForm()
-                return render(request, 'login/place_reservation.html', {'form': form})            
-        else:
-            form = TableForm()
-            return render(request, 'login/place_reservation.html', {'form': form})
+            sel_table = request.POST.get('tableNum')
+            sel_time = [0,0,0,0]
+            for i in range(0,3):
+                post_name = 'time[' + str(i) + ']'
+                if request.POST.get(post_name) != 0 :
+                    sel_time[i] = request.POST.get(post_name)
+            table_q = StudyTable.objects.all().filter(number=sel_table).filter(start_time__in=sel_time).filter(is_borrowed=False)
 
-    def LendTable(request):
-        if request.method == "POST":
-            sel_time = request.POST.getlist('time[]')
-            sel_table = request.POST.getlist('number[]')
-            table_q = StudyTable.objects.all().filter(start_time__in=sel_time).filter(number__in=sel_table).filter(is_borrowed=False)
+            if StudyTable.objects.all().filter(lender =request.user.user_data.id).count() + table_q.count() > 4 :
+                print("초과 예약")
+                return render(request, 'login/place_reservation.html')
+
+            for table in table_q :
+                if StudyTable.objects.all().filter(lender =request.user.user_data.id).filter(start_time = table.start_time).count() > 0 :
+                    print("동일 시간에 다른테이블 예약 존재")
+                    return render(request, 'login/place_reservation.html')
+                if table.is_borrowed == True :
+                    print("다른 사람의 예약 존재")
+                    return render(request, 'login/place_reservation.html')
+
             for sel in table_q:
                     sel.is_borrowed = True
                     sel.lender = request.user.user_data
                     sel.save()
                     logger.info('실습실 사업 : [학번:'+request.user.username+'| 실습실 테이블 번호:'+str(sel.number)+'| 실습실 대여 시간:'+ str(sel.start_time)+'] 예약 완료') # 담당자:{}
             return redirect('login:seltable')
-        else:
-            form = TimeForm()
-            return render(request, 'login/place_reservation.html', {'form' : form})
+
+
+#            if request.POST.get('desk') is not None:
+#                selected_number = request.POST['desk']
+#                table_q = StudyTable.objects.all().filter(number=selected_number)
+#                return render(request, 'login/place_reservation.html', {'tables' : table_q})
+#            else:
+#                return render(request, 'login/place_reservation.html')            
+
+
+    def LendTable(request):
+        sel_num = request.GET.get('table')
+        table_q = StudyTable.objects.all().filter(number=sel_num)
+        return render(request, 'login/place_reservation.html', { 'tables' : table_q})
+#         if request.method == "POST":
+#             sel_time = request.POST.get('tableNum')
+#             sel_table = request.POST.getlist('time[]')
+#             table_q = StudyTable.objects.all().filter(start_time__in=sel_time).filter(number=sel_table).filter(is_borrowed=False)
+#             print(table_q)
+#             if StudyTable.objects.all().filter(lender =request.user.user_data.id).count()+ table_q.count() > 4 :
+#                 yes_no = 1
+#                 return render(request, 'login/place_reservation.html', {'yes_no' : yes_no})
+#             for table in table_q :
+#                 if StudyTable.objects.all().filter(lender =request.user.user_data.id).filter(start_time = table.start_time).count() > 0 :
+#                     yes_no = 2
+#                     return render(request, 'login/place_reservation.html', {'yes_no' : yes_no})
+# #            for sel in table_q:
+# #                    sel.is_borrowed = True
+# #                    sel.lender = request.user.user_data
+# #                    sel.save()
+# #                    logger.info('실습실 사업 : [학번:'+request.user.username+'| 실습실 테이블 번호:'+str(sel.number)+'| 실습실 대여 시간:'+ str(sel.start_time)+'] 예약 완료') # 담당자:{}
+# #            return redirect('login:seltable')
+#         else:
+#             yes_no = 0
+#             return render(request, 'login/place_reservation.html', {'yes_no' : yes_no})
 
 
 
@@ -294,7 +425,7 @@ class PasswordContextMixin:
             **(self.extra_context or {})
         })
         return context
-
+      
 class PasswordChangeView(PasswordContextMixin, FormView):
     form_class = PasswordChangeForm
     success_url = reverse_lazy('login:main')

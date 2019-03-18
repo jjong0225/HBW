@@ -2,8 +2,6 @@
 {% load staticfiles %}
 
 {% block header %}
-<!-- Font-Awesome -->
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 {% endblock %}
 
 
@@ -52,34 +50,41 @@
           <i class="fas fa-umbrella fa-5x"></i>
           <h4>우산</h4>
           <p>{{ unbrella_count }}　|　<strong>{{ unbrella_total }}</strong></p> <!-- 수정됨 -->
-          {% if user.user_data.un.is_reserved == False and  user.user_data.un.is_borrowed == False %}
-            <p><a href = "/lendun" onclick="alert('우산이 대여되었습니다')" class="btn btn-theme" value="대여">대여</a></p> <!-- 수정됨 -->
+ <!--      {% if user.user_data.un.is_reserved == False and  user.user_data.un.is_borrowed == False %}
           {% else %}
-            <p><a href = "" onclick="alert('이미 대여중인 우산이 존재합니다')" class="btn btn-theme" value="대여">대여</a></p> <!-- 수정됨 -->
+            <p><a href = "" onclick="alert('이미 대여중인 우산이 존재합니다')" class="btn btn-theme" value="대여">대여</a></p> 
           {% endif %}
+        -->
+          <form action="" method="POST">{% csrf_token %}
+            <p><button type="submit" name="unbrella" value="True" class="btn btn-theme">대여</button></p> <!-- 수정됨 --> 
+          </form>        
         </div>
         <div class="col-lg-3">
           <i class="fas fa-battery-full fa-5x"></i>
           <h4>보조배터리</h4>
           <p>{{ battery_count }}　|　<strong>{{ battery_total }}</strong></p> <!-- 수정됨 -->
-          <form action="/login/jong" method="POST"> <!-- 수정됨 -->
-            <p><a onclick="alert('1번 보조 배터리가 대여되었습니다')" class="btn btn-theme">대여</a></p> <!-- 수정됨 -->
-            </form> <!-- 수정됨 -->
-        </div>
+            <form action="" method="POST">{% csrf_token %}
+              <p><button type="submit" name="battery" value="True" class="btn btn-theme">대여</button></p> <!-- 수정됨 --> 
+            </form>
+          </div>
         <div class="col-lg-3">
           <i class="fas fa-ethernet fa-5x"></i>
           <div class="lan_lent">
             <h4>랜선</h4>
             <p>{{ lan_count }}　|　<strong>{{ lan_total }}</strong></p> <!-- 수정됨 -->
-            <p><a onclick="alert('1번 랜선이 대여되었습니다')" class="btn btn-theme">대여</a></p>
+            <form action="" method="POST">{% csrf_token %}
+              <p><button type="submit" name="lan" value="True" class="btn btn-theme">대여</button></p> <!-- 수정됨 --> 
+            </form>
           </div>
         </div>
         <div class="col-lg-3">
           <i class="fas fa-plug fa-5x"></i>
           <div class="lan_lent">
             <h4>케이블</h4>
-            <p>0　|　<strong>10</strong></p>
-            <p><a onclick="alert('1번 케이블이 대여되었습니다')" class="btn btn-theme">대여</a></p>
+            <p>{{ cable_count }}　|　<strong>{{ cable_total }}</strong></p>
+            <form action="" method="POST">{% csrf_token %}
+                <p><button type="submit" name="cable" value="True" class="btn btn-theme">대여</button></p> <!-- 수정됨 --> 
+            </form>   
           </div>
         </div>
       </div>
@@ -164,6 +169,90 @@
   </div>
   </div>
   </div>
+
+  <!-- *****************************************************************************************************************
+  MESSAGE ALERTS
+  *******************************************************************************************************************-->
+      {% if unbrella_status != 0 %}
+        {% if unbrella_status == 1 %}
+        <script>
+          alert('{{ message_unbrella }}')
+        </script>
+
+        {% else %}
+          {% if unbrella_status == 2 %}
+          <script>
+              alert('이미 대여중인 우산이 있습니다')
+            </script>
+          {% else %}
+            {% if unbrella_status == 3 %}
+            <script>
+                alert('대여가능한 우산이 없습니다')
+              </script>
+            {% endif %}
+          {% endif %}
+        {% endif %}
+      {% else %}
+        {% if battery_status != 0 %}
+          {% if battery_status == 1 %}
+          <script>
+              alert('{{ message_battery }}')
+            </script>
+          {% else %}
+            {% if battery_status == 2 %}
+            <script>
+                alert('이미 대여중인 배터리가 있습니다')
+              </script>
+            {% else %}
+              {% if battery_status == 3 %}
+              <script>
+                  alert('대여가능한 배터리가 없습니다')
+                </script>
+              {% endif %}
+            {% endif %}
+          {% endif %}
+        {% else %}
+          {% if lan_status != 0 %}
+            {% if lan_status == 1 %}
+            <script>
+                alert('{{ message_lan }}')
+              </script>
+            {% else %}
+              {% if lan_status == 2 %}
+              <script>
+                  alert('이미 대여중인 랜선이 있습니다')
+                </script>
+              {% else %}
+                {% if lan_status == 3 %}
+                <script>
+                    alert('대여가능한 랜선이 없습니다')
+                  </script>
+                {% endif %}
+              {% endif %}
+            {% endif %}
+            
+          {% else %}
+            {% if cable_status == 1 %}
+            <script>
+                alert('{{ message_cable }}')
+              </script>
+            {% else %}
+              {% if cable_status == 2 %}
+              <script>
+                  alert('이미 대여중인 케이블이 있습니다')
+                </script>
+              {% else %}
+                {% if cable_status == 3 %}
+                <script>
+                    alert('대여가능한 케이블이 없습니다')
+                  </script>
+                {% endif %}
+              {% endif %}
+            {% endif %}
+          {% endif %}
+        {% endif %}
+      {% endif %}
+  
  {% endblock %}
 
  {% block copyrights %}

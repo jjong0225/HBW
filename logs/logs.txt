@@ -15,3 +15,7 @@
 [2019Mar/16/ 15:08:59][Log Line : login.views:360] 컴플레인 : [익명여부 :False이름:root| 학번:20170300| 컴플레인 번호6] 업로드 완료
 [2019Mar/16/ 15:09:17][Log Line : login.views:360] 컴플레인 : [익명여부 :True이름:anonymous| 학번:00000000| 컴플레인 번호7] 업로드 완료
 [2019Mar/16/ 15:48:06][Log Line : login.views:382] 우산 사업 : [학번:root|우산 번호:1] 대여 완료
+[2019Mar/18/ 13:42:35][Log Line : login.views:149] 실습실 사업 : [학번:test| 실습실 테이블 번호:1| 실습실 대여 시간:14] 예약 완료
+[2019Mar/18/ 16:05:46][Log Line : login.views:132] 우 사업 : [학번:test|우산 번호:3] 대여 완료
+[2019Mar/18/ 16:05:50][Log Line : login.views:112] 보조배터리 사업 : [학번:test|보조배터리 번호:1] 대여 완료
+[2019Mar/18/ 16:05:53][Log Line : login.views:152] 랜선 사업 : [학번:test|랜선 번호:1] 대여 완료
