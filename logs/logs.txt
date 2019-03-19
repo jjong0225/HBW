@@ -19,3 +19,9 @@
 [2019Mar/18/ 16:05:46][Log Line : login.views:132] 우 사업 : [학번:test|우산 번호:3] 대여 완료
 [2019Mar/18/ 16:05:50][Log Line : login.views:112] 보조배터리 사업 : [학번:test|보조배터리 번호:1] 대여 완료
 [2019Mar/18/ 16:05:53][Log Line : login.views:152] 랜선 사업 : [학번:test|랜선 번호:1] 대여 완료
+[2019Mar/19/ 13:49:40][Log Line : login.views:132] 우 사업 : [학번:admin|우산 번호:1] 대여 완료
+[2019Mar/19/ 13:52:44][Log Line : login.views:242] 실습실 사업 : [학번:admin| 실습실 테이블 번호:9| 실습실 대여 시간:12] 예약 완료
+[2019Mar/19/ 13:52:44][Log Line : login.views:242] 실습실 사업 : [학번:admin| 실습실 테이블 번호:9| 실습실 대여 시간:13] 예약 완료
+[2019Mar/19/ 13:52:48][Log Line : login.views:242] 실습실 사업 : [학번:admin| 실습실 테이블 번호:9| 실습실 대여 시간:14] 예약 완료
+[2019Mar/19/ 13:52:48][Log Line : login.views:242] 실습실 사업 : [학번:admin| 실습실 테이블 번호:9| 실습실 대여 시간:15] 예약 완료
+[2019Mar/19/ 13:54:29][Log Line : login.views:152] 랜선 사업 : [학번:admin|랜선 번호:2] 대여 완료

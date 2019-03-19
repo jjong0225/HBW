@@ -74,10 +74,10 @@ class Unbrella(models.Model):
         (status_reserved, '대여신청중'),
     )
 
-    number = models.PositiveSmallIntegerField()
+    number = models.PositiveSmallIntegerField(primary_key=True, unique=True)
     is_borrowed = models.BooleanField(default = False)
     borrowed_by = models.OneToOneField(Student, null=True, related_name = "un", blank=True, on_delete=models.CASCADE)
-    borrowed_by = models.OneToOneField(Student, null=True, related_name = "un", blank=True, on_delete=models.CASCADE, error_messages={'unique' : '한 사람 당 한 개씩만 대여 가능합니다.'})
+    borrowed_time = models.DateTimeField(auto_now_add=True)
     is_reserved = models.BooleanField(default = False)
     reservation_time = models.DateTimeField(auto_now_add=True)
     status=models.CharField(max_length=5, choices=status_choices, default=status_available)
@@ -122,7 +122,7 @@ class Battery(models.Model):
         (status_reserved, '대여신청중'),
     )
 
-    number = models.PositiveSmallIntegerField()
+    number = models.PositiveSmallIntegerField(primary_key=True, unique=True)
     is_borrowed = models.BooleanField(default = False)
     borrowed_by = models.OneToOneField(Student,related_name='ba', null=True, blank=True, on_delete=models.DO_NOTHING)
     borrowed_time = models.DateTimeField(auto_now_add=True)
@@ -170,7 +170,7 @@ class Lan(models.Model):
         (status_reserved, '대여신청중'),
     )
 
-    number = models.PositiveSmallIntegerField()
+    number = models.PositiveSmallIntegerField(primary_key=True, unique=True)
     is_borrowed = models.BooleanField(default = False)
     borrowed_by = models.OneToOneField(Student, related_name='la', null=True, blank=True, on_delete=models.DO_NOTHING)
     borrowed_time = models.DateTimeField(auto_now_add=True)
@@ -252,7 +252,7 @@ class Cable(models.Model):
         (status_reserved, '대여신청중'),
     )
     
-    number = models.PositiveSmallIntegerField()
+    number = models.PositiveSmallIntegerField(primary_key=True, unique=True)
     is_borrowed = models.BooleanField(default = False)
     borrowed_by = models.OneToOneField(Student, related_name='ca', null=True, blank=True, on_delete=models.DO_NOTHING)
     borrowed_time = models.DateTimeField(auto_now_add=True)
