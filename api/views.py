@@ -87,7 +87,7 @@ class StudyTableViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.StudyTableSerializer
     permission_classes = (CustomIsAdmin, permissions.IsAdminUser)
     filter_backends = (filters.SearchFilter,)
-    saerch_fileds = ('=number')
+    saerch_fileds = ('=number',)
 
 
 

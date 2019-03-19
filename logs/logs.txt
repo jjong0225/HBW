@@ -46,3 +46,5 @@
 [2019Mar/18/ 01:13:01][Log Line : login.views:173] 케이블 사업 : [학번:admin|케이블 번호:2] 대여 완료
 [2019Mar/19/ 12:50:58][Log Line : login.views:133] 우 사업 : [학번:admin|우산 번호:1] 대여 완료
 [2019Mar/19/ 12:52:08][Log Line : login.views:133] 우 사업 : [학번:admin|우산 번호:1] 대여 완료
+[2019Mar/19/ 16:54:42][Log Line : login.views:133] 우 사업 : [학번:admin|우산 번호:1] 대여 완료
+[2019Mar/19/ 16:59:51][Log Line : login.views:133] 우 사업 : [학번:admin|우산 번호:1] 대여 완료
