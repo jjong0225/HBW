@@ -1,4 +1,4 @@
-{% extends 'login/layout.html '%}
+{% extends 'login/layout.html' %}
 {% load staticfiles %}
 
 {% block header %}
@@ -175,7 +175,7 @@
   <script>
     {% if unbrella_status != 0 %}
       {% if unbrella_status == 1 %}
-        alert('{{ message_battery }}')
+        alert('{{ message_unbrella }}')
       {% else %}
         {% if unbrella_status == 2 %}
           alert('이미 대여중인 우산이 있습니다')
