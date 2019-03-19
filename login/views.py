@@ -414,6 +414,8 @@ class LendBusinessClass() :
             'lan_total': lan_set.count(),
             })
 
+   
+
 
 class PasswordContextMixin:
     extra_context = None

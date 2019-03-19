@@ -47,7 +47,7 @@ class Student(models.Model):
 
     def __str__(self):
         return self.user.username
-    
+
     def save(self, *args, **kwargs):
         self.today_A4 = self.today_A4 + self.A4_count
         if self.today_A4 > 50:
@@ -55,8 +55,8 @@ class Student(models.Model):
         self.month_A4 = self.month_A4 + self.A4_count
         if self.month_A4 > 500:
             raise APIException("한달 대여량은 500장을 넘길 수 없습니다!")
-
         self.A4_count = 0
+        
         super().save(*args, **kwargs)
 
     objects = models.Manager()
@@ -76,8 +76,8 @@ class Unbrella(models.Model):
 
     number = models.PositiveSmallIntegerField(primary_key=True, unique=True)
     is_borrowed = models.BooleanField(default = False)
-    borrowed_by = models.OneToOneField(Student, null=True, related_name = "un", blank=True, on_delete=models.CASCADE)
-    borrowed_time = models.DateTimeField(auto_now_add=True)
+    borrowed_by = models.OneToOneField(Student, null=True, related_name = "un", blank=True, on_delete=models.CASCADE, error_messages={'unique' : '한 사람 당 한 개씩만 대여 가능합니다.'})
+    borrowed_time = models.DateTimeField(auto_now=True)
     is_reserved = models.BooleanField(default = False)
     reservation_time = models.DateTimeField(auto_now_add=True)
     status=models.CharField(max_length=5, choices=status_choices, default=status_available)
@@ -90,6 +90,7 @@ class Unbrella(models.Model):
                 if self.borrowed_by is not None:
                     self.status = self.status_borrowed
                     self.is_borrowed = True
+                    self.borrowed_time = timezone.localtime()
                 else :
                     self.status = self.status_available
                     self.is_borrowed = False
@@ -138,6 +139,7 @@ class Battery(models.Model):
                 if self.borrowed_by is not None:
                     self.status = self.status_borrowed
                     self.is_borrowed = True
+                    self.borrowed_time = timezone.localtime()
                 else :
                     self.status = self.status_available
                     self.is_borrowed = False
@@ -186,6 +188,7 @@ class Lan(models.Model):
                 if self.borrowed_by is not None:
                     self.status = self.status_borrowed
                     self.is_borrowed = True
+                    self.borrowed_time = timezone.localtime()
                 else :
                     self.status = self.status_available
                     self.is_borrowed = False
@@ -221,6 +224,10 @@ class StudyTable(models.Model):
     
     def __str__(self):
         return "Table "+str(self.number)
+
+    
+        
+    
 
 
 
@@ -278,6 +285,7 @@ class Cable(models.Model):
                 if self.borrowed_by is not None:
                     self.status = self.status_borrowed
                     self.is_borrowed = True
+                    self.borrowed_time = timezone.localtime()
                 else :
                     self.status = self.status_available
                     self.is_borrowed = False

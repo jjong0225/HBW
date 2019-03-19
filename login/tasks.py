@@ -18,7 +18,6 @@ def ExpiredCheck():
     battery_set = models.Battery.objects.all().filter(is_reserved = True).filter(is_borrowed = False)
     lan_set = models.Lan.objects.all().filter(is_reserved = True).filter(is_borrowed = False)
     cable_set = models.Cable.objects.all().filter(is_reserved = True).filter(is_borrowed = False)
-
     cur_time = timezone.now()
     for item in unbrella_set :
         if item.reservation_time+datetime.timedelta(minutes=10) < cur_time :
@@ -189,5 +188,4 @@ def GetNowManager() :
     else if  now_manager.count() == 1 :
         models.now_time_table.objects.create(name=now_manager.name, start_time = num, is_manage = True)
     else  ## 오류 상황
-        models.now_time_table.objects.create(name='blank', start_time = num, is_staff = False)    
-    
+        models.now_time_table.objects.create(name='blank', start_time = num, is_staff = False)   

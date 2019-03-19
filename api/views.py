@@ -44,7 +44,7 @@ class UnbrellaViewSet(viewsets.ModelViewSet):
     '''
     우산 대여사업
     '''
-    queryset = models.Unbrella.objects.all()
+    queryset = models.Unbrella.objects.all().order_by('number')
     serializer_class = serializers.UnbrellaSerializer
     permission_classes = (CustomIsAdmin, permissions.IsAdminUser)
     filter_backends = (filters.SearchFilter,)
@@ -55,7 +55,7 @@ class BatteryViewSet(viewsets.ModelViewSet):
     '''
     배터리 대여사업
     '''
-    queryset = models.Battery.objects.all()
+    queryset = models.Battery.objects.all().order_by('number')
     serializer_class = serializers.BatterySerializer
     permission_classes = (CustomIsAdmin, permissions.IsAdminUser)
     filter_backends = (filters.SearchFilter,)
@@ -66,7 +66,7 @@ class LanViewSet(viewsets.ModelViewSet):
     '''
     랜선 대여사업
     '''
-    queryset = models.Lan.objects.all()
+    queryset = models.Lan.objects.all().order_by('number')
     serializer_class = serializers.LanSerializer
     permission_classes = (CustomIsAdmin, permissions.IsAdminUser)
     filter_backends = (filters.SearchFilter,)
@@ -90,14 +90,14 @@ class StudyTableViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.StudyTableSerializer
     permission_classes = (CustomIsAdmin, permissions.IsAdminUser)
     filter_backends = (filters.SearchFilter,)
-    saerch_fileds = ('=number',)
+    search_fields = ('=number',)
 
 
 class CableViewSet(viewsets.ModelViewSet):
     '''
     케이블 대여사업
     '''
-    queryset = models.Cable.objects.all()
+    queryset = models.Cable.objects.all().order_by('number')
     serializer_class = serializers.CableSerializer
     permission_classes = (CustomIsAdmin, permissions.IsAdminUser)
     filter_backends = (filters.SearchFilter,)
