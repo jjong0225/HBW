@@ -43,28 +43,63 @@
     Author: TemplateMag.com
     License: https://templatemag.com/license/
   ======================================================= -->
+
+
+
+  <!-- 수정한 스크립트 !!! 기존꺼 대체 바람 
+  그리고 헤더 부분에 mypage하고 똑같이 <meta content="~~~" name="csrf_token"> 넣어주세요
+  -->
   <script>
+    var userTimecnt = 0;
+    var userTable=(window.location.search.split("table=")[1]=="")?-1:window.location.search.split("table=")[1];
     $(document).ready(function(){
-      var timecnt = 0;
-      $('.OBJcbTime').click( function () {
-        if (this.getAttribute("state")=="true") {
-          timecnt--;
-          this.setAttribute("state","false");
+      for(i=0;i<$('.OBJcbTime').length;i++){
+        if(document.getElementsByClassName("OBJcbTime")[i].getAttribute("state")=="1" || document.getElementsByClassName("OBJcbTime")[i].getAttribute("state")=="-1" ){
+          userTimecnt++;
         }
-        else{
-          if (timecnt >= 4) {
-          alert("최대 2시간까지 예약 가능합니다.");
-          return false;
+      }
+      $('.OBJcbTime').click( function () {
+        if (this.getAttribute("state")=="1") {
+          userTimecnt--;
+          this.setAttribute("state","0");
+        }
+        else if(this.getAttribute("state")=="0"){
+          if (userTimecnt >= 4) {
+            alert("최대 4시간까지 예약 가능합니다.");
+            return false;
           }
-          timecnt++;
-          this.setAttribute("state","true");
+          userTimecnt++;
+          this.setAttribute("state","1");
         }
       });
     });
-    //2개만 체크되게 하기
-    // 체크 박스 이름 수정해주세요!
-    // 시간 체크 부분 원래 어떻게 생겼었는지 기억이 안나서 직접 안만들고 스크립트만 남겨놔요
-    
+
+    function applyReservation(){
+      if(userTable==-1){
+        alert('테이블을 선택해주세요');
+        return false;
+      }
+      var postdata="tableNum="+userTable;
+      var postcnt=0;
+      var time_array=["10","11","12","13","14","15","16","17"];
+      for(i=0;i<$('.OBJcbTime').length;i++){
+        if(document.getElementsByClassName("OBJcbTime")[i].getAttribute("state")=="1"){
+          postdata += "&time["+ postcnt++ + "]=" + time_array[i];
+        }
+      }
+      if (window.XMLHttpRequest)
+        xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            location.reload();
+          }
+      };
+      xmlhttp.open("POST","/place_reservation");
+      xmlhttp.setRequestHeader("Content-Type",'application/x-www-form-urlencoded');
+      //xmlhttp.setRequestHeader("X-CSRFToken",document.getElementsByName("csrf_token")[0].getAttribute("content"));
+      xmlhttp.send(postdata);
+      alert(postdata);
+    }
   </script>
 
 </head>
@@ -125,58 +160,62 @@
         <div class="hline"></div>
         <div class="table_container">
           <div class="upper_table">
+          <!-- 태그 많이 수정됨 
+          적용 바람@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+          @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@22
+          2@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2-->
             <div id="table_set" class="table_set1">
               <div id="reg" class="table1">
-                <a href="#"><img id="table1" src="img/desk1.png" onmouseover="this.src='img/desk1_onmouse.png'"
-                    onmouseout="this.src='img/desk1.png'"></a>
+                <a><img class="img_table img_table1" id="table1" src="img/desk1.png"
+                    onclick="setUserTable(1);"></a>
               </div>
               <div id="reg" class="table2">
-                <a href="#"><img id="table2" src="img/desk2.png" onmouseover="this.src='img/desk2_onmouse.png'"
-                    onmouseout="this.src='img/desk2.png'"></a>
+                <a><img class="img_table img_table2" id="table2" src="img/desk2.png"
+                    onclick="setUserTable(2);"></a>
               </div>
             </div>
             <div id="table_set" class="table_set2">
               <div id="reg" class="table3">
-                <a href="#"><img id="table3" src="img/desk3.png" onmouseover="this.src='img/desk3_onmouse.png'"
-                    onmouseout="this.src='img/desk3.png'"></a>
+                <a><img class="img_table img_table3" id="table3" src="img/desk3.png"
+                    onclick="setUserTable(3);"></a>
               </div>
               <div id="reg" class="table4">
-                <a href="#"><img id="table4" src="img/desk4.png" onmouseover="this.src='img/desk4_onmouse.png'"
-                    onmouseout="this.src='img/desk4.png'"></a>
+                <a><img class="img_table img_table4" id="table4" src="img/desk4.png"
+                    onclick="setUserTable(4);"></a>
               </div>
             </div>
             <div id="table_set" class="table_set3">
               <div id="reg" class="table5">
-                <a href="#"><img id="table3" src="img/desk5.png" onmouseover="this.src='img/desk5_onmouse.png'"
-                    onmouseout="this.src='img/desk5.png'"></a>
+                <a><img class="img_table img_table5" id="table5" src="img/desk5.png"
+                    onclick="setUserTable(5);"></a>
               </div>
               <div id="reg" class="table6">
-                <a href="#"><img id="table3" src="img/desk6.png" onmouseover="this.src='img/desk6_onmouse.png'"
-                    onmouseout="this.src='img/desk6.png'"></a>
+                <a><img class="img_table img_table6" id="table6" src="img/desk6.png"
+                    onclick="setUserTable(6);"></a>
               </div>
             </div>
           </div>
           <div class="lower_table">
             <div id="table_set" class="table_set4">
               <div id="reg" class="table7">
-                <a href="#"><img id="table7" src="img/desk7.png" onmouseover="this.src='img/desk7_onmouse.png'"
-                    onmouseout="this.src='img/desk7.png'"></a>
+                <a><img class="img_table img_table7" id="table7" src="img/desk7.png"
+                    onclick="setUserTable(7);"></a>
               </div>
               <div id="reg" class="table8">
-                <a href="#"><img id="table8" src="img/desk8.png" onmouseover="this.src='img/desk8_onmouse.png'"
-                    onmouseout="this.src='img/desk8.png'"></a>
+                <a><img class="img_table img_table8" id="table8" src="img/desk8.png"
+                    onclick="setUserTable(8);"></a>
               </div>
             </div>
 
             <div id="table_set" class="table_set5">
               <div id="reg" class="table9">
-                <a href="#"><img id="table9" src="img/desk9.png" onmouseover="this.src='img/desk9_onmouse.png'"
-                    onmouseout="this.src='img/desk9.png'"></a>
+                <a><img class="img_table img_table9" id="table9" src="img/desk9.png"
+                    onclick="setUserTable(9);"></a>
               </div>
             </div>
             <div id="reg" class="table10">
-              <a href="#"><img id="table10" src="img/desk10.png" onmouseover="this.src='img/desk10_onmouse.png'"
-                  onmouseout="this.src='img/desk10.png'"></a>
+              <a><img class="img_table img_table10" id="table10" src="img/desk10.png"
+                  onclick="setUserTable(10);"></a>
             </div>
             <div class="door">
               <p>D O O R</p>
@@ -191,10 +230,12 @@
           <div class="ikc-tablelist-listup ikc-smuf-form">
             <p>
               <span class="ikc-reserved-status">
-                <span class="ikc-reserved-off"></span>
+                <span class="ikc-reserved-off" id="off"></span>
                 예약 가능
                 <span class="ikc-reserved-inactive"></span>
                 예약 불가능
+                <span class="ikc-reserved-active"></span>
+                예약 선택
               </span>
             </p>
           </div>
@@ -210,29 +251,26 @@
                   <th>3</th>
                   <th>4</th>
                   <th>5</th>
-                  <th>6</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td id="cbTime0" class="OBJcbTime" state="0"></td> <!-- 0: 아무도 점유 없음  -->
+                  <td id="cbTime0" class="OBJcbTime" state="-1"></td> <!-- 0: 아무도 점유 없음  -->
                   <td id="cbTime1" class="OBJcbTime" state="0"></td> <!-- 1: 내가 점유 -->
                   <td id="cbTime2" class="OBJcbTime" state="0"></td> <!-- 2: 다른 사람 점유 -->
-                  <td id="cbTime3" class="OBJcbTime" state="0"></td>
+                  <td id="cbTime3" class="OBJcbTime" state="0"></td> <!-- 백엔드에서 상태 적어주세요-->
                   <td id="cbTime4" class="OBJcbTime" state="0"></td>
                   <td id="cbTime5" class="OBJcbTime" state="0"></td>
-                  <td id="cbTime6" class="OBJcbTime" state="0"></td>
-                  <td id="cbTime7" class="OBJcbTime" state="0"></td>
-                  <td id="cbTime8" class="OBJcbTime" state="0"></td>
+                  <td id="cbTime6" class="OBJcbTime" state="2"></td>
+                  <td id="cbTime7" class="OBJcbTime" state="2"></td>
                 </tr>
               </tbody>
             </table>
           </form>
-          
         </div>
       </div>
       <div class="col-md-2 col-md-offset-2 col-xs-6 col-xs-offset-3" style="text-align:center;">
-        <a class="btn btn-theme" id="reservation_button">자리 예약</a>
+        <a class="btn btn-theme" id="reservation_button" onclick="applyReservation();">자리 예약</a>
       </div>
       <div class="col-md-6 col-xs-12">
         <p class="cancel_message">실습실 예약 취소는 <a href="mypage.html">마이페이지</a>로</p>

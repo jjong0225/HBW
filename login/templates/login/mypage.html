@@ -1,7 +1,7 @@
 {% extends 'login/layout.html' %}
-
 {% block content %}
-  <!-- *****************************************************************************************************************
+<meta content="{{ csrf_token }}" name="csrf_token">
+<!-- *****************************************************************************************************************
 	 BLUE WRAP
 	 ***************************************************************************************************************** -->
    <div id="blue">
@@ -71,7 +71,7 @@
                   <span class="badge badge-primary badge-pill">{{ time.start_time }}:00~{{ time.start_time|add:1 }}:00</span>
                 </div>
                 <div class="col closeButton">
-                    <i class="fas fa-times" onclick="if(confirm('정말 실습실 예약을 취소할까요?')){window.location='home.html';}"></i>
+                    <i class="fas fa-times" onclick="if(confirm('정말 실습실 예약을 취소할까요?')){cancelReservation({{ time.start_time }})}"></i>
                 </div>
               </div>
             </li>
@@ -138,4 +138,21 @@
     </div>
   </div>
   <!-- / copyrights -->
+
+  <script>
+      function cancelReservation(time) {
+      if (window.XMLHttpRequest)
+              xmlhttp = new XMLHttpRequest();
+          xmlhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                location.reload();
+              }
+          };
+          xmlhttp.open("POST","/mypage/");
+          xmlhttp.setRequestHeader("X-CSRFToken",document.getElementsByName("csrf_token")[0].getAttribute("content"));
+          xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+          xmlhttp.send("cancel="+time);
+      }
+    </script>
 {% endblock %}
+
