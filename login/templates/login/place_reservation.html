@@ -5,11 +5,41 @@
 {% block header %}
   <!-- Checkbox Css-->
  
-
+  <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{% url "login:main" %}">SUPPORT.</a>
+        </div>
+        <div class="navbar-collapse collapse navbar-right">
+            <ul class="nav navbar-nav">
+                <li><a href="{% url "login:main" %}">홈</a></li>
+                {% if user.is_authenticated %}
+                  <li><a href="{% url "login:logout" %}">로그아웃</a></li>
+                {% else %}
+                  <li><a href="{% url "login:login" %}">로그인</a></li>
+                {% endif %}
+                <li class ="active"><a href="{% url "login:seltable" %}">실습실 예약</a></li>
+                <li><a href="{% url "login:mypage" %}">마이페이지</a></li>
+            </ul>
+        </div>
+        <!--/.nav-collapse -->
+    </div>
+  </div>
+  
   <script>
       var userTimecnt = 0;
-      var userTable=(window.location.search.split("table=")[1]=="")?-1:window.location.search.split("table=")[1];
+      var userTable=(window.location.search.split("table=")[1]==null)?-1:window.location.search.split("table=")[1];
+      
       $(document).ready(function(){
+        
+        if(userTable>0)
+          document.getElementsByClassName("img_table" + userTable)[0].setAttribute("src","/static/img/desk"+userTable+"_onmouse.png");
         for(i=0;i<$('.OBJcbTime').length;i++){
           if(document.getElementsByClassName("OBJcbTime")[i].getAttribute("state")=="1" || document.getElementsByClassName("OBJcbTime")[i].getAttribute("state")=="-1" ){
             userTimecnt++;
@@ -34,6 +64,7 @@
       function applyReservation(){
         if(userTable==-1){
           alert('테이블을 선택해주세요');
+          location.reload();
           return false;
         }
         var postdata="tableNum="+userTable;
@@ -48,6 +79,7 @@
           xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
+              alert(xmlhttp.responseText);
               location.reload();
             }
         };
@@ -55,7 +87,6 @@
         xmlhttp.setRequestHeader("Content-Type",'application/x-www-form-urlencoded');
         xmlhttp.setRequestHeader("X-CSRFToken",document.getElementsByName("csrf_token")[0].getAttribute("content"));
         xmlhttp.send(postdata);
-        // alert(postdata);
       }
     </script>
   {% endblock %}
@@ -108,56 +139,46 @@
           <div class="upper_table">
               <div id="table_set" class="table_set1">
                   <div id="reg" class="table1">
-                    <a href = "?table=1"><img class="img_table img_table1" id="table1" src="{% static "img/desk1.png" %}"
-                        onclick="setUserTable(1);"></a>
+                    <a href = "?table=1"><img class="img_table img_table1" id="table1" src="{% static "img/desk1.png" %}"></a>
                   </div>
                   <div id="reg" class="table2">
-                    <a href = "?table=2"><img class="img_table img_table2" id="table2" src="{% static "img/desk2.png" %}"
-                        onclick="setUserTable(2);"></a>
+                    <a href = "?table=2"><img class="img_table img_table2" id="table2" src="{% static "img/desk2.png" %}"></a>
                   </div>
                 </div>
                 <div id="table_set" class="table_set2">
                   <div id="reg" class="table3">
-                    <a href = "?table=3"><img class="img_table img_table3" id="table3" src="{% static "img/desk3.png" %}"
-                        onclick="setUserTable(3);"></a>
+                    <a href = "?table=3"><img class="img_table img_table3" id="table3" src="{% static "img/desk3.png" %}"></a>
                   </div>
                   <div id="reg" class="table4">
-                    <a href = "?table=4"><img class="img_table img_table4" id="table4" src="{% static "img/desk4.png" %}"
-                        onclick="setUserTable(4);"></a>
+                    <a href = "?table=4"><img class="img_table img_table4" id="table4" src="{% static "img/desk4.png" %}"></a>
                   </div>
                 </div>
                 <div id="table_set" class="table_set3">
                   <div id="reg" class="table5">
-                    <a href = "?table=5"><img class="img_table img_table5" id="table5" src="{% static "img/desk5.png" %}"
-                        onclick="setUserTable(5);"></a>
+                    <a href = "?table=5"><img class="img_table img_table5" id="table5" src="{% static "img/desk5.png" %}"></a>
                   </div>
                   <div id="reg" class="table6">
-                    <a href = "?table=6"><img class="img_table img_table6" id="table6" src="{% static "img/desk6.png" %}"
-                        onclick="setUserTable(6);"></a>
+                    <a href = "?table=6"><img class="img_table img_table6" id="table6" src="{% static "img/desk6.png" %}"></a>
                   </div>
                 </div>
               </div>
               <div class="lower_table">
                 <div id="table_set" class="table_set4">
                   <div id="reg" class="table7">
-                    <a href = "?table=7"><img class="img_table img_table7" id="table7" src="{% static "img/desk7.png" %}"
-                        onclick="setUserTable(7);"></a>
+                    <a href = "?table=7"><img class="img_table img_table7" id="table7" src="{% static "img/desk7.png" %}"></a>
                   </div>
                   <div id="reg" class="table8">
-                    <a href = "?table=8"><img class="img_table img_table8" id="table8" src="{% static "img/desk8.png" %}"
-                        onclick="setUserTable(8);"></a>
+                    <a href = "?table=8"><img class="img_table img_table8" id="table8" src="{% static "img/desk8.png" %}"></a>
                   </div>
                 </div>
     
                 <div id="table_set" class="table_set5">
                   <div id="reg" class="table9">
-                    <a href = "?table=9"><img class="img_table img_table9" id="table9" src="{% static "img/desk9.png" %}"
-                        onclick="setUserTable(9);"></a>
+                    <a href = "?table=9"><img class="img_table img_table9" id="table9" src="{% static "img/desk9.png" %}"></a>
                   </div>
                 </div>
                 <div id="reg" class="table10">
-                  <a href = "?table=10"><img class="img_table img_table10" id="table10" src="{% static "img/desk10.png" %}"
-                      onclick="setUserTable(10);"></a>
+                  <a href = "?table=10"><img class="img_table img_table10" id="table10" src="{% static "img/desk10.png" %}"></a>
                 </div>
                 <div class="door">
                   <p>D O O R</p>
@@ -197,11 +218,12 @@
               </thead>
               <tbody>
                 <tr>
+                  <!-- 0: 아무도 점유 없음  --> <!-- 1: 내가 점유 --> <!-- 2: 다른 사람 점유 -->
                   {% if tables %} 
-                  {% for table in tables %}  <!-- 0: 아무도 점유 없음  --> <!-- 1: 내가 점유 --> <!-- 2: 다른 사람 점유 -->
+                  {% for table in tables %}  
                     {% if table.is_borrowed %}
                       {% if table.lender == user.user_data %}
-                        <td id="cbTime{{ forloop.counter0 }}" class="OBJcbTime" state="2"></td> <!-- 1: 내가 점유 -->
+                        <td id="cbTime{{ forloop.counter0 }}" class="OBJcbTime" state="-1"></td> 
                         {% else %}
                         <td id="cbTime{{ forloop.counter0 }}" class="OBJcbTime" state="2"></td> <!-- 2: 다른 사람 점유 -->
                       {% endif %}
@@ -235,17 +257,3 @@
     </div>
   </div>
   {% endblock %}
-
-{% block copyrights %}
-  <div id="copyrights">
-    <div class="container">
-      <p>
-        &copy; Copyrights <strong>Solid</strong>. All Rights Reserved
-      </p>
-      <div class="credits">
-        Created with Solid template by <a href="https://templatemag.com/">TemplateMag</a>
-      </div>
-    </div>
-  </div>
-  <!-- / copyrights -->
-{% endblock %}

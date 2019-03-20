@@ -2,6 +2,32 @@
 {% load staticfiles %}
 
 {% block header %}
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+      <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="{% url "login:main" %}">SUPPORT.</a>
+      </div>
+      <div class="navbar-collapse collapse navbar-right">
+          <ul class="nav navbar-nav">
+              <li class ="active"><a href="{% url "login:main" %}">홈</a></li>
+              {% if user.is_authenticated %}
+                <li><a href="{% url "login:logout" %}">로그아웃</a></li>
+              {% else %}
+                <li><a href="{% url "login:login" %}">로그인</a></li>
+              {% endif %}
+              <li><a href="{% url "login:seltable" %}">실습실 예약</a></li>
+              <li><a href="{% url "login:mypage" %}">마이페이지</a></li>
+          </ul>
+      </div>
+      <!--/.nav-collapse -->
+  </div>
+</div>
 {% endblock %}
 
 
@@ -255,18 +281,3 @@
   
  {% endblock %}
 
- {% block copyrights %}
-
-    <div id="copyrights">
-      <div class="container">
-        <p><strong>제작자　|</strong>　김 산　박성철　안종훈　이진우　허예은 </p>
-        <p>
-          &copy; Copyrights <strong>Solid</strong> All Rights Reserved
-        </p>
-        <div class="credits">
-          Created with Solid template by <a href="https://templatemag.com/">TemplateMag</a>
-        </div>
-      </div>
-    </div>
-    <!-- / copyrights -->
-  {% endblock %}

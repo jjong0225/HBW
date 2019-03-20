@@ -59,32 +59,6 @@
 </style>
 <body>
     <!-- Fixed navbar -->
-  <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="{% url "login:main" %}">SUPPORT.</a>
-            </div>
-            <div class="navbar-collapse collapse navbar-right">
-                <ul class="nav navbar-nav">
-                    <li><a href="{% url "login:main" %}">홈</a></li>
-                    {% if user.is_authenticated %}
-                      <li><a href="{% url "login:logout" %}">로그아웃</a></li>
-                    {% else %}
-                      <li><a href="{% url "login:login" %}">로그인</a></li>
-                    {% endif %}
-                    <li><a href="{% url "login:seltable" %}">실습실 예약</a></li>
-                    <li><a href="{% url "login:mypage" %}">마이페이지</a></li>
-                </ul>
-            </div>
-            <!--/.nav-collapse -->
-        </div>
-    </div>
     {% block content %}
     {% endblock %}
     <!-- *****************************************************************************************************************
@@ -97,7 +71,7 @@
           <h4>연락처</h4>
           <div class="hline-w"></div>
           <p><b>회장 </b>윤동주 <a href="tel:01089182291">010-8918-2291</a> yoondj98</p>
-          <p><b>부회장 </b>노진주 <a href="tel:01088683785">010-8868-3785</a> estelle3785</p>
+          <p><b>부회장 </b>노진주 <a href="tel:01088983785">010-8898-3785</a> estelle3785</p>
           <p><b>부회장 </b>김상엽 <a href="tel:01067084808">010-6708-4808</a> tkdduqkim</p>
         </div>
         <div class="col-lg-6">
@@ -141,7 +115,7 @@
               </dl>
               <dl>
                 <dt>CLOSE  </dt>
-                <dd> 8:00</dd>
+                <dd> 18:00</dd>
               </dl>
             </div>
           </div>
@@ -149,8 +123,19 @@
       </div>
     </div>
   </div>
-  {% block copyrights %}
-  {% endblock %}
+
+  <div id="copyrights">
+    <div class="container">
+      <p><strong>제작자　|</strong>　김 산　박성철　안종훈　이진우　허예은 </p>
+      <p>
+        &copy; Copyrights <strong>Solid</strong> All Rights Reserved
+      </p>
+      <div class="credits">
+        Created with Solid template by <a href="https://templatemag.com/">TemplateMag</a>
+      </div>
+    </div>
+  </div>
+  <!-- / copyrights -->
 
     <!-- JavaScript Libraries -->
     <script src="{% static "lib/bootstrap/js/bootstrap.min.js" %}"></script>

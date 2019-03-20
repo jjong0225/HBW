@@ -198,6 +198,9 @@ def Main(request):
 @login_required
 def MyPage(request):
     current_user = request.user
+    cur_time = timezone.localtime()
+    after_time = cur_time + timezone.timedelta(minutes=10)
+
     if request.method == "POST":
         cur_time = request.POST.get('cancel')
         time_q = StudyTable.objects.all().filter(lender_id=current_user.user_data.id).filter(start_time=cur_time)
@@ -206,10 +209,10 @@ def MyPage(request):
                 time.lender_id = None
                 time.save()
         time_q = StudyTable.objects.all().filter(lender_id=current_user.user_data.id)
-        return render(request, 'login/mypage.html', {'times' : time_q})
+        return HttpResponse("취소 되었습니다.")
     else:
         time_q = StudyTable.objects.all().filter(lender_id=current_user.user_data.id)
-        return render(request, 'login/mypage.html', {'times' : time_q})
+        return render(request, 'login/mypage.html', {'times' : time_q, 'cur_time' : cur_time, 'after_time' : after_time})
 
 
 class StudyTableClass() :
@@ -217,30 +220,28 @@ class StudyTableClass() :
         if request.method == "POST":
             sel_table = request.POST.get('tableNum')
             sel_time = [0,0,0,0]
-            for i in range(0,3):
+            for i in range(0,4):
                 post_name = 'time[' + str(i) + ']'
                 if request.POST.get(post_name) != 0 :
                     sel_time[i] = request.POST.get(post_name)
             table_q = StudyTable.objects.all().filter(number=sel_table).filter(start_time__in=sel_time).filter(is_borrowed=False)
-
-            if StudyTable.objects.all().filter(lender =request.user.user_data.id).count() + table_q.count() > 4 :
-                print("초과 예약")
-                return render(request, 'login/place_reservation.html')
+            if StudyTable.objects.all().filter(lender=request.user.user_data.id).count() + table_q.count() > 4 :
+                return HttpResponse("초과 예약")
 
             for table in table_q :
                 if StudyTable.objects.all().filter(lender =request.user.user_data.id).filter(start_time = table.start_time).count() > 0 :
                     print("동일 시간에 다른테이블 예약 존재")
-                    return render(request, 'login/place_reservation.html')
+                    return HttpResponse("동일 시간에 다른테이블 예약 존재")
                 if table.is_borrowed == True :
                     print("다른 사람의 예약 존재")
-                    return render(request, 'login/place_reservation.html')
+                    return HttpResponse("다른 사람의 예약 존재")
 
             for sel in table_q:
-                    sel.is_borrowed = True
-                    sel.lender = request.user.user_data
-                    sel.save()
-                    logger.info('실습실 사업 : [학번:'+request.user.username+'| 실습실 테이블 번호:'+str(sel.number)+'| 실습실 대여 시간:'+ str(sel.start_time)+'] 예약 완료') # 담당자:{}
-            return redirect('login:seltable')
+                sel.is_borrowed = True
+                sel.lender = request.user.user_data
+                sel.save()
+                logger.info('실습실 사업 : [학번:'+request.user.username+'| 실습실 테이블 번호:'+str(sel.number)+'| 실습실 대여 시간:'+ str(sel.start_time)+'] 예약 완료') # 담당자:{}
+            return HttpResponse("예약되었습니다.")
 
 
 #            if request.POST.get('desk') is not None:
@@ -278,141 +279,6 @@ class StudyTableClass() :
 #             return render(request, 'login/place_reservation.html', {'yes_no' : yes_no})
 
 
-
-class LendBusinessClass() :
-    #우산대여
-    @login_required
-    def LendUnbrella(request):
-        unbrella_set = models.Unbrella.objects.all()
-        battery_set = models.Battery.objects.all()
-        lan_set = models.Lan.objects.all()
-        post_q = models.Poster.objects.all().order_by('number')
-        unbrella_count = unbrella_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
-        battery_count = battery_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
-        lan_count = lan_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
-        message = ""
-        yes_no = False
-        ans=request.POST.get('ans', 'No')
-        if unbrella_count < unbrella_set.count():
-            for item in unbrella_set:
-                    if item.is_available():
-                        break
-            if request.method == "GET":
-                message = str(item.number)+"번 우산을 예약하시겠습니까?"
-                yes_no = True
-            else :
-                if ans=='Yes':
-                    item.borrowed_by = request.user.user_data
-                    item.is_reserved = True
-                    item.reservation_time = timezone.localtime()
-                    item.save()
-                    logger.info('우산 사업 : [학번:'+request.user.username+'|우산 번호:'+str(item.number)+'] 대여 완료') # 담당자:{}
-                return redirect('login:main')
-        else :
-            message = "현재 예약 가능한 우산이 없습니다."
-            if ans=="OK":
-                return redirect('login:main')
-            yes_no = False
-
-        return render(request, 'login/main_lendunbrella.html', {
-            'message': message,
-            'yesno': yes_no,
-            'battery_count':battery_count,
-            'lan_count':lan_count,
-            'posts':post_q,
-            'battery_total' : battery_set.count(),
-            'unbrella_total': unbrella_set.count(),
-            'lan_total': lan_set.count(),
-            })
-
-    #배터리대여
-    @login_required
-    def LendBattery(request):
-        unbrella_set = models.Unbrella.objects.all()
-        battery_set = models.Battery.objects.all()
-        lan_set = models.Lan.objects.all()
-        post_q = models.Poster.objects.all().order_by('number')
-        unbrella_count = unbrella_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
-        battery_count = battery_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
-        lan_count = lan_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
-        message = ""
-        yes_no = False
-        ans=request.POST.get('ans', 'No')
-        if battery_count < battery_set.count():
-            for item in battery_set:
-                    if item.is_available() :
-                        break
-            if request.method == "GET":
-                message = str(item.number)+"번 배터리를 빌리시겠습니까?"
-                yes_no = True
-            else :
-                if ans=='Yes':
-                    item.borrowed_by = request.user.user_data
-                    item.is_reserved = True
-                    item.reservation_time = timezone.localtime()
-                    item.save()
-                    logger.info('배터리 사업 : [학번:'+request.user.username+'| 배터리 번호:'+str(item.number)+'] 대여 완료') # 담당자:{}
-                return redirect('login:main')
-        else :
-            message = "현재 예약 가능한 배터리가 없습니다."
-            if ans=="OK":
-                return redirect('login:main')
-            yes_no = False
-
-        return render(request, 'login/main_lendbattery.html', {
-            'message': message,
-            'yesno': yes_no,
-            'lan_count':lan_count,
-            'posts':post_q,
-            'unbrella_count':unbrella_count,
-            'battery_total' : battery_set.count(),
-            'unbrella_total': unbrella_set.count(),
-            'lan_total': lan_set.count(),
-            })
-
-    #랜선대여
-    @login_required
-    def LendLan(request):
-        unbrella_set = models.Unbrella.objects.all()
-        battery_set = models.Battery.objects.all()
-        lan_set = models.Lan.objects.all()
-        post_q = models.Poster.objects.all().order_by('number')
-        unbrella_count = unbrella_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
-        battery_count = battery_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
-        lan_count = lan_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
-        message = ""
-        yes_no = False
-        ans=request.POST.get('ans', 'No')
-        if lan_count < lan_set.count():
-            for item in lan_set:
-                    if item.is_available() :
-                        break
-            if request.method == "GET":
-                message = str(item.number)+"번 랜선을 빌리시겠습니까?"
-                yes_no = True
-            else :
-                if ans=='Yes':
-                    item.borrowed_by = request.user.user_data
-                    item.is_reserved = True
-                    item.reservation_time = timezone.localtime()
-                    item.save()
-                    logger.info('랜선 사업 : [학번:'+request.user.username+'| 랜선 번호:'+str(item.number)+'] 대여 완료') # 담당자:{}
-                return redirect('login:main')
-        else :
-            message = "현재 예약 가능한 랜선이 없습니다."
-            if ans=="OK":
-                return redirect('login:main')
-            yes_no = False
-        return render(request, 'login/main_lendlan.html', {
-            'message': message,
-            'yesno': yes_no,
-            'unbrella_count':unbrella_count,
-            'battery_count':battery_count,
-            'posts':post_q,
-            'battery_total' : battery_set.count(),
-            'unbrella_total': unbrella_set.count(),
-            'lan_total': lan_set.count(),
-            })
 
 
 class PasswordContextMixin:

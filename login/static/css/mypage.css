@@ -55,3 +55,13 @@ ul>li .col{
 .closeButton{
     float:right !important; margin-right:10px;
 }
+
+.badge-wait{
+    color:#ffffff !important;
+    background-color:#53a451 !important;
+}
+
+.badge-reserved{
+    color:#ffffff !important;
+    background-color:#4aa0b5 !important;
+}

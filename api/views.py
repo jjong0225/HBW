@@ -41,30 +41,64 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class UnbrellaViewSet(viewsets.ModelViewSet):
-    queryset = models.Unbrella.objects.all()
+    '''
+    우산 대여사업
+    '''
+    queryset = models.Unbrella.objects.all().order_by('number')
     serializer_class = serializers.UnbrellaSerializer
     permission_classes = (CustomIsAdmin, permissions.IsAdminUser)
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('number',)
+    search_fields = ('=number', '=borrowed_by__user__username')
 
 
 class BatteryViewSet(viewsets.ModelViewSet):
-    queryset = models.Battery.objects.all()
+    '''
+    배터리 대여사업
+    '''
+    queryset = models.Battery.objects.all().order_by('number')
     serializer_class = serializers.BatterySerializer
     permission_classes = (CustomIsAdmin, permissions.IsAdminUser)
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('number',)
+    search_fields = ('=number', '=borrowed_by__user__username')
 
 
 class LanViewSet(viewsets.ModelViewSet):
-    queryset = models.Lan.objects.all()
+    '''
+    랜선 대여사업
+    '''
+    queryset = models.Lan.objects.all().order_by('number')
     serializer_class = serializers.LanSerializer
     permission_classes = (CustomIsAdmin, permissions.IsAdminUser)
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('number',)
+    search_fields = ('=number', '=borrowed_by__user__username')
 
+class ComplainViewSet(viewsets.ModelViewSet):
+    '''
+    건의사항
+    '''
+    queryset = models.Complain.objects.all()
+    serializer_class = serializers.ComplainSerializer
+    permission_classes = (CustomIsAdmin, permissions.IsAdminUser)
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('=number',)
 
 class StudyTableViewSet(viewsets.ModelViewSet):
+    '''
+    실습실 테이블
+    '''
     queryset = models.StudyTable.objects.all()
     serializer_class = serializers.StudyTableSerializer
     permission_classes = (CustomIsAdmin, permissions.IsAdminUser)
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('=number',)
+
+
+class CableViewSet(viewsets.ModelViewSet):
+    '''
+    케이블 대여사업
+    '''
+    queryset = models.Cable.objects.all().order_by('number')
+    serializer_class = serializers.CableSerializer
+    permission_classes = (CustomIsAdmin, permissions.IsAdminUser)
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('=number', '=borrowed_by__user__username')
