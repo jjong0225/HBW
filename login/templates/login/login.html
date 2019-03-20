@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends 'login/layout.html' %}
 {% load staticfiles %}
 {% block header %}
@@ -75,3 +76,67 @@
   </div>
 {% endblock %}
 
+=======
+{% extends 'login/layout.html' %}
+{% load staticfiles %}
+{% block content %}
+  <!-- *****************************************************************************************************************
+	 BLUE WRAP
+	 ***************************************************************************************************************** -->
+  <div id="blue">
+    <div class="container">
+      <div class="row">
+        <h3>로그인</h3>
+      </div>
+      <!-- /row -->
+    </div>
+    <!-- /container -->
+  </div>
+  <!-- /blue -->
+
+
+
+  <!--Login Form-->
+
+  <div class="container">
+    <form action="" method="POST">{% csrf_token %}
+        <div class="row">
+            <div class="col-lg-6 col-lg-offset-3 col-md-12">
+              <div class="input-field ">
+                  {{ form.username }}
+                  <label for="user_id">아이디</label>
+              </div>
+              <div class="input-field ">
+                  {{ form.password }}
+                  <label for="user_pw">패스워드</label>
+              </div>
+                <p><input type = submit class="btn btn-theme btn-block", value="로그인"></input></p>
+              <div class="">
+                  <p>
+                      <label>
+                        <input type="checkbox" class="filled-in">
+                        <span>자동 로그인</span>
+                      </label>
+                  </p>
+              </div>
+            </div>
+        </div>
+    </form>
+  </div>
+{% endblock %}
+
+{% block copyrights %}
+    <div id="copyrights">
+      <div class="container">
+        <p>
+          &copy; Copyrights <strong>Solid</strong>. All Rights Reserved
+        </p>
+        <div class="credits">
+          Created with Solid template by <a href="https://templatemag.com/">TemplateMag</a>
+        </div>
+      </div>
+    </div>
+  <!-- / copyrights -->
+{% endblock %}
+
+>>>>>>> 9b6f01c94b85252de394d20d63bdcdb9887a28fa

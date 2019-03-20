@@ -71,7 +71,7 @@ class LanSerializer(serializers.ModelSerializer):
 
 
 class StudyTableSerializer(serializers.ModelSerializer):
-    lender = serializers.HyperlinkedRelatedField( view_name='student-detail', queryset=models.Student.objects.all(), required=False, allow_null=True)
+    lender = serializers.HyperlinkedRelatedField(view_name='student-detail', queryset=models.Student.objects.all(), required=False, allow_null=True)
 
     class Meta:
         model = models.StudyTable
