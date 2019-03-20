@@ -76,13 +76,8 @@ class Unbrella(models.Model):
 
     number = models.PositiveSmallIntegerField(primary_key=True, unique=True)
     is_borrowed = models.BooleanField(default = False)
-<<<<<<< HEAD
     borrowed_by = models.OneToOneField(Student, null=True, related_name = "un", blank=True, on_delete=models.CASCADE)
     borrowed_time = models.DateTimeField(auto_now_add=True)
-=======
-    borrowed_by = models.OneToOneField(Student, null=True, related_name = "un", blank=True, on_delete=models.CASCADE, error_messages={'unique' : '한 사람 당 한 개씩만 대여 가능합니다.'})
-    borrowed_time = models.DateTimeField(auto_now=True)
->>>>>>> 9b6f01c94b85252de394d20d63bdcdb9887a28fa
     is_reserved = models.BooleanField(default = False)
     reservation_time = models.DateTimeField(auto_now_add=True)
     status=models.CharField(max_length=5, choices=status_choices, default=status_available)
