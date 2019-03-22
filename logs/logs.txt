@@ -98,3 +98,14 @@
 [2019Mar/19/ 16:54:42][Log Line : login.views:133] �� ��� : [�й�:admin|��� ��ȣ:1] �뿩 �Ϸ�
 [2019Mar/19/ 16:59:51][Log Line : login.views:133] �� ��� : [�й�:admin|��� ��ȣ:1] �뿩 �Ϸ�
 >>>>>>> 9b6f01c94b85252de394d20d63bdcdb9887a28fa
+[2019Mar/20/ 14:43:39][Log Line : login.views:132] 우 사업 : [학번:test|우산 번호:3] 대여 완료
+[2019Mar/20/ 14:43:54][Log Line : login.views:243] 실습실 사업 : [학번:test| 실습실 테이블 번호:6| 실습실 대여 시간:10] 예약 완료
+[2019Mar/20/ 14:43:54][Log Line : login.views:243] 실습실 사업 : [학번:test| 실습실 테이블 번호:6| 실습실 대여 시간:11] 예약 완료
+[2019Mar/20/ 14:43:54][Log Line : login.views:243] 실습실 사업 : [학번:test| 실습실 테이블 번호:6| 실습실 대여 시간:12] 예약 완료
+[2019Mar/20/ 14:45:13][Log Line : login.views:243] 실습실 사업 : [학번:test| 실습실 테이블 번호:6| 실습실 대여 시간:11] 예약 완료
+[2019Mar/20/ 14:45:13][Log Line : login.views:243] 실습실 사업 : [학번:test| 실습실 테이블 번호:6| 실습실 대여 시간:12] 예약 완료
+[2019Mar/20/ 14:45:13][Log Line : login.views:243] 실습실 사업 : [학번:test| 실습실 테이블 번호:6| 실습실 대여 시간:13] 예약 완료
+[2019Mar/21/ 18:36:55][Log Line : login.views:360] ���÷��� : [�͸����� :True�̸�:anonymous| �й�:00000000| ���÷��� ��ȣ:8] ���ε� �Ϸ�
+[2019Mar/22/ 20:18:15][Log Line : login.views:132] �� ��� : [�й�:test|��� ��ȣ:3] �뿩 �Ϸ�
+[2019Mar/22/ 20:24:49][Log Line : login.views:132] �� ��� : [�й�:test|��� ��ȣ:3] �뿩 �Ϸ�
+[2019Mar/22/ 22:23:34][Log Line : login.views:504] ���÷��� : [�͸����� :True�̸�:anonymous| �й�:00000000| ���÷��� ��ȣ:9] ���ε� �Ϸ�

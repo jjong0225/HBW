@@ -81,7 +81,12 @@
             <div class="left_table" style="margin-top:-2.5%;">
               <p>학생회실
                   <div class="onoffswitch" id="place1">
+                      {% if manager.is_manager == True %}
                       <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked disabled>
+                      {% endif %}
+                      {% if manager.is_manager == False %}
+                      <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" unchecked disabled>
+                      {% endif %}
                       <label class="onoffswitch-label" for="myonoffswitch"> 
                           <span class="onoffswitch-inner"></span>
                           <span class="onoffswitch-switch"></span>
@@ -101,7 +106,12 @@
             <div class="right_table" style="margin-top:-2.5%;">
                 <p>실습실
                     <div class="onoffswitch" id = "place2" >
+                      {% if manager.is_manager == True %}
                         <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked disabled>
+                      {% endif %}
+                      {% if manager.is_manager == False %}
+                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" unchecked disabled>
+                      {% endif %}
                         <label class="onoffswitch-label" for="myonoffswitch"> 
                             <span class="onoffswitch-inner"></span>
                             <span class="onoffswitch-switch"></span>

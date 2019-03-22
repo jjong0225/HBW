@@ -756,19 +756,19 @@ position:relative;
 .onoffswitch-inner:before {
     content: "ON";
     padding-left: 10px;
-    background-color: #00B3FE; color: #FFFFFF;
+    background-color: #628cbe; color: #FFFFFF;
 }
 .onoffswitch-inner:after {
     content: "OFF";
     padding-right: 10px;
-    background-color: #EEEEEE; color: #999999;
+	background-color:#ee8f8f; color: #ffffff;
     text-align: right;
 }
 .onoffswitch-switch {
     display: block; width: 18px; margin: 2.5px;
     background: #FFFFFF;
     position: absolute; top: 0; bottom: 0;
-    right: 41px;
+	right: 45px;
     border: 2px solid #999999; border-radius: 20px;
     transition: all 0.3s ease-in 0s; 
 }

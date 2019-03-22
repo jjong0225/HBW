@@ -11,6 +11,7 @@ from django.contrib.auth.hashers import (
     UNUSABLE_PASSWORD_PREFIX, identify_hasher,
 )
 from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMultiAlternatives
 from django.template import loader
@@ -139,3 +140,12 @@ class PasswordChangeForm(SetPasswordForm):
                 code='password_incorrect',
             )
         return old_password
+
+
+class custom_login_form(AuthenticationForm) :
+        error_messages = {
+        'invalid_login': _(
+            "올바른 비밀번호와 패스워드를 입력해주세요"
+        ),
+        'inactive': _("This account is inactive."),
+    }

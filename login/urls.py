@@ -4,11 +4,11 @@ from django.conf.urls import url
 from django.contrib.auth import views as auth_views
 from django.conf.urls.static import static
 from django.conf import settings
-
+from login.forms import custom_login_form
 
 app_name = 'login'
 urlpatterns = [
-    path('login/', auth_views.LoginView.as_view(template_name='login/login.html'), name='login'),
+    path('login/', auth_views.LoginView.as_view(template_name='login/login.html', form_class=custom_login_form), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('', views.Main, name='main'),
     path('mypage/', views.MyPage, name='mypage'),
@@ -19,5 +19,9 @@ urlpatterns = [
     path('jong/', views.GetComplain, name='jong'),
     path('lendun/', views.LendUn, name='jong'),
     path('ca/', views.create_all_password),
+    path('complain/', views.GetComplain),
+    path('jong1/',views.EveryDayStudyTable),
+    path('jong2/',views.EveryHourStudyTable),    
+    path('jong3/',views.GetNowManager),    
 ]
 urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

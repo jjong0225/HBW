@@ -306,6 +306,7 @@ class Complain(models.Model):
 class time_table(models.Model):
     name = models.CharField(max_length=20)
     start_time = models.PositiveSmallIntegerField(default = 0)
+    week_day = models.PositiveSmallIntegerField(default = 0)
 
 class now_time_table(models.Model):
     name = models.CharField(max_length=20)
