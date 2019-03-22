@@ -347,7 +347,7 @@ def MyPage(request):
             'my_cable' : my_cable,
             'unbrella_time' : unbrella_time, 
             'battery_time' : battery_time, 
-            'lan_time' : battery_time, 
+            'lan_time' : lan_time, 
             'cable_time' : cable_time, 
             'unbrella_status' : unbrella_status, 
             'battery_status' : battery_status, 

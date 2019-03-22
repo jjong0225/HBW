@@ -109,3 +109,5 @@
 [2019Mar/22/ 20:18:15][Log Line : login.views:132] 우 사업 : [학번:test|우산 번호:3] 대여 완료
 [2019Mar/22/ 20:24:49][Log Line : login.views:132] 우 사업 : [학번:test|우산 번호:3] 대여 완료
 [2019Mar/22/ 22:23:34][Log Line : login.views:504] 컴플레인 : [익명여부 :True이름:anonymous| 학번:00000000| 컴플레인 번호:9] 업로드 완료
+[2019Mar/23/ 00:27:18][Log Line : login.views:178] 랜선 사업 : [학번:admin|랜선 번호:1] 대여 완료
+[2019Mar/23/ 00:28:54][Log Line : login.views:198] 케이블 사업 : [학번:admin|케이블 번호:1] 대여 완료
