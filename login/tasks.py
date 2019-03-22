@@ -155,7 +155,7 @@ def EveryDayErrorCheck ():
             Number = Number + 1
 
 
-    if(studytable_q.count() != studytable_table_count):
+    if(studytable_q.count() != studytable_count):
         print("Server Error : 중복된 실습실 레코드가 존재합니다. Admin 사이트에서 이를 직접 관리하거나 서버 관리자에게 문의해주세요")
 
 
@@ -174,18 +174,35 @@ def LoggingAdminTask() :
         logger.info('우산 사업 : [학번:'+request.user.username+'|우산 번호:'+str(item.number)+'] 대여 완료') # 담당자:{}
 
 
+@task(name="get_now_manager")
 def GetNowManager() :
     models.now_time_table.objects.all().delete()
-    current_time = timezone.localtime()
-
-    num = (current_time.hour - 9) * 2
+    current_time = timezone.localtime() + datetime.timedelta(minutes=10)
+    cur_day = timezone.localtime().weekday()
+    num = (current_time.hour - 10) * 2
     if current_time.minute > 30 :
         num = num + 1
-
-    now_manager = models.time_table.objects.all().filter(start_time = num)
+    now_manager = models.time_table.objects.all().filter(start_time = num).filter(week_day = cur_day)
     if now_manager.count() == 0 :
-        models.now_time_table.objects.create(name='blank', start_time = num, is_staff = False)    
-    else if  now_manager.count() == 1 :
-        models.now_time_table.objects.create(name=now_manager.name, start_time = num, is_manage = True)
-    else  ## 오류 상황
-        models.now_time_table.objects.create(name='blank', start_time = num, is_staff = False)   
+        models.now_time_table.objects.create(name='blank', start_time = num, is_manager = False)    
+
+    if now_manager.count() == 1 :
+            models.now_time_table.objects.create(name=now_manager.name, start_time = num, is_manage = True)
+
+    if  now_manager.count() > 1 or  now_manager.count() < 0  : ## 오류 상황
+        models.now_time_table.objects.create(name='blank', start_time = num, is_manager = False) 
+
+
+
+@task(name="table_hour_update")
+def EveryHourStudyTable():
+    cur_hour = timezone.localtime().hour
+    if cur_hour < 20 and cur_hour > 9:
+        time_q = models.StudyTable.objects.all().filter(start_time__lte = cur_hour).update(is_borrowed = True)
+
+
+@task(name="table_day_update")
+def EveryDayStudyTable():
+    time_q = models.StudyTable.objects.all()
+    time_q.update(is_borrowed = False)
+    time_q.update(lender = None)

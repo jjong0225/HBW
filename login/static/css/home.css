@@ -2,3 +2,15 @@
 .full{
 	color:red;
 }
+
+#radio{
+	float:right;	
+}
+
+#is_anonymous{
+text-decoration: none;
+color: #fff;
+background-color: #202b38 !important;
+text-align: center;
+transition: background-color .2s ease-out;
+}

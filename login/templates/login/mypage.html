@@ -120,37 +120,105 @@
               <span class="badge badge-primary badge-pill">월 {{ user.user_data.month_A4 }}장</span>
               <span class="badge badge-primary">일 {{ user.user_data.today_A4 }}장</span>
             </li>
-            {% if user.user_data.un %}
-              {% if user.user_data.un.is_borrowed %}
-              
-              {% else %}
-                <li class="list-group-item d-flex justify-content-between align-items-center">
+            {% if unbrella_status == 1 %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
                   우산
-                  <span class="badge badge-primary badge-pill">{{ user.user_data.un.reservation_time|timeuntil:cur_time }} Left</span>
+                  <span class="badge badge-primary badge-pill">{{ unbrella_time }}시간 남음</span>
                   <span class="badge badge-yellow">{{ user.user_data.un.number }}번</span>
-                  <span class="badge badge-wait">예약 중</span>
-                </li>
-              {% endif %}
+                  <span class="badge badge-reserved">대여 중</span>
+              </li>
             {% endif %}
-            {% if user.user_data.ba %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              보조배터리
-              <span class="badge badge-primary badge-pill">{{ user.user_data.ba.borrowed_time.year }}/{{ user.user_data.ba.borrowed_time.month }}/{{ user.user_data.ba.borrowed_time.day|add:1 }}</span>
-              <span class="badge badge-yellow">{{ user.user_data.ba.number }}번</span>
-            </li>
+            {% if unbrella_status == 2 %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                우산
+                <span class="badge badge-red">{{ unbrella_time }}일 연체</span>
+                <span class="badge badge-red">{{ user.user_data.un.number }}번</span>
+                <span class="badge badge-red">연체 중</span>
+              </li>
             {% endif %}
-            {% if user.user_data.la  %}
+            {% if unbrella_status == 3 %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                우산
+                <span class="badge badge-primary badge-pill">{{ unbrella_time }}분 남음</span>
+                <span class="badge badge-yellow">{{ user.user_data.un.number }}번</span>
+                <span class="badge badge-wait">예약 중</span>
+              </li>
+            {% endif %}
+
+            {% if battery_status == 1 %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                보조배터리
+                <span class="badge badge-primary badge-pill">{{ battery_time }}시간 남음</span>
+                <span class="badge badge-yellow">{{ user.user_data.ba.number }}번</span>
+                <span class="badge badge-reserved">대여 중</span>
+              </li>
+            {% endif %}
+            {% if battery_status == 2 %}
             <li class="list-group-item d-flex justify-content-between align-items-center">
-              랜선
-              <span class="badge badge-primary badge-pill">{{ user.user_data.la.borrowed_time.year }}/{{ user.user_data.la.borrowed_time.month }}/{{ user.user_data.la.borrowed_time.day|add:1 }}</span>
+                보조배터리
+                <span class="badge badge-red">{{ battery_time }}일 연체</span>
+                <span class="badge badge-yellow">{{ user.user_data.ba.number }}번</span>
+                <span class="badge badge-red">연체 중</span>
+              </li>
+            {% endif %}
+            {% if battery_status == 3 %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                보조배터리
+                <span class="badge badge-primary badge-pill">{{ battery_time }}분 남음</span>
+                <span class="badge badge-yellow">{{ user.user_data.ba.number }}번</span>
+                <span class="badge badge-wait">예약 중</span>
+              </li>
+            {% endif %}
+
+
+            {% if lan_status == 1 %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                랜선
+                <span class="badge badge-primary badge-pill">{{ lan_time }}시간 남음</span>
+                <span class="badge badge-yellow">{{ user.user_data.la.number }}번</span>
+                <span class="badge badge-reserved">대여 중</span>
+            </li>                
+            {% endif %}
+            {% if lan_status == 2 %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                랜선
+                <span class="badge badge-red">{{ lan_time }}일 연체</span>
+                <span class="badge badge-red">{{ user.user_data.la.number }}번</span>
+                <span class="badge badge-red">연체 중</span>
+              </li>
+            {% endif %}
+            {% if lan_status == 3 %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                랜선
+              <span class="badge badge-primary badge-pill">{{ lan_time }}분 남음</span>
               <span class="badge badge-yellow">{{ user.user_data.la.number }}번</span>
+              <span class="badge badge-wait">예약 중</span>
             </li>
             {% endif %}
-            {% if user.user_data.ca %}
+
+
+            {% if cable_status == 1 %}
             <li class="list-group-item d-flex justify-content-between align-items-center">
-              케이블
-              <span class="badge badge-primary badge-pill">{{ user.user_data.ca.borrowed_time.year }}/{{ user.user_data.ca.borrowed_time.month }}/{{ user.user_data.ca.borrowed_time.day|add:1 }}</span>
+                케이블
+                <span class="badge badge-primary badge-pill">{{ cable_time }}시간 남음</span>
+                <span class="badge badge-yellow">{{ user.user_data.ca.number }}번</span>
+                <span class="badge badge-reserved">대여 중</span>
+            </li>                
+            {% endif %}
+            {% if cable_status == 2 %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                케이블
+                <span class="badge badge-red">{{ cable_time }}일 연체</span>
+                <span class="badge badge-red">{{ user.user_data.ca.number }}번</span>
+                <span class="badge badge-red">연체 중</span>
+              </li>
+            {% endif %}
+            {% if cable_status == 3 %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                케이블
+              <span class="badge badge-primary badge-pill">{{ cable_time }}분 남음</span>
               <span class="badge badge-yellow">{{ user.user_data.ca.number }}번</span>
+              <span class="badge badge-wait">예약 중</span>
             </li>
             {% endif %}
           </ul>

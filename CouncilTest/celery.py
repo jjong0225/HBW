@@ -21,20 +21,32 @@ app.autodiscover_tasks()
 
 
 app.conf.beat_schedule = {
-    'empty-month_A4-every-month-contrab': {
+    'reset_month_a4_every_month': {
         'task' : 'empty_A4',
-        'schedule': crontab(0, 0, day_of_month='1'),
+        'schedule': crontab(minute=0, hour=0, day_of_month='1'),
     },
-    'unbrella_expired_check_every_min' : {
+    'item_expired_check_every_min' : {
         'task' : 'expired_check',
-        'schedule' : 60.0
+        'schedule' : crontab(),
     },
     'reset_today_a4_every_day' : {
         'task' : 'a4_update',
-        'schedule' : 360.0
+        'schedule' : crontab(minute=0, hour=0),
     },
     'error_check_every_day' : {
         'task' : 'error_check_all',
-        'schedule' : 86400.0
+        'schedule' : crontab(minute=0, hour=0),
+    },
+    'time_table_check_every_30_minutes' : {
+        'task': 'get_now_manager',
+        'schedule': crontab(minute='20, 50'),
+    },
+    'time_table_day_update': {
+        'task': 'table_day_update',
+        'schedule': crontab(minute=0, hour=0),
+    },
+    'time_table_hour_update': {
+        'task': 'table_hour_update',
+        'schedule': crontab(minute=0),
     },
 }
