@@ -262,11 +262,12 @@ def MyPage(request):
             if my_unbrella.is_borrowed == True : 
                 if (my_unbrella.borrowed_time + datetime.timedelta(days = 1)) > timezone.localtime() :
                     unbrella_status = 1
-                    if my_unbrella.borrowed_time.weekday() != 4 :
+                    if my_unbrella.borrowed_time.weekday() < 4 :
                         tmp_time = ((my_unbrella.borrowed_time + datetime.timedelta(days = 1)) - timezone.localtime())
                         unbrella_time = tmp_time 
                     else :
-                        tmp_time = ((my_unbrella.borrowed_time + datetime.timedelta(days = 3)) - timezone.localtime())
+                        offset = 7 - timezone.localtime().weekday()
+                        tmp_time = ((my_unbrella.borrowed_time + datetime.timedelta(days = offset)) - timezone.localtime())
                         unbrella_time = tmp_time.days * 24 + (tmp_time.seconds // 3600)
                 else : 
                     unbrella_status = 2
@@ -282,11 +283,12 @@ def MyPage(request):
             if my_battery.is_borrowed == True : 
                 if (my_battery.borrowed_time + datetime.timedelta(days = 1)) > timezone.localtime() :
                     battery_status = 1
-                    if my_battery.borrowed_time.weekday() != 4 :
+                    if my_battery.borrowed_time.weekday() < 4 :
                         tmp_time = ((my_battery.borrowed_time + datetime.timedelta(days = 1)) - timezone.localtime())
                         battery_time = tmp_time 
                     else :
-                        tmp_time = ((my_battery.borrowed_time + datetime.timedelta(days = 3)) - timezone.localtime())
+                        offset = 7 - timezone.localtime().weekday()
+                        tmp_time = ((my_battery.borrowed_time + datetime.timedelta(days = offset)) - timezone.localtime())
                         battery_time = tmp_time.days * 24 + (tmp_time.seconds // 3600)
                 else : 
                     battery_status = 2
@@ -302,11 +304,12 @@ def MyPage(request):
             if my_lan.is_borrowed == True : 
                 if (my_lan.borrowed_time + datetime.timedelta(days = 1)) > timezone.localtime() :
                     lan_status = 1
-                    if my_lan.borrowed_time.weekday() != 4 :
+                    if my_lan.borrowed_time.weekday() < 4 :
                         tmp_time = ((my_lan.borrowed_time + datetime.timedelta(days = 1)) - timezone.localtime())
                         lan_time = tmp_time 
                     else :
-                        tmp_time = ((my_lan.borrowed_time + datetime.timedelta(days = 3)) - timezone.localtime())
+                        offset = 7 - timezone.localtime().weekday()
+                        tmp_time = ((my_lan.borrowed_time + datetime.timedelta(days = offset)) - timezone.localtime())
                         lan_time = tmp_time.days * 24 + (tmp_time.seconds // 3600)
                 else : 
                     lan_status = 2
@@ -322,11 +325,12 @@ def MyPage(request):
             if my_cable.is_borrowed == True : 
                 if (my_cable.borrowed_time + datetime.timedelta(days = 1)) > timezone.localtime() :
                     cable_status = 1
-                    if my_cable.borrowed_time.weekday() != 4 :
+                    if my_cable.borrowed_time.weekday() < 4 :
                         tmp_time = ((my_cable.borrowed_time + datetime.timedelta(days = 1)) - timezone.localtime())
                         cable_time = tmp_time 
                     else :
-                        tmp_time = ((my_cable.borrowed_time + datetime.timedelta(days = 3)) - timezone.localtime())
+                        offset = 7 - timezone.localtime().weekday()
+                        tmp_time = ((my_cable.borrowed_time + datetime.timedelta(days = offset)) - timezone.localtime())
                         cable_time = tmp_time.days * 24 + (tmp_time.seconds // 3600)
                 else : 
                     cable_status = 2
