@@ -389,10 +389,6 @@ font-weight:bold;
 }
 
 @media screen and (max-width:720px){
-	.table_container{
-		zoom:0.5;
-		scale:0.5;
-	}
 	.carousel{
 		height:475px !important;
 		-webkit-user-select: none;
@@ -414,6 +410,10 @@ font-weight:bold;
 	}
 	.support_font{
 		margin-top:-16px !important;
+	}
+	#place1{
+		display:block;
+		position:relative;
 	}
 
 }
@@ -779,14 +779,6 @@ position:relative;
     right: 0px; 
 }
 
-@media screen and (max-width:720px){
-#place1{
-	display:block;
-	position:relative;
-}
-
-}
-
 
 /*	################################################################
 PAGE CONFIGURATIONS
@@ -1127,7 +1119,7 @@ color: #fff;
 /* Materialize Adjust */
 
 h1{
-font-size: 1.5rem;
+font-size: 22px;
 font-family: 'Nanum Gothic', sans-serif !important;
 }
 }
@@ -1155,9 +1147,4 @@ user-select: none;
 
 .nanumfont{
 	font-family: 'Nanum Gothic', sans-serif !important;
-}
-
-.table_container{
-	zoom:0.9;
-	scale:0.9;
 }

@@ -111,3 +111,17 @@
 [2019Mar/22/ 22:23:34][Log Line : login.views:504] ���÷��� : [�͸����� :True�̸�:anonymous| �й�:00000000| ���÷��� ��ȣ:9] ���ε� �Ϸ�
 [2019Mar/23/ 00:27:18][Log Line : login.views:178] ���� ��� : [�й�:admin|���� ��ȣ:1] �뿩 �Ϸ�
 [2019Mar/23/ 00:28:54][Log Line : login.views:198] ���̺� ��� : [�й�:admin|���̺� ��ȣ:1] �뿩 �Ϸ�
+[2019Mar/23/ 00:47:51][Log Line : login.views:178] 랜선 사업 : [학번:test|랜선 번호:2] 대여 완료
+[2019Mar/23/ 00:47:54][Log Line : login.views:198] 케이블 사업 : [학번:test|케이블 번호:2] 대여 완료
+[2019Mar/23/ 01:11:04][Log Line : login.views:506] 컴플레인 : [익명여부 :False이름:test| 학번:18| 컴플레인 번호:10] 업로드 완료
+[2019Mar/23/ 17:05:10][Log Line : login.views:385] 실습실 사업 : [학번:test| 실습실 테이블 번호:5| 실습실 대여 시간:13] 예약 완료
+[2019Mar/23/ 17:05:10][Log Line : login.views:385] 실습실 사업 : [학번:test| 실습실 테이블 번호:5| 실습실 대여 시간:14] 예약 완료
+[2019Mar/23/ 17:17:45][Log Line : login.views:385] 실습실 사업 : [학번:test| 실습실 테이블 번호:10| 실습실 대여 시간:14] 예약 완료
+[2019Mar/23/ 17:17:45][Log Line : login.views:385] 실습실 사업 : [학번:test| 실습실 테이블 번호:10| 실습실 대여 시간:15] 예약 완료
+[2019Mar/24/ 15:11:00][Log Line : login.views:506] 컴플레인 : [익명여부 :False이름:anonymous| 학번:00000000| 컴플레인 번호:10] 업로드 완료
+[2019Mar/24/ 15:14:11][Log Line : login.views:178] 랜선 사업 : [학번:test|랜선 번호:1] 대여 완료
+[2019Mar/24/ 15:31:36][Log Line : login.views:385] 실습실 사업 : [학번:test| 실습실 테이블 번호:1| 실습실 대여 시간:16] 예약 완료
+[2019Mar/24/ 15:31:36][Log Line : login.views:385] 실습실 사업 : [학번:test| 실습실 테이블 번호:1| 실습실 대여 시간:17] 예약 완료
+[2019Mar/24/ 15:42:11][Log Line : login.views:178] 랜선 사업 : [학번:test|랜선 번호:1] 대여 완료
+[2019Mar/24/ 15:42:16][Log Line : login.views:198] 케이블 사업 : [학번:test|케이블 번호:1] 대여 완료
+[2019Mar/24/ 15:42:40][Log Line : login.views:506] 컴플레인 : [익명여부 :True이름:anonymous| 학번:00000000| 컴플레인 번호:10] 업로드 완료
