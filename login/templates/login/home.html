@@ -212,6 +212,11 @@
           alert('로그인 후 이용 가능합니다')
         </script>
       {% endif %}
+      {% if login_status == 2 %}
+        <script>
+          alert('죄송합니다. 대여사업은 학생회비를 낸 학생을 대상으로만 운영됩니다.')
+        </script>
+      {% endif %}
       {% if unbrella_status != 0 %}
         {% if unbrella_status == 1 %}
         <script>
