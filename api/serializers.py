@@ -72,10 +72,10 @@ class LanSerializer(serializers.ModelSerializer):
 
 class StudyTableSerializer(serializers.ModelSerializer):
     lender = serializers.HyperlinkedRelatedField(view_name='student-detail', queryset=models.Student.objects.all(), required=False, allow_null=True)
-
+    
     class Meta:
         model = models.StudyTable
-        fields = ('url', 'number', 'is_borrowed', 'start_time', 'end_time', 'lender')
+        fields = ('url', 'number', 'is_borrowed', 'start_time', 'end_time', 'lender', 'is_checked')
 
 class ComplainSerializer(serializers.ModelSerializer):
     class Meta:
