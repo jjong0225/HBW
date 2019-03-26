@@ -4,8 +4,12 @@ from django.utils import timezone
 from django.core.validators import MaxValueValidator
 from rest_framework.exceptions import APIException
 from django.db import IntegrityError
+<<<<<<< HEAD
 from django.contrib.auth.models import Group, Permission
 from django.contrib.auth.models import AbstractUser
+=======
+from api.models import Logging
+>>>>>>> c8514e841672058b347e0933e5acaf92e131e0e9
 
 # Create your models here.
 
@@ -58,6 +62,11 @@ class Student(models.Model):
         if self.month_A4 > 500:
             raise APIException("한달 대여량은 500장을 넘길 수 없습니다!")
         self.A4_count = 0
+
+        Logging.objects.create(
+            item = "today_A4", 
+            user = self.user.username,
+            message = "A4"+str(self.A4_count)+"장 대여")
         
         super().save(*args, **kwargs)
 
@@ -91,13 +100,23 @@ class Unbrella(models.Model):
             self.status = self.status_reserved
         else :
             if self.status != self.status_unavailable:
-                if self.borrowed_by is not None:
+                if self.status == self.status_reserved:
                     self.status = self.status_borrowed
                     self.is_borrowed = True
                     self.borrowed_time = timezone.localtime()
+                    Logging.objects.create(
+                        user = self.borrowed_by.user.username, 
+                        item = "unbrella",
+                        message = str(self.number)+"번 우산 대여"
+                        )
                 else :
                     self.status = self.status_available
-                    self.is_borrowed = False
+                    Logging.objects.create(
+                        user = self.borrowed_by.user.username,
+                        item = "unbrella",
+                        message = str(self.number)+"번 우산 반납"
+                    )
+                    self.borrowed_by = None
         try :
             super().save(*args, **kwargs)
         except IntegrityError:
@@ -141,13 +160,23 @@ class Battery(models.Model):
             self.status = self.status_reserved
         else :
             if self.status != self.status_unavailable:
-                if self.borrowed_by is not None:
+                if self.status == self.status_reserved:
                     self.status = self.status_borrowed
                     self.is_borrowed = True
                     self.borrowed_time = timezone.localtime()
+                    Logging.objects.create(
+                        user = self.borrowed_by.user.username, 
+                        item = "battery",
+                        message = str(self.number)+"번 배터리 대여"
+                        )
                 else :
                     self.status = self.status_available
-                    self.is_borrowed = False
+                    Logging.objects.create(
+                        user = self.borrowed_by.user.username, 
+                        item = "battery",
+                        message = str(self.number)+"번 배터리 반납"
+                        )
+                    self.borrowed_by = None
         try :
             super().save(*args, **kwargs)
         except IntegrityError:
@@ -191,13 +220,23 @@ class Lan(models.Model):
             self.status = self.status_reserved
         else :
             if self.status != self.status_unavailable:
-                if self.borrowed_by is not None:
+                if self.status == self.status_reserved:
                     self.status = self.status_borrowed
                     self.is_borrowed = True
                     self.borrowed_time = timezone.localtime()
+                    Logging.objects.create(
+                        user = self.borrowed_by.user.username, 
+                        item = "lan",
+                        message = str(self.number)+"번 랜선 대여"
+                        )
                 else :
                     self.status = self.status_available
-                    self.is_borrowed = False
+                    Logging.objects.create(
+                        user = self.borrowed_by.user.username, 
+                        item = "lan",
+                        message = str(self.number)+"번 랜선 반납"
+                        )
+                    self.borrowed_by = None
         try :
             super().save(*args, **kwargs)
         except IntegrityError:
@@ -229,6 +268,13 @@ class StudyTable(models.Model):
     lender = models.ForeignKey(Student, related_name='st', null=True, blank=True, on_delete=models.DO_NOTHING, db_constraint=False)
     is_checked = models.BooleanField(default = False)
     
+    def save(self, *args, **kwargs):
+        if self.is_borrowed:
+            Logging.create(
+                user=self.lender.user.username,
+                item="studytable",
+                message = str(self.number)+"번 테이블 | "+self.start_time+"부터 1시간 빌림"
+            )
     def __str__(self):
         return "Table "+str(self.number)
 
@@ -289,13 +335,23 @@ class Cable(models.Model):
             self.status = self.status_reserved
         else :
             if self.status != self.status_unavailable:
-                if self.borrowed_by is not None:
+                if self.status == self.status_reserved:
                     self.status = self.status_borrowed
                     self.is_borrowed = True
                     self.borrowed_time = timezone.localtime()
+                    Logging.objects.create(
+                        user = self.borrowed_by.user.username, 
+                        item = "cable",
+                        message = str(self.number)+"번 " + self.cable_type + " 케이블 대여"
+                        )
                 else :
                     self.status = self.status_available
-                    self.is_borrowed = False
+                    Logging.objects.create(
+                        user = self.borrowed_by.user.username, 
+                        item = "cable",
+                        message = str(self.number)+"번 " + self.cable_type + " 케이블 반납"
+                        )
+                    self.borrowed_by = None
         try :
             super().save(*args, **kwargs)
         except IntegrityError:

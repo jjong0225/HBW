@@ -2,6 +2,7 @@
 
 from rest_framework import serializers
 from login import models
+from api.models import Logging
 from django.contrib.auth.models import User
 
 class StudentSerializer(serializers.HyperlinkedModelSerializer):
@@ -72,10 +73,10 @@ class LanSerializer(serializers.ModelSerializer):
 
 class StudyTableSerializer(serializers.ModelSerializer):
     lender = serializers.HyperlinkedRelatedField(view_name='student-detail', queryset=models.Student.objects.all(), required=False, allow_null=True)
-
+    
     class Meta:
         model = models.StudyTable
-        fields = ('url', 'number', 'is_borrowed', 'start_time', 'end_time', 'lender')
+        fields = ('url', 'number', 'is_borrowed', 'start_time', 'end_time', 'lender', 'is_checked')
 
 class ComplainSerializer(serializers.ModelSerializer):
     class Meta:
@@ -89,3 +90,9 @@ class CableSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Cable
         fields = ('url', 'number', 'borrowed_by', 'borrowed_time', 'is_reserved', 'is_borrowed', 'cable_type', 'status')
+
+
+class LoggingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Logging
+        fields = ('url', 'date', 'user', 'item', 'message')

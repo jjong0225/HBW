@@ -1,6 +1,7 @@
 from .serializers import StudentSerializer, UserSerializer
 from rest_framework import viewsets, filters
 from login import models
+from api.models import Logging
 from rest_framework import generics, permissions
 from django.contrib.auth.models import User
 from api import serializers
@@ -102,3 +103,15 @@ class CableViewSet(viewsets.ModelViewSet):
     permission_classes = (CustomIsAdmin, permissions.IsAdminUser)
     filter_backends = (filters.SearchFilter,)
     search_fields = ('=number', '=borrowed_by__user__username')
+
+
+class LoggingViewSet(viewsets.ModelViewSet):
+    '''
+    로그
+    '''
+    queryset = Logging.objects.all().order_by('-pk')
+    serializer_class = serializers.LoggingSerializer
+    permission_classes = (CustomIsAdmin, permissions.IsAdminUser)
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('=user', '=item')
+    

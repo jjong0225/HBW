@@ -15,7 +15,11 @@ urlpatterns = [
     path('reservation/', views.StudyTableClass.LendTable, name='seltable'),
     path('reservation/submit', views.StudyTableClass.TableSelect, name='lendtable'),
     path('password_change/', views.PasswordChangeView.as_view(template_name='login/change_pw.html'), name='change'),
+<<<<<<< HEAD
     path('first_login/', views.first_login_class.as_view(template_name='login/login_agreement.html'), name='first'),
+=======
+    path('password_complete', views.PasswordChangeDoneView.as_view(), name='change_done'),
+>>>>>>> c8514e841672058b347e0933e5acaf92e131e0e9
     path('pc/', views.PasswordChangeView.as_view(template_name='login/pass_change.html'), name='ch'),
     path('jong/', views.GetComplain, name='jong'),
     path('lendun/', views.LendUn, name='jong'),

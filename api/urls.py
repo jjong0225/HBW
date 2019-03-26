@@ -14,6 +14,7 @@ router.register(r'lans', views.LanViewSet)
 router.register(r'studytables', views.StudyTableViewSet)
 router.register(r'complains', views.ComplainViewSet)
 router.register(r'cables', views.CableViewSet)
+router.register(r'Loggings', views.LoggingViewSet)
 
 
 urlpatterns = [
