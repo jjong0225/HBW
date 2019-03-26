@@ -52,17 +52,17 @@
     <div class="container">
         <form action="" method="POST">{% csrf_token %}
                 {% if form.errors %}
-                <div class="alert alert-danger">
+                <div class="alert alert-danger"style="margin-top:2.5%; margin-bottom:2.5%;">
                 {% for field in form %}
                     {% for error in field.errors %}                        
-                            <strong>{{ error|escape }}</strong><br>
+                            <strong><i class="fas fa-exclamation-circle"></i>　{{ error|escape }}</strong><br>
                         
                     {% endfor %}
                 {% endfor %}
                 </div>
                 {% for error in form.non_field_errors %}
                     <div class="alert alert-danger">
-                        <strong>{{ error|escape }}</strong>
+                        <strong><i class="fas fa-exclamation-circle"></i>　{{ error|escape }}</strong>
                     </div>
                 {% endfor %}
             {% endif %}

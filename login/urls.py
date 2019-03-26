@@ -15,11 +15,13 @@ urlpatterns = [
     path('reservation/', views.StudyTableClass.LendTable, name='seltable'),
     path('reservation/submit', views.StudyTableClass.TableSelect, name='lendtable'),
     path('password_change/', views.PasswordChangeView.as_view(template_name='login/change_pw.html'), name='change'),
+    path('first_login/', views.first_login_class.as_view(template_name='login/login_agreement.html'), name='first'),
     path('pc/', views.PasswordChangeView.as_view(template_name='login/pass_change.html'), name='ch'),
     path('jong/', views.GetComplain, name='jong'),
     path('lendun/', views.LendUn, name='jong'),
     path('ca/', views.create_all_password),
     path('complain/', views.GetComplain),
-    path('jong1/',views.EveryDayErrorCheck),
+    path('jong1/',views.EveryHourStudyTable),
+    path('jong2/',views.EveryDayStudyTable),
 ]
 urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
