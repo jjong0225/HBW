@@ -782,5 +782,7 @@ class first_login_class(PasswordChangeView) :
 #        perm = Permission.objects.get_or_create(codename = 'agreed', name='agreed', Content_type = ct)
 #        new_group = Group.objects.filter(Q())
 #        newgroup.permissions.add(can_fm_list)
-#        self.request.user.user_data.add(perm)
+        date = "2019-03-01 05:06:46.931737"
+        self.request.user.date_joined = date
+        self.request.user.save()
         return super().form_valid(form)

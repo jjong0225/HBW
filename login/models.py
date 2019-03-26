@@ -4,12 +4,9 @@ from django.utils import timezone
 from django.core.validators import MaxValueValidator
 from rest_framework.exceptions import APIException
 from django.db import IntegrityError
-<<<<<<< HEAD
 from django.contrib.auth.models import Group, Permission
 from django.contrib.auth.models import AbstractUser
-=======
 from api.models import Logging
->>>>>>> c8514e841672058b347e0933e5acaf92e131e0e9
 
 # Create your models here.
 
