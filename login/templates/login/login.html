@@ -51,9 +51,13 @@
   <div class="container">
     <form action="" method="POST">{% csrf_token %}
         <div class="row">
-            {% for message in form.non_field_errors %}
-            <p>오류!  {{ message }}</p>
-            {% endfor %}
+            {% if form.errors %}
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endif %}
 
             <div class="col-lg-6 col-lg-offset-3 col-md-12">
               <div class="input-field ">

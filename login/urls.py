@@ -21,8 +21,6 @@ urlpatterns = [
     path('lendun/', views.LendUn, name='jong'),
     path('ca/', views.create_all_password),
     path('complain/', views.GetComplain),
-    path('jong1/',views.EveryDayStudyTable),
-    path('jong2/',views.EveryHourStudyTable),    
-    path('jong3/',views.GetNowManager),    
+    path('jong1/',views.EveryDayErrorCheck),
 ]
 urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

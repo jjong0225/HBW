@@ -117,8 +117,8 @@
           <ul class="list-group">
             <li class="list-group-item list-group-item-success d-flex justify-content-between align-items-center">
               A4
-              <span class="badge badge-primary badge-pill">월 {{ user.user_data.month_A4 }}장</span>
-              <span class="badge badge-primary">일 {{ user.user_data.today_A4 }}장</span>
+              <span class="badge badge-primary badge-pill">월 {{ user.user_data.month_A4 }}/500장</span>
+              <span class="badge badge-primary">일 {{ user.user_data.today_A4 }}/50장</span>
             </li>
             {% if unbrella_status == 1 %}
               <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -132,7 +132,7 @@
               <li class="list-group-item d-flex justify-content-between align-items-center">
                 우산
                 <span class="badge badge-red">{{ unbrella_time }}일 연체</span>
-                <span class="badge badge-red">{{ user.user_data.un.number }}번</span>
+                <span class="badge badge-yellow">{{ user.user_data.un.number }}번</span>
                 <span class="badge badge-red">연체 중</span>
               </li>
             {% endif %}
@@ -183,7 +183,7 @@
               <li class="list-group-item d-flex justify-content-between align-items-center">
                 랜선
                 <span class="badge badge-red">{{ lan_time }}일 연체</span>
-                <span class="badge badge-red">{{ user.user_data.la.number }}번</span>
+                <span class="badge badge-yellow">{{ user.user_data.la.number }}번</span>
                 <span class="badge badge-red">연체 중</span>
               </li>
             {% endif %}
@@ -209,7 +209,7 @@
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 케이블
                 <span class="badge badge-red">{{ cable_time }}일 연체</span>
-                <span class="badge badge-red">{{ user.user_data.ca.number }}번</span>
+                <span class="badge badge-yellow">{{ user.user_data.ca.number }}번</span>
                 <span class="badge badge-red">연체 중</span>
               </li>
             {% endif %}

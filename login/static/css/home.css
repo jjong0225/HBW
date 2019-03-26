@@ -7,10 +7,16 @@
 	float:right;	
 }
 
-#is_anonymous{
-text-decoration: none;
-color: #fff;
-background-color: #202b38 !important;
-text-align: center;
-transition: background-color .2s ease-out;
+.btn.btn-secondary.active{
+	background-color: #009bdd;
+}
+.btn.btn-secondary.focus{
+	background-color: #009bdd;
+}
+.btn.btn-secondary:hover{
+	background-color: #00b3fe;
+}
+.btn.btn-secondary{
+	background-color: #384452;
+	color:white;
 }

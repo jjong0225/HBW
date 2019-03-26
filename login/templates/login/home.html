@@ -185,7 +185,7 @@
         <h4>건의사항                
           <div class="btn-group btn-group-toggle" data-toggle="buttons" id="radio">
             <label class="btn btn-secondary active">
-              <input type="radio" name="is_anonymous" id="is_anonymous" autocomplete="off" value="True" checked="checked"> 익명
+              <input type="radio" name="is_anonymous" autocomplete="off" value="True" checked="checked"> 익명
             </label>
             <label class="btn btn-secondary">
               <input type="radio" name="is_anonymous" id="is_anonymous" autocomplete="off" value="False"> 실명
@@ -210,6 +210,11 @@
       {% if login_status == 1 %}
         <script>
           alert('로그인 후 이용 가능합니다')
+        </script>
+      {% endif %}
+      {% if login_status == 2 %}
+        <script>
+          alert('죄송합니다. 대여사업은 학생회비를 낸 학생을 대상으로만 운영됩니다.')
         </script>
       {% endif %}
       {% if unbrella_status != 0 %}

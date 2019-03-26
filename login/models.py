@@ -87,6 +87,7 @@ class Unbrella(models.Model):
     is_reserved = models.BooleanField(default = False)
     reservation_time = models.DateTimeField(auto_now_add=True)
     status=models.CharField(max_length=5, choices=status_choices, default=status_available)
+    return_time = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
         if self.is_reserved :
@@ -146,6 +147,7 @@ class Battery(models.Model):
     is_reserved = models.BooleanField(default = False)
     reservation_time = models.DateTimeField(auto_now_add=True)
     status=models.CharField(max_length=5, choices=status_choices, default=status_available)
+    return_time = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
         if self.is_reserved :
@@ -205,7 +207,8 @@ class Lan(models.Model):
     is_reserved = models.BooleanField(default = False)
     reservation_time = models.DateTimeField(auto_now_add=True)
     status=models.CharField(max_length=5, choices=status_choices, default=status_available)
-
+    return_time = models.DateTimeField(auto_now_add=True)
+    
     def save(self, *args, **kwargs):
         if self.is_reserved :
             self.status = self.status_reserved
@@ -257,6 +260,7 @@ class StudyTable(models.Model):
     start_time = models.CharField(max_length=100, blank=True, null=True)
     end_time = models.TimeField(blank=True, null=True)
     lender = models.ForeignKey(Student, related_name='st', null=True, blank=True, on_delete=models.DO_NOTHING, db_constraint=False)
+    is_checked = models.BooleanField(default = False)
     
     def save(self, *args, **kwargs):
         if self.is_borrowed:
