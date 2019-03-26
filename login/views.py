@@ -155,7 +155,7 @@ def Main(request):
                     item.is_reserved = True
                     item.reservation_time = timezone.localtime()
                     item.save()
-                    logger.info('우 사업 : [학번:'+request.user.username+'|우산 번호:'+str(item.number)+'] 대여 완료') # 담당자:{}
+                    logger.info('우산 사업 : [학번:'+request.user.username+'|우산 번호:'+str(item.number)+'] 대여 완료') # 담당자:{}
                     unbrella_count = unbrella_count + 1
                     unbrella_status = 1
 
@@ -438,7 +438,7 @@ class PasswordContextMixin:
       
 class PasswordChangeView(PasswordContextMixin, FormView):
     form_class = PasswordChangeForm
-    success_url = reverse_lazy('login:main')
+    success_url = reverse_lazy('login:change_done')
     template_name = 'registration/password_change_form.html'
     title = _('Password change')
 
@@ -459,6 +459,16 @@ class PasswordChangeView(PasswordContextMixin, FormView):
         # except the current one.
         update_session_auth_hash(self.request, form.user)
         return super().form_valid(form)
+
+
+class PasswordChangeDoneView(PasswordContextMixin, TemplateView):
+    template_name = 'login/password_change_done.html'
+    title = _('Password change successful')
+    
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 
 # 우산의 번호를 받아 우산을 반환 (Post 방식)

@@ -2,6 +2,7 @@
 
 from rest_framework import serializers
 from login import models
+from api.models import Logging
 from django.contrib.auth.models import User
 
 class StudentSerializer(serializers.HyperlinkedModelSerializer):
@@ -89,3 +90,9 @@ class CableSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Cable
         fields = ('url', 'number', 'borrowed_by', 'borrowed_time', 'is_reserved', 'is_borrowed', 'cable_type', 'status')
+
+
+class LoggingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Logging
+        fields = ('url', 'date', 'user', 'item', 'message')
