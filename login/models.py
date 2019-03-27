@@ -4,6 +4,8 @@ from django.utils import timezone
 from django.core.validators import MaxValueValidator
 from rest_framework.exceptions import APIException
 from django.db import IntegrityError
+from django.contrib.auth.models import Group, Permission
+from django.contrib.auth.models import AbstractUser
 from api.models import Logging
 
 # Create your models here.
@@ -11,7 +13,7 @@ from api.models import Logging
 # 대여 (학생회 측)
 # 예약 (학생 측)
 
-class Student(models.Model):
+class Student(models.Model):    
     user = models.OneToOneField(User, on_delete=models.CASCADE,related_name='user_data', null=True, blank=True)
     # 장고의 User모델에서 username(학번 즉 ID), password first_name, last_name, user_permissions, last_login을 사용
     # user 모델의 필드들
@@ -67,6 +69,7 @@ class Student(models.Model):
         super().save(*args, **kwargs)
 
     objects = models.Manager()
+
 
 
 class Unbrella(models.Model):

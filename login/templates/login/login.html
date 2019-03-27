@@ -53,8 +53,8 @@
         <div class="row">
             {% if form.errors %}
                 {% for error in form.non_field_errors %}
-                    <div class="alert alert-danger">
-                        <strong>{{ error|escape }}</strong>
+                    <div class="alert alert-danger" style="margin-top:2.5%; margin-bottom:2.5%;">
+                        <strong><i class="fas fa-exclamation-circle"></i>　{{ error|escape }}</strong>
                     </div>
                 {% endfor %}
             {% endif %}
@@ -96,5 +96,3 @@
     </div>
   <!-- / copyrights -->
 {% endblock %}
-
->>>>>>> 9b6f01c94b85252de394d20d63bdcdb9887a28fa

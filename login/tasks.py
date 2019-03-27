@@ -197,8 +197,9 @@ def GetNowManager() :
 @task(name="table_hour_update")
 def EveryHourStudyTable():
     cur_hour = timezone.localtime().hour
+    update_dic = {'is_borrowed' : True, 'lender' : None}
     if cur_hour < 20 and cur_hour > 9:
-        time_q = models.StudyTable.objects.all().filter(start_time__lte = cur_hour).update(is_borrowed = True)
+        time_q = models.StudyTable.objects.all().filter(start_time__lte = cur_hour).update(**update_dic)
 
 
 @task(name="table_day_update")

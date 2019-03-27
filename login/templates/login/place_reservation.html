@@ -1,260 +1,274 @@
 {% extends 'login/layout.html' %}
 {% block jquery %}
-  <meta content="{{ csrf_token }}" name="csrf_token">
+<meta content="{{ csrf_token }}" name="csrf_token">
 {% endblock %}
 {% block header %}
-  <!-- Checkbox Css-->
- 
-  <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="{% url "login:main" %}">SUPPORT.</a>
-        </div>
-        <div class="navbar-collapse collapse navbar-right">
-            <ul class="nav navbar-nav">
-                <li><a href="{% url "login:main" %}">홈</a></li>
-                {% if user.is_authenticated %}
-                  <li><a href="{% url "login:logout" %}">로그아웃</a></li>
-                {% else %}
-                  <li><a href="{% url "login:login" %}">로그인</a></li>
-                {% endif %}
-                <li class ="active"><a href="{% url "login:seltable" %}">실습실 예약</a></li>
-                <li><a href="{% url "login:mypage" %}">마이페이지</a></li>
-            </ul>
-        </div>
-        <!--/.nav-collapse -->
+<!-- Checkbox Css-->
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{% url "login:main" %}">SUPPORT.</a>
     </div>
+    <div class="navbar-collapse collapse navbar-right">
+      <ul class="nav navbar-nav">
+        <li><a href="{% url "login:main" %}">홈</a></li>
+        {% if user.is_authenticated %}
+        <li><a href="{% url "login:logout" %}">로그아웃</a></li>
+        {% else %}
+        <li><a href="{% url "login:login" %}">로그인</a></li>
+        {% endif %}
+        <li class="active"><a href="{% url "login:seltable" %}">실습실 예약</a></li>
+        <li><a href="{% url "login:mypage" %}">마이페이지</a></li>
+      </ul>
+    </div>
+    <!--/.nav-collapse -->
   </div>
-  
-  <script>
-      var userTimecnt = 0;
-      var userTable=(window.location.search.split("table=")[1]==null)?-1:window.location.search.split("table=")[1];
-      
-      $(document).ready(function(){
-        
-        if(userTable>0)
-          document.getElementsByClassName("img_table" + userTable)[0].setAttribute("src","/static/img/desk"+userTable+"_onmouse.png");
-        for(i=0;i<$('.OBJcbTime').length;i++){
-          if(document.getElementsByClassName("OBJcbTime")[i].getAttribute("state")=="1" || document.getElementsByClassName("OBJcbTime")[i].getAttribute("state")=="-1" ){
-            userTimecnt++;
-          }
-        }
-        $('.OBJcbTime').click( function () {
-          if (this.getAttribute("state")=="1") {
-            userTimecnt--;
-            this.setAttribute("state","0");
-          }
-          else if(this.getAttribute("state")=="0"){
-            if (userTimecnt >= 4) {
-              alert("최대 4시간까지 예약 가능합니다.");
-              return false;
-            }
-            userTimecnt++;
-            this.setAttribute("state","1");
-          }
-        });
-      });
-  
-      function applyReservation(){
-        if(userTable==-1){
-          alert('테이블을 선택해주세요');
-          location.reload();
+</div>
+
+<script>
+  var userTimecnt = 0;
+  var userTable = (window.location.search.split("table=")[1] == null) ? -1 : window.location.search.split("table=")[1];
+
+  $(document).ready(function () {
+
+    if (userTable > 0)
+      document.getElementsByClassName("img_table" + userTable)[0].setAttribute("src", "/static/img/desk" + userTable + "_onmouse.png");
+    for (i = 0; i < $('.OBJcbTime').length; i++) {
+      if (document.getElementsByClassName("OBJcbTime")[i].getAttribute("state") == "1" || document.getElementsByClassName("OBJcbTime")[i].getAttribute("state") == "-1") {
+        userTimecnt++;
+      }
+    }
+    $('.OBJcbTime').click(function () {
+      if (this.getAttribute("state") == "1") {
+        userTimecnt--;
+        this.setAttribute("state", "0");
+      }
+      else if (this.getAttribute("state") == "0") {
+        if (userTimecnt >= 4) {
+          alert("최대 4시간까지 예약 가능합니다.");
           return false;
         }
-        var postdata="tableNum="+userTable;
-        var postcnt=0;
-        var time_array=["10","11","12","13","14","15","16","17"];
-        for(i=0;i<$('.OBJcbTime').length;i++){
-          if(document.getElementsByClassName("OBJcbTime")[i].getAttribute("state")=="1"){
-            postdata += "&time["+ postcnt++ + "]=" + time_array[i];
-          }
-        }
-        if (window.XMLHttpRequest)
-          xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-              alert(xmlhttp.responseText);
-              location.reload();
-            }
-        };
-        xmlhttp.open("POST","/reservation/submit");
-        xmlhttp.setRequestHeader("Content-Type",'application/x-www-form-urlencoded');
-        xmlhttp.setRequestHeader("X-CSRFToken",document.getElementsByName("csrf_token")[0].getAttribute("content"));
-        xmlhttp.send(postdata);
+        userTimecnt++;
+        this.setAttribute("state", "1");
       }
-    </script>
-  {% endblock %}
+    });
+  });
+
+  function applyReservation() {
+    if (userTable == -1) {
+      alert('테이블을 선택해주세요');
+      location.reload();
+      return false;
+    }
+    var postdata = "tableNum=" + userTable;
+    var postcnt = 0;
+    var time_array = ["10", "11", "12", "13", "14", "15", "16", "17"];
+    for (i = 0; i < $('.OBJcbTime').length; i++) {
+      if (document.getElementsByClassName("OBJcbTime")[i].getAttribute("state") == "1") {
+        postdata += "&time[" + postcnt++ + "]=" + time_array[i];
+      }
+    }
+    if (window.XMLHttpRequest)
+      xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        alert(xmlhttp.responseText);
+        location.reload();
+      }
+    };
+    xmlhttp.open("POST", "/reservation/submit");
+    xmlhttp.setRequestHeader("Content-Type", 'application/x-www-form-urlencoded');
+    xmlhttp.setRequestHeader("X-CSRFToken", document.getElementsByName("csrf_token")[0].getAttribute("content"));
+    xmlhttp.send(postdata);
+  }
+</script>
+{% endblock %}
 
 {% block content %}
-  <!-- *****************************************************************************************************************
+<!-- *****************************************************************************************************************
 	 BLUE WRAP
 	 ***************************************************************************************************************** -->
-  <div id="blue">
-    <div class="container">
-      <div class="row">
-        <h3>실습실 예약</h3>
-      </div>
-      <!-- /row -->
+<div id="blue" style="margin-bottom:-2.5%;">
+  <div class="container">
+    <div class="row">
+      <h3>실습실 예약</h3>
     </div>
-    <!-- /container -->
+    <!-- /row -->
   </div>
-  <!-- /blue -->
-  {% if yes_no == 1 %}
-    <script>
-        alert("하루 총 4시간의 예약만 가능합니다.");
-    </script>
-  {% endif %}
-  {% if yes_no == 2 %}
-  <script>
-      alert("동일한 시간대에 예약한 테이블이 이미 존재합니다. 다시 예약해주세요.");
-  </script>
-  {% endif %}
-  {% if yes_no == 3 %}
-  <script>
-      alert("다른 유저가 예약한 테이블을 예약하실 수 없습니다. 다시 예약해주세요.");
-  </script>
-  {% endif %}
-  <div class="container mtb">
-    <div class="time_check">
-      <select id="class">
-        <option value="monday" selected>2019-03-10</option>
-        <option value="tuesday">2019-03-11</option>
-        <option value="wednesday">2019-03-12</option>
-        <option value="thursday">2019-03-13</option>
-        <option value="friday">2019-03-14</option>
-      </select>
-    </div>
-    <div class="row justify-content-center">
-      <div class="col-lg-6 col-12">
-        <h1>자리배치도</h1>
-        <div class="hline"></div>
-        <div class="table_container">
-          {% load staticfiles %}
-          <div class="upper_table">
-              <div id="table_set" class="table_set1">
-                  <div id="reg" class="table1">
-                    <a href = "?table=1"><img class="img_table img_table1" id="table1" src="{% static "img/desk1.png" %}"></a>
-                  </div>
-                  <div id="reg" class="table2">
-                    <a href = "?table=2"><img class="img_table img_table2" id="table2" src="{% static "img/desk2.png" %}"></a>
-                  </div>
-                </div>
-                <div id="table_set" class="table_set2">
-                  <div id="reg" class="table3">
-                    <a href = "?table=3"><img class="img_table img_table3" id="table3" src="{% static "img/desk3.png" %}"></a>
-                  </div>
-                  <div id="reg" class="table4">
-                    <a href = "?table=4"><img class="img_table img_table4" id="table4" src="{% static "img/desk4.png" %}"></a>
-                  </div>
-                </div>
-                <div id="table_set" class="table_set3">
-                  <div id="reg" class="table5">
-                    <a href = "?table=5"><img class="img_table img_table5" id="table5" src="{% static "img/desk5.png" %}"></a>
-                  </div>
-                  <div id="reg" class="table6">
-                    <a href = "?table=6"><img class="img_table img_table6" id="table6" src="{% static "img/desk6.png" %}"></a>
-                  </div>
-                </div>
-              </div>
-              <div class="lower_table">
-                <div id="table_set" class="table_set4">
-                  <div id="reg" class="table7">
-                    <a href = "?table=7"><img class="img_table img_table7" id="table7" src="{% static "img/desk7.png" %}"></a>
-                  </div>
-                  <div id="reg" class="table8">
-                    <a href = "?table=8"><img class="img_table img_table8" id="table8" src="{% static "img/desk8.png" %}"></a>
-                  </div>
-                </div>
-    
-                <div id="table_set" class="table_set5">
-                  <div id="reg" class="table9">
-                    <a href = "?table=9"><img class="img_table img_table9" id="table9" src="{% static "img/desk9.png" %}"></a>
-                  </div>
-                </div>
-                <div id="reg" class="table10">
-                  <a href = "?table=10"><img class="img_table img_table10" id="table10" src="{% static "img/desk10.png" %}"></a>
-                </div>
-                <div class="door">
-                  <p>D O O R</p>
-                </div>
-              </div>
-            </div>
+  <!-- /container -->
+</div>
+<!-- /blue -->
+{% if yes_no == 1 %}
+<script>
+  alert("하루 총 4시간의 예약만 가능합니다.");
+</script>
+{% endif %}
+{% if yes_no == 2 %}
+<script>
+  alert("동일한 시간대에 예약한 테이블이 이미 존재합니다. 다시 예약해주세요.");
+</script>
+{% endif %}
+{% if yes_no == 3 %}
+<script>
+  alert("다른 유저가 예약한 테이블을 예약하실 수 없습니다. 다시 예약해주세요.");
+</script>
+{% endif %}
+<div class="container mtb">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="margin-left:-30%; margin-bottom:-25%;">날짜
+              변경<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Today</a></li>
+            </ul>
+          </li>
+        </ul>
       </div>
-      <div class="col-lg-6">
-        <h1>예약 가능 시간</h1>
-        <div class="hline"></div>
-        <p id ="six"><i class="fas fa-phone"></i>　6시 이후 예약은 학생회실에 연락주세요.</p>
-        <div class="place_time_check">
-          <div class="ikc-tablelist-listup ikc-smuf-form">
-            <p>
-                <span class="ikc-reserved-status">
-                    <span class="ikc-reserved-off" id="off"></span>
-                    예약 가능
-                    <span class="ikc-reserved-inactive"></span>
-                    예약 불가능
-                    <span class="ikc-reserved-active"></span>
-                    예약 선택
-                  </span>
-                </p>
-          </div>
-          <form action="" method="POST">
-            <table class="table" cellpadding="0" cellspacing="0">
-              <thead>
-                <tr>
-                  <th>10</th>
-                  <th>11</th>
-                  <th>12</th>
-                  <th>1</th>
-                  <th>2</th>
-                  <th>3</th>
-                  <th>4</th>
-                  <th>5</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <!-- 0: 아무도 점유 없음  --> <!-- 1: 내가 점유 --> <!-- 2: 다른 사람 점유 -->
-                  {% if tables %} 
-                  {% for table in tables %}  
-                    {% if table.is_borrowed %}
-                      {% if table.lender == user.user_data %}
-                        <td id="cbTime{{ forloop.counter0 }}" class="OBJcbTime" state="-1"></td> 
-                        {% else %}
-                        <td id="cbTime{{ forloop.counter0 }}" class="OBJcbTime" state="2"></td> <!-- 2: 다른 사람 점유 -->
-                      {% endif %}
-                      {% else %}
-                      <td id="cbTime{{ forloop.counter0 }}" class="OBJcbTime" state="0"></td> <!-- 0: 아무도 점유 없음  -->
-                    {% endif %}
-                  {% endfor %}
-                  {% else %}
-                  <td id="cbTime0" class="OBJcbTime" state="0"></td> <!-- 0: 아무도 점유 없음 -->
-                  <td id="cbTime1" class="OBJcbTime" state="0"></td> <!-- 1: 내가 점유 -->
-                  <td id="cbTime2" class="OBJcbTime" state="0"></td> <!-- 2: 다른 사람 점유 -->
-                  <td id="cbTime3" class="OBJcbTime" state="0"></td>
-                  <td id="cbTime4" class="OBJcbTime" state="0"></td>
-                  <td id="cbTime5" class="OBJcbTime" state="0"></td>
-                  <td id="cbTime6" class="OBJcbTime" state="0"></td>
-                  <td id="cbTime7" class="OBJcbTime" state="0"></td>
-                  {% endif %}
-                </tr>
-              </tbody>
-            </table>
-          </form>
+      <div class="col-lg-offset-11" style="margin-top:-5%;">
 
-        </div>
-      </div>
-      <div class="col-md-2 col-md-offset-2 col-xs-6 col-xs-offset-3" style="text-align:center;">
-          <a class="btn btn-theme" id="reservation_button" onclick="applyReservation();">자리 예약</a>
-        </div>
-      <div class="col-md-6 col-xs-12">
-        <p class="cancel_message">실습실 예약 취소는 <a href="mypage.html">마이페이지</a>로</p>
+
       </div>
     </div>
   </div>
-  {% endblock %}
+  <div class="row justify-content-center">
+    <div class="col-lg-6 col-12">
+      <h1>자리배치도</h1>
+      <div class="hline"></div>
+      <div class="table_container">
+        {% load staticfiles %}
+        <div class="upper_table">
+          <div id="table_set" class="table_set1">
+            <div id="reg" class="table1">
+              <a href="?table=1"><img class="img_table img_table1" id="table1" src="{% static "img/desk1.png" %}"></a>
+            </div>
+            <div id="reg" class="table2">
+              <a href="?table=2"><img class="img_table img_table2" id="table2" src="{% static "img/desk2.png" %}"></a>
+            </div>
+          </div>
+          <div id="table_set" class="table_set2">
+            <div id="reg" class="table3">
+              <a href="?table=3"><img class="img_table img_table3" id="table3" src="{% static "img/desk3.png" %}"></a>
+            </div>
+            <div id="reg" class="table4">
+              <a href="?table=4"><img class="img_table img_table4" id="table4" src="{% static "img/desk4.png" %}"></a>
+            </div>
+          </div>
+          <div id="table_set" class="table_set3">
+            <div id="reg" class="table5">
+              <a href="?table=5"><img class="img_table img_table5" id="table5" src="{% static "img/desk5.png" %}"></a>
+            </div>
+            <div id="reg" class="table6">
+              <a href="?table=6"><img class="img_table img_table6" id="table6" src="{% static "img/desk6.png" %}"></a>
+            </div>
+          </div>
+        </div>
+        <div class="lower_table">
+          <div id="table_set" class="table_set4">
+            <div id="reg" class="table7">
+              <a href="?table=7"><img class="img_table img_table7" id="table7" src="{% static "img/desk7.png" %}"></a>
+            </div>
+            <div id="reg" class="table8">
+              <a href="?table=8"><img class="img_table img_table8" id="table8" src="{% static "img/desk8.png" %}"></a>
+            </div>
+          </div>
+
+          <div id="table_set" class="table_set5">
+            <div id="reg" class="table9">
+              <a href="?table=9"><img class="img_table img_table9" id="table9" src="{% static "img/desk9.png" %}"></a>
+            </div>
+          </div>
+          <div id="reg" class="table10">
+            <a href="?table=10"><img class="img_table img_table10" id="table10" src="{% static "img/desk10.png" %}"></a>
+          </div>
+          <div class="door">
+            <p>D O O R</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <h1>예약 가능 시간</h1>
+      <div class="hline"></div>
+      <p id="six"><i class="fas fa-phone"></i>　6시 이후 예약은 학생회실에 연락주세요.</p>
+      <div class="place_time_check">
+        <div class="ikc-tablelist-listup ikc-smuf-form col-lg-offset-4">
+          <p>
+            <span class="ikc-reserved-status">
+              <span class="ikc-reserved-off" id="off"></span>
+              예약 가능
+              <span class="ikc-reserved-inactive"></span>
+              예약 불가능
+              <span class="ikc-reserved-active"></span>
+              예약 선택
+            </span>
+          </p>
+        </div>
+        <form action="" method="POST">
+          <table class="table" cellpadding="0" cellspacing="0">
+            <thead>
+              <tr>
+                <th>10</th>
+                <th>11</th>
+                <th>12</th>
+                <th>1</th>
+                <th>2</th>
+                <th>3</th>
+                <th>4</th>
+                <th>5</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <!-- 0: 아무도 점유 없음  -->
+                <!-- 1: 내가 점유 -->
+                <!-- 2: 다른 사람 점유 -->
+                {% if tables %}
+                {% for table in tables %}
+                {% if table.is_borrowed %}
+                {% if table.lender == user.user_data %}
+                <td id="cbTime{{ forloop.counter0 }}" class="OBJcbTime" state="-1"></td>
+                {% else %}
+                <td id="cbTime{{ forloop.counter0 }}" class="OBJcbTime" state="2"></td> <!-- 2: 다른 사람 점유 -->
+                {% endif %}
+                {% else %}
+                <td id="cbTime{{ forloop.counter0 }}" class="OBJcbTime" state="0"></td> <!-- 0: 아무도 점유 없음  -->
+                {% endif %}
+                {% endfor %}
+                {% else %}
+                <td id="cbTime0" class="OBJcbTime" state="0"></td> <!-- 0: 아무도 점유 없음 -->
+                <td id="cbTime1" class="OBJcbTime" state="0"></td> <!-- 1: 내가 점유 -->
+                <td id="cbTime2" class="OBJcbTime" state="0"></td> <!-- 2: 다른 사람 점유 -->
+                <td id="cbTime3" class="OBJcbTime" state="0"></td>
+                <td id="cbTime4" class="OBJcbTime" state="0"></td>
+                <td id="cbTime5" class="OBJcbTime" state="0"></td>
+                <td id="cbTime6" class="OBJcbTime" state="0"></td>
+                <td id="cbTime7" class="OBJcbTime" state="0"></td>
+                {% endif %}
+              </tr>
+            </tbody>
+          </table>
+        </form>
+
+      </div>
+      <div class="col-md-2 col-md-offset-4 col-xs-6 col-xs-offset-3" style="text-align:center; margin-bottom:5%;  ">
+        <a class="btn btn-theme" id="reservation_button" onclick="applyReservation();" style="display:inline-block;">자리 예약</a>
+      </div>
+      
+    </div>
+    <div class="col-md-6 col-xs-12">
+      <p class="cancel_message">실습실 예약 취소는 <a href="mypage.html">마이페이지</a>로</p>
+    </div>
+  
+  </div>
+</div>
+{% endblock %}

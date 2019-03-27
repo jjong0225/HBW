@@ -145,7 +145,7 @@ class PasswordChangeForm(SetPasswordForm):
 class custom_login_form(AuthenticationForm) :
         error_messages = {
         'invalid_login': _(
-            "올바른 비밀번호와 패스워드를 입력해주세요"
+            "올바른 아이디와 패스워드를 입력해주세요"
         ),
         'inactive': _("This account is inactive."),
     }

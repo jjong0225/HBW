@@ -7,10 +7,13 @@ from django.contrib.auth import login, authenticate
 from django.template import RequestContext
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import permission_required
 from django.utils import timezone
 import datetime
 from django.db.models import Q
 import logging
+from django.contrib.auth.models import Group, Permission
+from django.contrib.contenttypes.models import ContentType
 logger = logging.getLogger(__name__)
 
 
@@ -250,6 +253,8 @@ def Main(request):
 #마이페이지
 @login_required
 def MyPage(request):
+    if request.user.date_joined.day == 25:
+        return redirect('login:first') 
     current_user = request.user
     cur_time = timezone.localtime()
     manager = models.now_time_table.objects.all()
@@ -257,11 +262,16 @@ def MyPage(request):
 
     if request.method == "POST":
         cur_time = request.POST.get('cancel')
-        time_q = StudyTable.objects.all().filter(lender_id=current_user.user_data.id).filter(start_time=cur_time)
-        for time in time_q:
-                time.is_borrowed = False
-                time.lender_id = None
-                time.save()
+        time = StudyTable.objects.all().filter(lender_id=current_user.user_data.id).filter(start_time=cur_time).first()
+        if time is None : 
+            return HttpResponse("예약이 존재하지 않습니다.")
+        if int(cur_time) > timezone.localtime().hour : 
+            time.is_borrowed = False
+            time.lender_id = None
+            time.save()
+        else :
+            time.lender_id = None
+            time.save()
         time_q = StudyTable.objects.all().filter(lender_id=current_user.user_data.id)
         return HttpResponse("취소 되었습니다.")
     else:
@@ -425,6 +435,8 @@ class StudyTableClass() :
 
     @login_required
     def LendTable(request):
+        if request.user.date_joined.day == 25  :
+            return redirect('login:first') 
         sel_num = request.GET.get('table')
         table_q = StudyTable.objects.all().filter(number=sel_num)
         manager = models.now_time_table.objects.all()    
@@ -754,3 +766,23 @@ def EveryDayErrorCheck (request):
         print("Server Error : 중복된 실습실 레코드가 존재합니다. Admin 사이트에서 이를 직접 관리하거나 서버 관리자에게 문의해주세요")
 
     return redirect('login:main')
+
+
+def EveryHourStudyTable(request):
+    cur_hour = timezone.localtime().hour
+    update_dic = {'is_borrowed' : True, 'lender' : None}
+    if cur_hour < 20 and cur_hour > 9:
+        time_q = models.StudyTable.objects.all().filter(start_time__lte = cur_hour).update(**update_dic)
+    return redirect('login:main')
+
+
+class first_login_class(PasswordChangeView) :
+    def form_valid(self, form):
+#        ct = ContentType.objects.get_for_model(User)
+#        perm = Permission.objects.get_or_create(codename = 'agreed', name='agreed', Content_type = ct)
+#        new_group = Group.objects.filter(Q())
+#        newgroup.permissions.add(can_fm_list)
+        date = "2019-03-01 05:06:46.931737"
+        self.request.user.date_joined = date
+        self.request.user.save()
+        return super().form_valid(form)
