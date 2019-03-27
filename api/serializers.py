@@ -95,4 +95,4 @@ class CableSerializer(serializers.ModelSerializer):
 class LoggingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Logging
-        fields = ('url', 'date', 'user', 'item', 'message')
+        fields = ('url', 'date', 'manager', 'user', 'item', 'message')
