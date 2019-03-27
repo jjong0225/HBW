@@ -61,6 +61,7 @@ class Student(models.Model):
         Logging.objects.create(
             item = "today_A4", 
             user = self.user.username,
+            manager = now_time_table.objects.first().name,
             message = "A4"+str(self.A4_count)+"장 대여")
         
         super().save(*args, **kwargs)
@@ -100,6 +101,7 @@ class Unbrella(models.Model):
                     self.borrowed_time = timezone.localtime()
                     Logging.objects.create(
                         user = self.borrowed_by.user.username, 
+                        manager = now_time_table.objects.first().name,
                         item = "unbrella",
                         message = str(self.number)+"번 우산 대여"
                         )
@@ -107,6 +109,7 @@ class Unbrella(models.Model):
                     self.status = self.status_available
                     Logging.objects.create(
                         user = self.borrowed_by.user.username,
+                        manager = now_time_table.objects.first().name,
                         item = "unbrella",
                         message = str(self.number)+"번 우산 반납"
                     )
@@ -160,6 +163,7 @@ class Battery(models.Model):
                     self.borrowed_time = timezone.localtime()
                     Logging.objects.create(
                         user = self.borrowed_by.user.username, 
+                        manager = now_time_table.objects.first().name,
                         item = "battery",
                         message = str(self.number)+"번 배터리 대여"
                         )
@@ -167,6 +171,7 @@ class Battery(models.Model):
                     self.status = self.status_available
                     Logging.objects.create(
                         user = self.borrowed_by.user.username, 
+                        manager = now_time_table.objects.first().name,
                         item = "battery",
                         message = str(self.number)+"번 배터리 반납"
                         )
@@ -220,6 +225,7 @@ class Lan(models.Model):
                     self.borrowed_time = timezone.localtime()
                     Logging.objects.create(
                         user = self.borrowed_by.user.username, 
+                        manager = now_time_table.objects.first().name,
                         item = "lan",
                         message = str(self.number)+"번 랜선 대여"
                         )
@@ -227,6 +233,7 @@ class Lan(models.Model):
                     self.status = self.status_available
                     Logging.objects.create(
                         user = self.borrowed_by.user.username, 
+                        manager = now_time_table.objects.first().name,
                         item = "lan",
                         message = str(self.number)+"번 랜선 반납"
                         )
@@ -266,17 +273,12 @@ class StudyTable(models.Model):
         if self.is_borrowed:
             Logging.create(
                 user=self.lender.user.username,
+                manager = now_time_table.objects.first().name,
                 item="studytable",
                 message = str(self.number)+"번 테이블 | "+self.start_time+"부터 1시간 빌림"
             )
     def __str__(self):
         return "Table "+str(self.number)
-
-    
-        
-    
-
-
 
 
 class timetest(models.Model):
@@ -335,6 +337,7 @@ class Cable(models.Model):
                     self.borrowed_time = timezone.localtime()
                     Logging.objects.create(
                         user = self.borrowed_by.user.username, 
+                        manager = now_time_table.objects.first().name,
                         item = "cable",
                         message = str(self.number)+"번 " + self.cable_type + " 케이블 대여"
                         )
@@ -342,6 +345,7 @@ class Cable(models.Model):
                     self.status = self.status_available
                     Logging.objects.create(
                         user = self.borrowed_by.user.username, 
+                        manager = now_time_table.objects.first().name,
                         item = "cable",
                         message = str(self.number)+"번 " + self.cable_type + " 케이블 반납"
                         )
