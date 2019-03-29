@@ -4,298 +4,304 @@
 {% block header %}
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
-      <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="{% url "login:main" %}">SUPPORT.</a>
-      </div>
-      <div class="navbar-collapse collapse navbar-right">
-          <ul class="nav navbar-nav">
-              <li class ="active"><a href="{% url "login:main" %}">홈</a></li>
-              {% if user.is_authenticated %}
-                <li><a href="{% url "login:logout" %}">로그아웃</a></li>
-              {% else %}
-                <li><a href="{% url "login:login" %}">로그인</a></li>
-              {% endif %}
-              <li><a href="{% url "login:seltable" %}">실습실 예약</a></li>
-              <li><a href="{% url "login:mypage" %}">마이페이지</a></li>
-          </ul>
-      </div>
-      <!--/.nav-collapse -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{% url "login:main" %}">SUPPORT.</a>
+    </div>
+    <div class="navbar-collapse collapse navbar-right">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="{% url "login:main" %}">홈</a></li>
+        {% if user.is_authenticated %}
+        <li><a href="{% url "login:logout" %}">로그아웃</a></li>
+        {% else %}
+        <li><a href="{% url "login:login" %}">로그인</a></li>
+        {% endif %}
+        <li><a href="{% url "login:seltable" %}">실습실 예약</a></li>
+        <li><a href="{% url "login:mypage" %}">마이페이지</a></li>
+      </ul>
+    </div>
+    <!--/.nav-collapse -->
   </div>
 </div>
 {% endblock %}
 
 
 {% block content %}
-  <!-- *****************************************************************************************************************
+<!-- *****************************************************************************************************************
 	 HEADERWRAP
 	 ***************************************************************************************************************** -->
-  <div id="headerwrap">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12" id="logo_content">
-            <span class ="logo_content" ><h3 style="margin-bottom:2%;">언제나, 늘, 당신곁에</h3></span>
-            <h1 style="margin-top:-0.1%;" class = "logo_sentence">제4대 소프트웨어학부 학생회 </h1>
-            <h1 style="margin-top:-0.25%;" class = "support_font"><span class= "logo">SUPPORT.</span> 입니다.</h1>
-        </div>
+<div id="headerwrap">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12" id="logo_content">
+        <span class="logo_content">
+          <h3 style="margin-bottom:2%;">언제나, 늘, 당신곁에</h3>
+        </span>
+        <h1 style="margin-top:-0.1%;" class="logo_sentence">제4대 소프트웨어학부 학생회 </h1>
+        <h1 style="margin-top:-0.25%;" class="support_font"><span class="logo">SUPPORT.</span> 입니다.</h1>
+      </div>
     </div>
     <div class="row">
       <div class="col-lg-12">
         <div class="carousel" style="width:100%;">
-            {% for post in posts %}
-              {% if post.photo %}
-                <a id= "carousel-{{ forloop.counter0 }}" class="carousel-item" href="#"><img src="{{ post.photo.url }}"></a>
-              {% endif %}
-            {% endfor %}
-          </div>
+          {% for post in posts %}
+          {% if post.photo %}
+          <a id="carousel-{{ forloop.counter0 }}" class="carousel-item" href="#"><img src="{{ post.photo.url }}"></a>
+          {% endif %}
+          {% endfor %}
+        </div>
       </div>
     </div>
-      <script>
-        document.addEventListener('DOMContentLoaded', function() {
-          var elems = document.querySelectorAll('.carousel');
-          var instances = M.Carousel.init(elems);
-        });
-      </script>    
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('.carousel');
+        var instances = M.Carousel.init(elems);
+      });
+    </script>
     <!-- /container -->
   </div>
   <!-- /headerwrap -->
-  </div>
+</div>
 
-  <!-- *****************************************************************************************************************
+<!-- *****************************************************************************************************************
 	 SERVICE LOGOS
 	 ***************************************************************************************************************** -->
-  <div id="service">
-    <div class="container">
-      <div class="row centered">
-        <div class="col-lg-3">
-          <i class="fas fa-umbrella fa-5x"></i>
-          <h4>우산</h4>
-          <p>{{ unbrella_count }}　|　<strong>{{ unbrella_total }}</strong></p> <!-- 수정됨 -->
- <!--      {% if user.user_data.un.is_reserved == False and  user.user_data.un.is_borrowed == False %}
+<div id="service">
+  <div class="container">
+    <div class="row centered">
+      <div class="col-lg-3">
+        <i class="fas fa-umbrella fa-5x"></i>
+        <h4>우산</h4>
+        <p>{{ unbrella_count }}　|　<b>{{ unbrella_total }}</b></p> <!-- 수정됨 -->
+        <!--      {% if user.user_data.un.is_reserved == False and  user.user_data.un.is_borrowed == False %}
           {% else %}
             <p><a href = "" onclick="alert('이미 대여중인 우산이 존재합니다')" class="btn btn-theme" value="대여">대여</a></p> 
           {% endif %}
         -->
+        <form action="" method="POST">{% csrf_token %}
+          <p><button type="submit" name="unbrella" value="True" class="btn btn-theme">대여</button></p> <!-- 수정됨 -->
+        </form>
+      </div>
+      <div class="col-lg-3">
+        <i class="fas fa-battery-full fa-5x"></i>
+        <h4>보조배터리</h4>
+        <p>{{ battery_count }}　|　<b>{{ battery_total }}</b></p> <!-- 수정됨 -->
+        <form action="" method="POST">{% csrf_token %}
+          <p><button type="submit" name="battery" value="True" class="btn btn-theme">대여</button></p> <!-- 수정됨 -->
+        </form>
+      </div>
+      <div class="col-lg-3">
+        <i class="fas fa-ethernet fa-5x"></i>
+        <div class="lan_lent">
+          <h4>랜선</h4>
+          <p>{{ lan_count }}　|　<b>{{ lan_total }}</b></p> <!-- 수정됨 -->
           <form action="" method="POST">{% csrf_token %}
-            <p><button type="submit" name="unbrella" value="True" class="btn btn-theme">대여</button></p> <!-- 수정됨 --> 
-          </form>        
-        </div>
-        <div class="col-lg-3">
-          <i class="fas fa-battery-full fa-5x"></i>
-          <h4>보조배터리</h4>
-          <p>{{ battery_count }}　|　<strong>{{ battery_total }}</strong></p> <!-- 수정됨 -->
-            <form action="" method="POST">{% csrf_token %}
-              <p><button type="submit" name="battery" value="True" class="btn btn-theme">대여</button></p> <!-- 수정됨 --> 
-            </form>
-          </div>
-        <div class="col-lg-3">
-          <i class="fas fa-ethernet fa-5x"></i>
-          <div class="lan_lent">
-            <h4>랜선</h4>
-            <p>{{ lan_count }}　|　<strong>{{ lan_total }}</strong></p> <!-- 수정됨 -->
-            <form action="" method="POST">{% csrf_token %}
-              <p><button type="submit" name="lan" value="True" class="btn btn-theme">대여</button></p> <!-- 수정됨 --> 
-            </form>
-          </div>
-        </div>
-        <div class="col-lg-3">
-          <i class="fas fa-plug fa-5x"></i>
-          <div class="lan_lent">
-            <h4>케이블</h4>
-            <p>{{ cable_count }}　|　<strong>{{ cable_total }}</strong></p>
-            <form action="" method="POST">{% csrf_token %}
-                <p><button type="submit" name="cable" value="True" class="btn btn-theme">대여</button></p> <!-- 수정됨 --> 
-            </form>   
-          </div>
+            <p><button type="submit" name="lan" value="True" class="btn btn-theme">대여</button></p> <!-- 수정됨 -->
+          </form>
         </div>
       </div>
+      <div class="col-lg-3">
+        <i class="fas fa-plug fa-5x"></i>
+        <div class="lan_lent">
+          <h4>케이블</h4>
+          <p>{{ cable_count }}　|　<b>{{ cable_total }}</b></p>
+          <form action="" method="POST">{% csrf_token %}
+            <p><button type="submit" name="cable" value="True" class="btn btn-theme">대여</button></p> <!-- 수정됨 -->
+          </form>
+        </div>
+      </div>
+      <div class="col-lg-12">
+          <p><span class="fas fa-exclamation-circle" style="margin-top:5%;"></span>　예약 후 10분안에 학생회실에서 대여해주세요.</p>
+        </div>
     </div>
+ 
   </div>
+</div>
 
-  <!-- *****************************************************************************************************************
+<!-- *****************************************************************************************************************
 	 PORTFOLIO SECTION
 	 ***************************************************************************************************************** -->
-  <div id="portfoliowrap">
-    <div class="time_now">
-      <p>　</p>
-      <h3>실습실 현재 예약 현황</h3>
-      <div class ="ikc-tablelist-listup ikc-smuf-form">
-        <p>
-          <span class = "ikc-reserved-status">
-            <span class = "ik-reserved-off" style="background:#dddddd; border:1px solid grey;"></span>
-            예약 가능
-            <span class = "ikc-reserved-inactive"></span>
-            예약 불가능
-          </span>
-        </p>
-      </div>
-      <div class="row">
-        <div class="col-12">
-          <table class="table" border="0" cellpadding="1" cellspacing="0">
-            <thead>
-              <th>번호/시간</td>
-              <th>　10　</th>
-              <th>　11　</th>
-              <th>　12　</th>
-              <th>　1　</th>
-              <th>　2　</th>
-              <th>　3　</th>
-              <th>　4　</th>
-              <th>　5　</th>
-            </thead>
-            <tbody>
-              {% for table in tables %}
-                {% if table.start_time == "10" %}
-                  <tr>
-                      <td>{{ table.number }}</td>  
-                  {% endif %}
-                  {% if table.is_borrowed %}
-                    <td class="occupied"></td>
-                  {% else %}
-                    <td></td>
-                  {% endif %}
-                {% if table.start_time == "17" %}
-                  </tr>
-                {% endif %}
-              {% endfor %}
-                <!-- 표 하나하나 색깔 바꾸고 싶으면 bgcolor해서 바꾸면 됨! -->
-                <!-- style="background-color:rgb(233, 181, 49)" => class="occupied"-->
-                <!-- 장고 DB를 받어서 확인하도록 함-->
-            </tbody>
-          </table>
-        </div>
+<div id="portfoliowrap">
+  <div class="time_now">
+    <p>　</p>
+    <h3>실습실 현재 예약 현황</h3>
+    <div class="ikc-tablelist-listup ikc-smuf-form">
+      <p>
+        <span class="ikc-reserved-status">
+          <span class="ik-reserved-off" style="background:#dddddd; border:1px solid grey;"></span>
+          예약 가능
+          <span class="ikc-reserved-inactive"></span>
+          예약 불가능
+        </span>
+      </p>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <table class="table" border="0" cellpadding="1" cellspacing="0">
+          <thead>
+            <th>번호/시간</td>
+            <th>　10　</th>
+            <th>　11　</th>
+            <th>　12　</th>
+            <th>　1　</th>
+            <th>　2　</th>
+            <th>　3　</th>
+            <th>　4　</th>
+            <th>　5　</th>
+          </thead>
+          <tbody>
+            {% for table in tables %}
+            {% if table.start_time == "10" %}
+            <tr>
+              <td>{{ table.number }}</td>
+              {% endif %}
+              {% if table.is_borrowed %}
+              <td class="occupied"></td>
+              {% else %}
+              <td></td>
+              {% endif %}
+              {% if table.start_time == "17" %}
+            </tr>
+            {% endif %}
+            {% endfor %}
+            <!-- 표 하나하나 색깔 바꾸고 싶으면 bgcolor해서 바꾸면 됨! -->
+            <!-- style="background-color:rgb(233, 181, 49)" => class="occupied"-->
+            <!-- 장고 DB를 받어서 확인하도록 함-->
+          </tbody>
+        </table>
       </div>
     </div>
+  </div>
 
 
 
-     <!-- *****************************************************************************************************************
+  <!-- *****************************************************************************************************************
 	 건의사항
    ***************************************************************************************************************** -->
-  <div class = "container mtb"> 
-    <div class = "row">
-  <div class = "portfoliowrap" id="wrap"> 
-    <form role="form" action="/complain/" method="POST">{% csrf_token %}
-    <div class = "col-12" id="complain_wrap">
-        <h4>건의사항                
-          <div class="btn-group btn-group-toggle" data-toggle="buttons" id="radio">
-            <label class="btn btn-secondary active">
-              <input type="radio" name="is_anonymous" autocomplete="off" value="True" checked="checked"> 익명
-            </label>
-            <label class="btn btn-secondary">
-              <input type="radio" name="is_anonymous" id="is_anonymous" autocomplete="off" value="False"> 실명
-            </label>
-          </h4>
-        <div class = "hline"></div>
-        <div class = "col-12">
-          <div class="col-12">
-              <textarea class = "form-control btn-block" name="updated_text" id="contact-message" placeholder="건의사항 남기기" row="10" data-rule="required" style="margin-top:2.5%;"></textarea>
-              <input type="submit" class="btn btn-theme btn-block" id="complain_button" value="건의사항 보내기"></input>
+  <div class="container mtb">
+    <div class="row">
+      <div class="portfoliowrap" id="wrap">
+        <form role="form" action="/complain/" method="POST">{% csrf_token %}
+          <div class="col-12" id="complain_wrap">
+            <h4>건의사항
+              <div class="btn-group btn-group-toggle" data-toggle="buttons" id="radio">
+                <label class="btn btn-secondary active">
+                  <input type="radio" name="is_anonymous" autocomplete="off" value="True" checked="checked"> 익명
+                </label>
+                <label class="btn btn-secondary">
+                  <input type="radio" name="is_anonymous" id="is_anonymous" autocomplete="off" value="False"> 실명
+                </label>
+            </h4>
+            <div class="hline"></div>
+            <div class="col-12">
+              <div class="col-12">
+                <textarea class="form-control btn-block" name="updated_text" id="contact-message" placeholder="건의사항 남기기"
+                  row="10" data-rule="required" style="margin-top:2.5%;"></textarea>
+                <input type="submit" class="btn btn-theme btn-block" id="complain_button" value="건의사항 보내기"></input>
+              </div>
             </div>
+          </div>
+        </form>
       </div>
     </div>
-  </form>
-  </div>
-  </div>
   </div>
 
   <!-- *****************************************************************************************************************
   MESSAGE ALERTS
   *******************************************************************************************************************-->
-      {% if login_status == 1 %}
-        <script>
-          alert('로그인 후 이용 가능합니다')
-        </script>
-      {% endif %}
-      {% if login_status == 2 %}
-        <script>
-          alert('죄송합니다. 대여사업은 학생회비를 낸 학생을 대상으로만 운영됩니다.')
-        </script>
-      {% endif %}
-      {% if unbrella_status != 0 %}
-        {% if unbrella_status == 1 %}
-        <script>
-          alert('{{ message_unbrella }}')
-        </script>
+  {% if login_status == 1 %}
+  <script>
+    alert('로그인 후 이용 가능합니다')
+  </script>
+  {% endif %}
+  {% if login_status == 2 %}
+  <script>
+    alert('죄송합니다. 대여사업은 학생회비를 낸 학생을 대상으로만 운영됩니다.')
+  </script>
+  {% endif %}
+  {% if unbrella_status != 0 %}
+  {% if unbrella_status == 1 %}
+  <script>
+    alert('{{ message_unbrella }}')
+  </script>
 
-        {% else %}
-          {% if unbrella_status == 2 %}
-          <script>
-              alert('이미 대여중인 우산이 있습니다')
-            </script>
-          {% else %}
-            {% if unbrella_status == 3 %}
-            <script>
-                alert('대여가능한 우산이 없습니다')
-              </script>
-            {% endif %}
-          {% endif %}
-        {% endif %}
-      {% else %}
-        {% if battery_status != 0 %}
-          {% if battery_status == 1 %}
-          <script>
-              alert('{{ message_battery }}')
-            </script>
-          {% else %}
-            {% if battery_status == 2 %}
-            <script>
-                alert('이미 대여중인 배터리가 있습니다')
-              </script>
-            {% else %}
-              {% if battery_status == 3 %}
-              <script>
-                  alert('대여가능한 배터리가 없습니다')
-                </script>
-              {% endif %}
-            {% endif %}
-          {% endif %}
-        {% else %}
-          {% if lan_status != 0 %}
-            {% if lan_status == 1 %}
-            <script>
-                alert('{{ message_lan }}')
-              </script>
-            {% else %}
-              {% if lan_status == 2 %}
-              <script>
-                  alert('이미 대여중인 랜선이 있습니다')
-                </script>
-              {% else %}
-                {% if lan_status == 3 %}
-                <script>
-                    alert('대여가능한 랜선이 없습니다')
-                  </script>
-                {% endif %}
-              {% endif %}
-            {% endif %}
-            
-          {% else %}
-            {% if cable_status == 1 %}
-            <script>
-                alert('{{ message_cable }}')
-              </script>
-            {% else %}
-              {% if cable_status == 2 %}
-              <script>
-                  alert('이미 대여중인 케이블이 있습니다')
-                </script>
-              {% else %}
-                {% if cable_status == 3 %}
-                <script>
-                    alert('대여가능한 케이블이 없습니다')
-                  </script>
-                {% endif %}
-              {% endif %}
-            {% endif %}
-          {% endif %}
-        {% endif %}
-      {% endif %}
-  
- {% endblock %}
+  {% else %}
+  {% if unbrella_status == 2 %}
+  <script>
+    alert('이미 대여중인 우산이 있습니다')
+  </script>
+  {% else %}
+  {% if unbrella_status == 3 %}
+  <script>
+    alert('대여가능한 우산이 없습니다')
+  </script>
+  {% endif %}
+  {% endif %}
+  {% endif %}
+  {% else %}
+  {% if battery_status != 0 %}
+  {% if battery_status == 1 %}
+  <script>
+    alert('{{ message_battery }}')
+  </script>
+  {% else %}
+  {% if battery_status == 2 %}
+  <script>
+    alert('이미 대여중인 배터리가 있습니다')
+  </script>
+  {% else %}
+  {% if battery_status == 3 %}
+  <script>
+    alert('대여가능한 배터리가 없습니다')
+  </script>
+  {% endif %}
+  {% endif %}
+  {% endif %}
+  {% else %}
+  {% if lan_status != 0 %}
+  {% if lan_status == 1 %}
+  <script>
+    alert('{{ message_lan }}')
+  </script>
+  {% else %}
+  {% if lan_status == 2 %}
+  <script>
+    alert('이미 대여중인 랜선이 있습니다')
+  </script>
+  {% else %}
+  {% if lan_status == 3 %}
+  <script>
+    alert('대여가능한 랜선이 없습니다')
+  </script>
+  {% endif %}
+  {% endif %}
+  {% endif %}
 
+  {% else %}
+  {% if cable_status == 1 %}
+  <script>
+    alert('{{ message_cable }}')
+  </script>
+  {% else %}
+  {% if cable_status == 2 %}
+  <script>
+    alert('이미 대여중인 케이블이 있습니다')
+  </script>
+  {% else %}
+  {% if cable_status == 3 %}
+  <script>
+    alert('대여가능한 케이블이 없습니다')
+  </script>
+  {% endif %}
+  {% endif %}
+  {% endif %}
+  {% endif %}
+  {% endif %}
+  {% endif %}
+
+  {% endblock %}

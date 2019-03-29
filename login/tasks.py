@@ -180,14 +180,14 @@ def GetNowManager() :
     current_time = timezone.localtime() + datetime.timedelta(minutes=10)
     cur_day = timezone.localtime().weekday()
     num = (current_time.hour - 10) * 2
-    if current_time.minute > 30 :
+    if current_time.minute >= 30 :
         num = num + 1
     now_manager = models.time_table.objects.all().filter(start_time = num).filter(week_day = cur_day)
     if now_manager.count() == 0 :
         models.now_time_table.objects.create(name='blank', start_time = num, is_manager = False)    
 
     if now_manager.count() == 1 :
-            models.now_time_table.objects.create(name=now_manager.name, start_time = num, is_manage = True)
+            models.now_time_table.objects.create(name=now_manager.first().name, start_time = num, is_manager = True)
 
     if  now_manager.count() > 1 or  now_manager.count() < 0  : ## 오류 상황
         models.now_time_table.objects.create(name='blank', start_time = num, is_manager = False) 

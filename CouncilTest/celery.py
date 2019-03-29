@@ -41,11 +41,11 @@ app.conf.beat_schedule = {
         'task': 'get_now_manager',
         'schedule': crontab(minute='20, 50'),
     },
-    'time_table_day_update': {
+    'study_table_day_update': {
         'task': 'table_day_update',
         'schedule': crontab(minute=0, hour=0),
     },
-    'time_table_hour_update': {
+    'study_table_hour_update': {
         'task': 'table_hour_update',
         'schedule': crontab(minute=0),
     },

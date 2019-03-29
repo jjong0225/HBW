@@ -62,8 +62,9 @@ class Student(models.Model):
 
         Logging.objects.create(
             item = "today_A4", 
+            manager = now_time_table.objects.first().name,
             user = self.user.username,
-            message = "A4"+str(self.A4_count)+"장 대여")
+            message = "A4"+str(self.A4_count)+" 장 대여")
         
         super().save(*args, **kwargs)
 
@@ -97,22 +98,32 @@ class Unbrella(models.Model):
             self.status = self.status_reserved
         else :
             if self.status != self.status_unavailable:
-                if self.status == self.status_reserved:
+                if self.status == self.status_reserved and self.borrowed_by is not None:
                     self.status = self.status_borrowed
                     self.is_borrowed = True
                     self.borrowed_time = timezone.localtime()
                     Logging.objects.create(
                         user = self.borrowed_by.user.username, 
+                        manager = now_time_table.objects.first().name,
                         item = "unbrella",
                         message = str(self.number)+"번 우산 대여"
                         )
                 else :
                     self.status = self.status_available
-                    Logging.objects.create(
-                        user = self.borrowed_by.user.username,
-                        item = "unbrella",
-                        message = str(self.number)+"번 우산 반납"
-                    )
+                    try:
+                        Logging.objects.create(
+                            user = self.borrowed_by.user.username,
+                            manager = now_time_table.objects.first().name,
+                            item = "unbrella",
+                            message = str(self.number)+"번 우산 반납"
+                        )
+                    except:
+                         Logging.objects.create(
+                            user = "blank",
+                            manager = now_time_table.objects.first().name,
+                            item = "unbrella",
+                            message = str(self.number)+"번 우산 예약 시간초과"
+                        )
                     self.borrowed_by = None
         try :
             super().save(*args, **kwargs)
@@ -157,21 +168,31 @@ class Battery(models.Model):
             self.status = self.status_reserved
         else :
             if self.status != self.status_unavailable:
-                if self.status == self.status_reserved:
+                if self.status == self.status_reserved and self.borrowed_by is not None:
                     self.status = self.status_borrowed
                     self.is_borrowed = True
                     self.borrowed_time = timezone.localtime()
                     Logging.objects.create(
                         user = self.borrowed_by.user.username, 
+                        manager = now_time_table.objects.first().name,
                         item = "battery",
                         message = str(self.number)+"번 배터리 대여"
                         )
                 else :
                     self.status = self.status_available
-                    Logging.objects.create(
-                        user = self.borrowed_by.user.username, 
-                        item = "battery",
-                        message = str(self.number)+"번 배터리 반납"
+                    try:
+                        Logging.objects.create(
+                            user = self.borrowed_by.user.username, 
+                            manager = now_time_table.objects.first().name,
+                            item = "battery",
+                            message = str(self.number)+"번 배터리 반납"
+                            )
+                    except:
+                         Logging.objects.create(
+                            user = "blank",
+                            manager = now_time_table.objects.first().name,
+                            item = "battery",
+                            message = str(self.number)+"번 배터리 예약 시간초과"
                         )
                     self.borrowed_by = None
         try :
@@ -217,21 +238,31 @@ class Lan(models.Model):
             self.status = self.status_reserved
         else :
             if self.status != self.status_unavailable:
-                if self.status == self.status_reserved:
+                if self.status == self.status_reserved and self.borrowed_by is not None:
                     self.status = self.status_borrowed
                     self.is_borrowed = True
                     self.borrowed_time = timezone.localtime()
                     Logging.objects.create(
-                        user = self.borrowed_by.user.username, 
+                        user = self.borrowed_by.user.username,
+                        manager = now_time_table.objects.first().name, 
                         item = "lan",
                         message = str(self.number)+"번 랜선 대여"
                         )
                 else :
                     self.status = self.status_available
-                    Logging.objects.create(
-                        user = self.borrowed_by.user.username, 
-                        item = "lan",
-                        message = str(self.number)+"번 랜선 반납"
+                    try:
+                        Logging.objects.create(
+                            user = self.borrowed_by.user.username, 
+                            manager = now_time_table.objects.first().name,
+                            item = "lan",
+                            message = str(self.number)+"번 랜선 반납"
+                            )
+                    except:
+                         Logging.objects.create(
+                            user = "blank",
+                            manager = now_time_table.objects.first().name,
+                            item = "lan",
+                            message = str(self.number)+"번 랜선 예약 시간초과"
                         )
                     self.borrowed_by = None
         try :
@@ -267,8 +298,9 @@ class StudyTable(models.Model):
     
     def save(self, *args, **kwargs):
         if self.is_borrowed:
-            Logging.create(
+            Logging.objects.create(
                 user=self.lender.user.username,
+                manager = now_time_table.objects.first().name,
                 item="studytable",
                 message = str(self.number)+"번 테이블 | "+self.start_time+"부터 1시간 빌림"
             )
@@ -332,21 +364,31 @@ class Cable(models.Model):
             self.status = self.status_reserved
         else :
             if self.status != self.status_unavailable:
-                if self.status == self.status_reserved:
+                if self.status == self.status_reserved and self.borrowed_by is not None:
                     self.status = self.status_borrowed
                     self.is_borrowed = True
                     self.borrowed_time = timezone.localtime()
                     Logging.objects.create(
                         user = self.borrowed_by.user.username, 
+                        manager = now_time_table.objects.first().name,
                         item = "cable",
                         message = str(self.number)+"번 " + self.cable_type + " 케이블 대여"
                         )
                 else :
                     self.status = self.status_available
-                    Logging.objects.create(
-                        user = self.borrowed_by.user.username, 
-                        item = "cable",
-                        message = str(self.number)+"번 " + self.cable_type + " 케이블 반납"
+                    try:
+                        Logging.objects.create(
+                            user = self.borrowed_by.user.username, 
+                            manager = now_time_table.objects.first().name,
+                            item = "cable",
+                            message = str(self.number)+"번 " + self.cable_type + " 케이블 반납"
+                            )
+                    except:
+                         Logging.objects.create(
+                            user = "blank",
+                            manager = now_time_table.objects.first().name,
+                            item = "cable",
+                            message = str(self.number)+"번 " + self.cable_type + "케이블 예약 시간초과"
                         )
                     self.borrowed_by = None
         try :

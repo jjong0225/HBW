@@ -417,7 +417,7 @@ font-weight:bold;
 	}
 
 }
-
+/*
 .img_table1:hover{content:url('../img/desk1_onmouse.png');}
 .img_table2:hover{content:url('../img/desk2_onmouse.png');}
 .img_table3:hover{content:url('../img/desk3_onmouse.png');}
@@ -427,7 +427,8 @@ font-weight:bold;
 .img_table7:hover{content:url('../img/desk7_onmouse.png');}
 .img_table8:hover{content:url('../img/desk8_onmouse.png');}
 .img_table9:hover{content:url('../img/desk9_onmouse.png');}
-.img_table10:hover{content:url('../img/desk10_onmouse.png');}
+.img_table10:hover{content:url('../img/desk10_onmouse.png');}*/
+
 .table_container {
 width: 500px;
 height: 330px;

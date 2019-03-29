@@ -37,8 +37,28 @@
   var userTable = (window.location.search.split("table=")[1] == null) ? -1 : window.location.search.split("table=")[1];
 
   $(document).ready(function () {
-
+    $('.img_table1').mouseover(function(){$('.img_table1').attr("src","/static/img/desk1_onmouse.png");});
+    $('.img_table1').mouseout(function(){$('.img_table1').attr("src","/static/img/desk1.png");});
+    $('.img_table2').mouseover(function(){$('.img_table2').attr("src","/static/img/desk2_onmouse.png");});
+    $('.img_table2').mouseout(function(){$('.img_table2').attr("src","/static/img/desk2.png");});
+    $('.img_table3').mouseover(function(){$('.img_table3').attr("src","/static/img/desk3_onmouse.png");});
+    $('.img_table3').mouseout(function(){$('.img_table3').attr("src","/static/img/desk3.png");});
+    $('.img_table4').mouseover(function(){$('.img_table4').attr("src","/static/img/desk4_onmouse.png");});
+    $('.img_table4').mouseout(function(){$('.img_table4').attr("src","/static/img/desk4.png");});
+    $('.img_table5').mouseover(function(){$('.img_table5').attr("src","/static/img/desk5_onmouse.png");});
+    $('.img_table5').mouseout(function(){$('.img_table5').attr("src","/static/img/desk5.png");});
+    $('.img_table6').mouseover(function(){$('.img_table6').attr("src","/static/img/desk6_onmouse.png");});
+    $('.img_table6').mouseout(function(){$('.img_table6').attr("src","/static/img/desk6.png");});
+    $('.img_table7').mouseover(function(){$('.img_table7').attr("src","/static/img/desk7_onmouse.png");});
+    $('.img_table7').mouseout(function(){$('.img_table7').attr("src","/static/img/desk7.png");});
+    $('.img_table8').mouseover(function(){$('.img_table8').attr("src","/static/img/desk8_onmouse.png");});
+    $('.img_table8').mouseout(function(){$('.img_table8').attr("src","/static/img/desk8.png");});
+    $('.img_table9').mouseover(function(){$('.img_table9').attr("src","/static/img/desk9_onmouse.png");});
+    $('.img_table9').mouseout(function(){$('.img_table9').attr("src","/static/img/desk9.png");});
+    $('.img_table10').mouseover(function(){$('.img_table10').attr("src","/static/img/desk10_onmouse.png");});
+    $('.img_table10').mouseout(function(){$('.img_table10').attr("src","/static/img/desk10.png");});
     if (userTable > 0)
+      $(".img_table" + userTable).off("mouseout");
       document.getElementsByClassName("img_table" + userTable)[0].setAttribute("src", "/static/img/desk" + userTable + "_onmouse.png");
     for (i = 0; i < $('.OBJcbTime').length; i++) {
       if (document.getElementsByClassName("OBJcbTime")[i].getAttribute("state") == "1" || document.getElementsByClassName("OBJcbTime")[i].getAttribute("state") == "-1") {
@@ -46,6 +66,11 @@
       }
     }
     $('.OBJcbTime').click(function () {
+      if (userTable == -1) {
+        alert('테이블을 선택해주세요');
+        location.reload();
+        return false;
+      }
       if (this.getAttribute("state") == "1") {
         userTimecnt--;
         this.setAttribute("state", "0");
@@ -199,19 +224,16 @@
     <div class="col-lg-6">
       <h1>예약 가능 시간</h1>
       <div class="hline"></div>
-      <p id="six"><i class="fas fa-phone"></i>　6시 이후 예약은 학생회실에 연락주세요.</p>
       <div class="place_time_check">
         <div class="ikc-tablelist-listup ikc-smuf-form col-lg-offset-4">
-          <p>
-            <span class="ikc-reserved-status">
+            <div class="ikc-reserved-status" style="margin-top:-2.5%; display:inline-block;">
               <span class="ikc-reserved-off" id="off"></span>
               예약 가능
               <span class="ikc-reserved-inactive"></span>
               예약 불가능
               <span class="ikc-reserved-active"></span>
               예약 선택
-            </span>
-          </p>
+            </div>
         </div>
         <form action="" method="POST">
           <table class="table" cellpadding="0" cellspacing="0">
@@ -260,14 +282,21 @@
         </form>
 
       </div>
+      <div class="col-xs-12">
+          <div class="alert alert-success" role="alert" style="margin-top:-7.5%;">
+                  <h4>주의사항</h4>
+              <p><i class="far fa-smile"></i>　실습실 예약 취소는<a href="{% url "login:main" %}"> 마이페이지</a>로!</p>
+              <p><i class="far fa-smile"></i>　<b>6시 이후</b> 실습실 예약은 학생회실에 연락주세요.</p>
+              <p><i class="far fa-smile"></i>　하루 최대 예약 시간은 <b>4시간</b>입니다.</p>
+          </div>
+      </div>
       <div class="col-md-2 col-md-offset-4 col-xs-6 col-xs-offset-3" style="text-align:center; margin-bottom:5%;  ">
         <a class="btn btn-theme" id="reservation_button" onclick="applyReservation();" style="display:inline-block;">자리 예약</a>
       </div>
+    </div>
       
-    </div>
-    <div class="col-md-6 col-xs-12">
-      <p class="cancel_message">실습실 예약 취소는 <a href="mypage.html">마이페이지</a>로</p>
-    </div>
+
+
   
   </div>
 </div>

@@ -253,7 +253,7 @@ def Main(request):
 #마이페이지
 @login_required
 def MyPage(request):
-    if request.user.date_joined.day == 25:
+    if request.user.date_joined.year == 2019 and request.user.date_joined.month == 3 and request.user.date_joined.day == 27 :
         return redirect('login:first') 
     current_user = request.user
     cur_time = timezone.localtime()
@@ -435,7 +435,7 @@ class StudyTableClass() :
 
     @login_required
     def LendTable(request):
-        if request.user.date_joined.day == 25  :
+        if request.user.date_joined.year == 2019 and request.user.date_joined.month == 3 and request.user.date_joined.day == 27 :
             return redirect('login:first') 
         sel_num = request.GET.get('table')
         table_q = StudyTable.objects.all().filter(number=sel_num)
@@ -617,8 +617,10 @@ def LendUn(request) :
 
 def create_all_password(request):
     player_q = models.User.objects.all().filter(is_superuser = 0)
+    cur_time = timezone.localtime()
     for player in player_q :
         player.set_password(player.email)
+        player.date_joined = cur_time
         player.save()
     return redirect('login:main') 
 
@@ -778,11 +780,34 @@ def EveryHourStudyTable(request):
 
 class first_login_class(PasswordChangeView) :
     def form_valid(self, form):
-#        ct = ContentType.objects.get_for_model(User)
-#        perm = Permission.objects.get_or_create(codename = 'agreed', name='agreed', Content_type = ct)
-#        new_group = Group.objects.filter(Q())
-#        newgroup.permissions.add(can_fm_list)
-        date = "2019-03-01 05:06:46.931737"
+        date = timezone.localtime()
         self.request.user.date_joined = date
         self.request.user.save()
         return super().form_valid(form)
+
+def password_reset(request) :
+    status = 0
+    if request.method == "POST" :
+        user_id = request.POST.get('user_id')
+        tel_num = request.POST.get('tel_num')
+        target = models.User.objects.all().filter(username = user_id)
+        if target.count() == 1 :
+            player = target.first()
+            if player.email == tel_num :
+                player.set_password(player.email)
+                return redirect('login:change_done')
+            else :
+                status = 2
+        else :
+            status = 1
+    return render(request, 'login/find_pw.html', {'status' : status})
+
+
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+
+def page_not_found(request) :
+    response = render_to_response('login/404.html', {}, 
+    conttext_instance=RequestContext(request))
+    response.status_code = 404
+    return response

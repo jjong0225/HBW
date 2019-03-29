@@ -24,5 +24,6 @@ urlpatterns = [
     path('complain/', views.GetComplain),
     path('jong1/',views.EveryHourStudyTable),
     path('jong2/',views.EveryDayStudyTable),
+    path('password_reset/',views.password_reset),
 ]
 urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
