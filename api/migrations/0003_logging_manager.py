@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='logging',
             name='manager',
-            field=models.CharField(default='a', max_length=10),
+            field=models.CharField(default='A', max_length=10),
             preserve_default=False,
         ),
     ]

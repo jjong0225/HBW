@@ -64,7 +64,8 @@ class Student(models.Model):
             item = "today_A4", 
             manager = now_time_table.objects.first().name,
             user = self.user.username,
-            message = "A4"+str(self.A4_count)+" 장 대여")
+            manager = now_time_table.objects.first().name,
+            message = "A4 "+str(self.A4_count)+"장 대여")
         
         super().save(*args, **kwargs)
 
@@ -243,8 +244,8 @@ class Lan(models.Model):
                     self.is_borrowed = True
                     self.borrowed_time = timezone.localtime()
                     Logging.objects.create(
-                        user = self.borrowed_by.user.username,
-                        manager = now_time_table.objects.first().name, 
+                        user = self.borrowed_by.user.username, 
+                        manager = now_time_table.objects.first().name,
                         item = "lan",
                         message = str(self.number)+"번 랜선 대여"
                         )
@@ -306,12 +307,6 @@ class StudyTable(models.Model):
             )
     def __str__(self):
         return "Table "+str(self.number)
-
-    
-        
-    
-
-
 
 
 class timetest(models.Model):

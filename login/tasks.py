@@ -187,7 +187,7 @@ def GetNowManager() :
         models.now_time_table.objects.create(name='blank', start_time = num, is_manager = False)    
 
     if now_manager.count() == 1 :
-            models.now_time_table.objects.create(name=now_manager.first().name, start_time = num, is_manager = True)
+        models.now_time_table.objects.create(name=now_manager.first().name, start_time = num, is_manager = True)
 
     if  now_manager.count() > 1 or  now_manager.count() < 0  : ## 오류 상황
         models.now_time_table.objects.create(name='blank', start_time = num, is_manager = False) 
