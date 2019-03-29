@@ -253,7 +253,7 @@ def Main(request):
 #마이페이지
 @login_required
 def MyPage(request):
-    if request.user.date_joined.year == 2019 and request.user.date_joined.month == 3 and request.user.date_joined.day == 27 :
+    if request.user.date_joined.year == 2019 and request.user.date_joined.month == 3 and request.user.date_joined.day == 28 :
         return redirect('login:first') 
     current_user = request.user
     cur_time = timezone.localtime()
@@ -435,7 +435,7 @@ class StudyTableClass() :
 
     @login_required
     def LendTable(request):
-        if request.user.date_joined.year == 2019 and request.user.date_joined.month == 3 and request.user.date_joined.day == 27 :
+        if request.user.date_joined.year == 2019 and request.user.date_joined.month == 3 and request.user.date_joined.day == 28 :
             return redirect('login:first') 
         sel_num = request.GET.get('table')
         table_q = StudyTable.objects.all().filter(number=sel_num)
