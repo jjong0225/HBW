@@ -64,7 +64,6 @@ class Student(models.Model):
             item = "today_A4", 
             manager = now_time_table.objects.first().name,
             user = self.user.username,
-            manager = now_time_table.objects.first().name,
             message = "A4 "+str(self.A4_count)+"장 대여")
         
         super().save(*args, **kwargs)
