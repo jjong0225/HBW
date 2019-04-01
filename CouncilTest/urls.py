@@ -27,11 +27,11 @@ urlpatterns = [
     path('api/', include('api.urls')),
 ]
 
-#from django.conf.urls import (
-#    handler400, handler403, handler404, handler500
-#)
+from django.conf.urls import (
+    handler400, handler403, handler404, handler500
+)
 
-#handler400='login.views.'
-#handler403=''
-#handler404=''
-#handler500=''
+handler400='login.views.page_not_found'
+handler403='login.views.page_not_found'
+handler404='login.views.page_not_found'
+handler500='login.views.server_error_page'

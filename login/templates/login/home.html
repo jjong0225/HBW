@@ -51,7 +51,7 @@
         <div class="carousel" style="width:100%;">
           {% for post in posts %}
           {% if post.photo %}
-          <a id="carousel-{{ forloop.counter0 }}" class="carousel-item" href="#"><img src="{{ post.photo.url }}"></a>
+          <a id="carousel-{{ forloop.counter0 }}" class="carousel-item" href="#"><img src={{ post.photo.url }} ></a>
           {% endif %}
           {% endfor %}
         </div>

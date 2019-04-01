@@ -807,7 +807,13 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 
 def page_not_found(request) :
-    response = render_to_response('login/404.html', {}, 
-    conttext_instance=RequestContext(request))
+    # response = render_to_response('login/404.html',context_instance=RequestContext(request))
+    response = render(request, 'login/404.html', {})
     response.status_code = 404
+    return response
+
+def server_error_page(request) :
+    # response = render_to_response('login/404.html',context_instance=RequestContext(request))
+    response = render(request, 'login/404.html', {})
+    response.status_code = 500
     return response

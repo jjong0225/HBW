@@ -1,0 +1,67 @@
+.grey.darken-1{
+    color:white;
+}
+.grey.darken-1 p{
+    color:white;
+    margin-left:15px;
+}
+
+.grey.darken-1 h1{
+    margin-left:15px;
+}
+.grey.darken-1 .profile{
+    background-image:url("../img/profile.af27be63dbf8.jpg");
+    display: block;
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
+    margin-right: 20px;
+    background-size: cover;
+    background-position: 50% 50%;
+}
+
+.list-group{
+    margin-top:2.5%;
+}
+
+ul>li .col{
+    padding:0 !important;
+}
+
+.nopadding{
+    padding-left: 0px;padding-right: 0px;
+}
+
+#reservation_state .list-group .row{
+    margin-bottom:0px;
+}
+
+.badge-yellow{
+    color:white !important; 
+    background-color:#ffc107;
+}
+
+.badge-primary{
+    color:#ffffff !important;
+    background-color:#007bff !important;
+}
+
+.badge-red{
+    color:#ffffff !important;
+    background-color:red !important;
+
+}
+
+.closeButton{
+    float:right !important; margin-right:10px;
+}
+
+.badge-wait{
+    color:#ffffff !important;
+    background-color:#53a451 !important;
+}
+
+.badge-reserved{
+    color:#ffffff !important;
+    background-color:#4aa0b5 !important;
+}

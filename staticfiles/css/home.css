@@ -1,0 +1,22 @@
+
+.full{
+	color:red;
+}
+
+#radio{
+	float:right;	
+}
+
+.btn.btn-secondary.active{
+	background-color: #009bdd;
+}
+.btn.btn-secondary.focus{
+	background-color: #009bdd;
+}
+.btn.btn-secondary:hover{
+	background-color: #00b3fe;
+}
+.btn.btn-secondary{
+	background-color: #384452;
+	color:white;
+}
