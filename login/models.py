@@ -304,6 +304,8 @@ class StudyTable(models.Model):
                 item="studytable",
                 message = str(self.number)+"번 테이블 | "+self.start_time+"부터 1시간 빌림"
             )
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return "Table "+str(self.number)
 

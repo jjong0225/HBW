@@ -27,5 +27,6 @@ urlpatterns = [
     path('jong2/',views.EveryDayStudyTable),
     path('password_reset/',views.password_reset),
     url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
+    path('pass_changed', views.pass_changed, name='pass_changed'),
 ]
 urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

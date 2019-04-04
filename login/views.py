@@ -81,7 +81,7 @@ def Main(request):
     cable_set = models.Cable.objects.all()
     post_q = models.Poster.objects.all().order_by('number')
     table_q = models.StudyTable.objects.all().order_by('number', 'start_time')
-    manager = models.now_time_table.objects.all()
+    manager = models.now_time_table.objects.first()
     unbrella_count = unbrella_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
     battery_count = battery_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
     lan_count = lan_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
@@ -90,10 +90,10 @@ def Main(request):
     message_battery = ""
     message_lan = ""
     message_cable = ""
-    unbrella_status = 0   # 0 : 평상시상태.   1 : 대여가능.   2 : 대여중   3 : 대여가능한 물품이 없음 
-    battery_status = 0  
+    unbrella_status = 0   # 0 : 평상시상태.   1 : 대여가능.   2 : 대여중   3 : 대여가능한 물품이 없음
+    battery_status = 0
     lan_status = 0
-    cable_status = 0 
+    cable_status = 0
     login_status = 0
 
     if request.method == "POST":
@@ -117,9 +117,9 @@ def Main(request):
                 'unbrella_status': unbrella_status,
                 'battery_status': battery_status,
                 'lan_status': lan_status,
-                'cable_status': cable_status,   
-                'manager':manager,   
-                'login_status':login_status,  
+                'cable_status': cable_status,
+                'manager':manager,
+                'login_status':login_status,
             })
 
         if request.user.user_data.is_paid == False :
@@ -142,9 +142,9 @@ def Main(request):
                 'unbrella_status': unbrella_status,
                 'battery_status': battery_status,
                 'lan_status': lan_status,
-                'cable_status': cable_status,   
-                'manager':manager,   
-                'login_status':login_status,  
+                'cable_status': cable_status,
+                'manager':manager,
+                'login_status':login_status,
             })
 
         if request.POST.get('battery', 'False') == "True":
@@ -154,7 +154,7 @@ def Main(request):
                 try :
                     if request.user.user_data.ba is not None :
                         battery_status = 2
-                except :      
+                except :
                     for item in battery_set:
                         if item.is_available():
                             break
@@ -174,7 +174,7 @@ def Main(request):
                 try :
                     if request.user.user_data.un is not None :
                         unbrella_status = 2
-                except :      
+                except :
                     for item in unbrella_set:
                         if item.is_available():
                             break
@@ -194,7 +194,7 @@ def Main(request):
                 try :
                     if request.user.user_data.la is not None :
                         lan_status = 2
-                except :      
+                except :
                     for item in lan_set:
                         if item.is_available():
                             break
@@ -214,7 +214,7 @@ def Main(request):
                 try :
                     if request.user.user_data.ca is not None :
                         cable_status = 2
-                except :      
+                except :
                     for item in cable_set:
                         if item.is_available():
                             break
@@ -226,7 +226,7 @@ def Main(request):
                     logger.info('케이블 사업 : [학번:'+request.user.username+'|케이블 번호:'+str(item.number)+'] 대여 완료') # 담당자:{}
                     cable_count = cable_count + 1
                     cable_status = 1
-            
+
     return render(request, 'login/home.html', {
         'tables' : table_q,
         'battery_count': battery_count,
@@ -245,16 +245,16 @@ def Main(request):
         'unbrella_status': unbrella_status,
         'battery_status': battery_status,
         'lan_status': lan_status,
-        'cable_status': cable_status,   
-        'manager':manager,   
-        'login_status':login_status,  
+        'cable_status': cable_status,
+        'manager':manager,
+        'login_status':login_status,
     })
 
 #마이페이지
 @login_required
 def MyPage(request):
     if request.user.date_joined.year == 2019 and request.user.date_joined.month == 3 and request.user.date_joined.day == 28 :
-        return redirect('login:first') 
+        return redirect('login:first')
     current_user = request.user
     cur_time = timezone.localtime()
     manager = models.now_time_table.objects.all()
@@ -263,9 +263,9 @@ def MyPage(request):
     if request.method == "POST":
         cur_time = request.POST.get('cancel')
         time = StudyTable.objects.all().filter(lender_id=current_user.user_data.id).filter(start_time=cur_time).first()
-        if time is None : 
+        if time is None :
             return HttpResponse("예약이 존재하지 않습니다.")
-        if int(cur_time) > timezone.localtime().hour : 
+        if int(cur_time) > timezone.localtime().hour :
             time.is_borrowed = False
             time.lender_id = None
             time.save()
@@ -291,20 +291,20 @@ def MyPage(request):
         lan_time = 0
         cable_time = 0
 
-        if my_unbrella is None : 
+        if my_unbrella is None :
             unbrella_status = 0
         else :
-            if my_unbrella.is_borrowed == True : 
+            if my_unbrella.is_borrowed == True :
                 if (my_unbrella.borrowed_time + datetime.timedelta(days = 1)) > timezone.localtime() :
                     unbrella_status = 1
                     if my_unbrella.borrowed_time.weekday() < 4 :
                         tmp_time = ((my_unbrella.borrowed_time + datetime.timedelta(days = 1)) - timezone.localtime())
-                        unbrella_time = tmp_time 
+                        unbrella_time = tmp_time
                     else :
                         offset = 7 - timezone.localtime().weekday()
                         tmp_time = ((my_unbrella.borrowed_time + datetime.timedelta(days = offset)) - timezone.localtime())
                         unbrella_time = tmp_time.days * 24 + (tmp_time.seconds // 3600)
-                else : 
+                else :
                     unbrella_status = 2
                     tmp_time =  timezone.localtime() - my_unbrella.borrowed_time
                     unbrella_time = tmp_time.days
@@ -312,20 +312,20 @@ def MyPage(request):
                     unbrella_status = 3
                     unbrella_time = ((((my_unbrella.reservation_time + datetime.timedelta(minutes = 10)) - timezone.localtime()).seconds) % 3600) // 60
 
-        if my_battery is None : 
+        if my_battery is None :
             battery_status = 0
         else :
-            if my_battery.is_borrowed == True : 
+            if my_battery.is_borrowed == True :
                 if (my_battery.borrowed_time + datetime.timedelta(days = 1)) > timezone.localtime() :
                     battery_status = 1
                     if my_battery.borrowed_time.weekday() < 4 :
                         tmp_time = ((my_battery.borrowed_time + datetime.timedelta(days = 1)) - timezone.localtime())
-                        battery_time = tmp_time 
+                        battery_time = tmp_time
                     else :
                         offset = 7 - timezone.localtime().weekday()
                         tmp_time = ((my_battery.borrowed_time + datetime.timedelta(days = offset)) - timezone.localtime())
                         battery_time = tmp_time.days * 24 + (tmp_time.seconds // 3600)
-                else : 
+                else :
                     battery_status = 2
                     tmp_time =  timezone.localtime() - my_battery.borrowed_time
                     battery_time = tmp_time.days
@@ -333,20 +333,20 @@ def MyPage(request):
                     battery_status = 3
                     battery_time = ((((my_battery.reservation_time + datetime.timedelta(minutes = 10)) - timezone.localtime()).seconds) % 3600) // 60
 
-        if my_lan is None : 
+        if my_lan is None :
             lan_status = 0
         else :
-            if my_lan.is_borrowed == True : 
+            if my_lan.is_borrowed == True :
                 if (my_lan.borrowed_time + datetime.timedelta(days = 1)) > timezone.localtime() :
                     lan_status = 1
                     if my_lan.borrowed_time.weekday() < 4 :
                         tmp_time = ((my_lan.borrowed_time + datetime.timedelta(days = 1)) - timezone.localtime())
-                        lan_time = tmp_time 
+                        lan_time = tmp_time
                     else :
                         offset = 7 - timezone.localtime().weekday()
                         tmp_time = ((my_lan.borrowed_time + datetime.timedelta(days = offset)) - timezone.localtime())
                         lan_time = tmp_time.days * 24 + (tmp_time.seconds // 3600)
-                else : 
+                else :
                     lan_status = 2
                     tmp_time =  timezone.localtime() - my_lan.borrowed_time
                     lan_time = tmp_time.days
@@ -354,20 +354,20 @@ def MyPage(request):
                     lan_status = 3
                     lan_time = ((((my_lan.reservation_time + datetime.timedelta(minutes = 10)) - timezone.localtime()).seconds) % 3600) // 60
 
-        if my_cable is None : 
+        if my_cable is None :
             cable_status = 0
         else :
-            if my_cable.is_borrowed == True : 
+            if my_cable.is_borrowed == True :
                 if (my_cable.borrowed_time + datetime.timedelta(days = 1)) > timezone.localtime() :
                     cable_status = 1
                     if my_cable.borrowed_time.weekday() < 4 :
                         tmp_time = ((my_cable.borrowed_time + datetime.timedelta(days = 1)) - timezone.localtime())
-                        cable_time = tmp_time 
+                        cable_time = tmp_time
                     else :
                         offset = 7 - timezone.localtime().weekday()
                         tmp_time = ((my_cable.borrowed_time + datetime.timedelta(days = offset)) - timezone.localtime())
                         cable_time = tmp_time.days * 24 + (tmp_time.seconds // 3600)
-                else : 
+                else :
                     cable_status = 2
                     tmp_time =  timezone.localtime() - my_cable.borrowed_time
                     cable_time = tmp_time.days
@@ -378,20 +378,20 @@ def MyPage(request):
         cur_time  = timezone.localtime()
         return render(request, 'login/mypage.html', {
             'times' : time_q,
-            'cur_time' : cur_time, 
+            'cur_time' : cur_time,
             'manager':manager,
-            'my_unbrella' : my_unbrella, 
-            'my_battery' : my_battery, 
-            'my_lan' : my_lan, 
+            'my_unbrella' : my_unbrella,
+            'my_battery' : my_battery,
+            'my_lan' : my_lan,
             'my_cable' : my_cable,
-            'unbrella_time' : unbrella_time, 
-            'battery_time' : battery_time, 
-            'lan_time' : lan_time, 
-            'cable_time' : cable_time, 
-            'unbrella_status' : unbrella_status, 
-            'battery_status' : battery_status, 
-            'lan_status' : lan_status, 
-            'cable_status' : cable_status, 
+            'unbrella_time' : unbrella_time,
+            'battery_time' : battery_time,
+            'lan_time' : lan_time,
+            'cable_time' : cable_time,
+            'unbrella_status' : unbrella_status,
+            'battery_status' : battery_status,
+            'lan_status' : lan_status,
+            'cable_status' : cable_status,
             'cur_time' : cur_time,
             })
 
@@ -406,6 +406,10 @@ class StudyTableClass() :
                 if request.POST.get(post_name) != 0 :
                     sel_time[i] = request.POST.get(post_name)
             table_q = StudyTable.objects.all().filter(number=sel_table).filter(start_time__in=sel_time).filter(is_borrowed=False)
+
+            if table_q.count() == 0:
+                return HttpResponse("시간을 선택해주세요")
+
             if StudyTable.objects.all().filter(lender=request.user.user_data.id).count() + table_q.count() > 4 :
                 return HttpResponse("초과 예약")
 
@@ -430,16 +434,16 @@ class StudyTableClass() :
 #                table_q = StudyTable.objects.all().filter(number=selected_number)
 #                return render(request, 'login/place_reservation.html', {'tables' : table_q})
 #            else:
-#                return render(request, 'login/place_reservation.html')            
+#                return render(request, 'login/place_reservation.html')
 
 
     @login_required
     def LendTable(request):
         if request.user.date_joined.year == 2019 and request.user.date_joined.month == 3 and request.user.date_joined.day == 28 :
-            return redirect('login:first') 
+            return redirect('login:first')
         sel_num = request.GET.get('table')
         table_q = StudyTable.objects.all().filter(number=sel_num)
-        manager = models.now_time_table.objects.all()    
+        manager = models.now_time_table.objects.all()
         return render(request, 'login/place_reservation.html', { 'tables' : table_q, 'manager':manager})
 #         if request.method == "POST":
 #             sel_time = request.POST.get('tableNum')
@@ -476,7 +480,7 @@ class PasswordContextMixin:
             **(self.extra_context or {})
         })
         return context
-      
+
 class PasswordChangeView(PasswordContextMixin, FormView):
     form_class = PasswordChangeForm
     success_url = reverse_lazy('login:change_done')
@@ -505,7 +509,7 @@ class PasswordChangeView(PasswordContextMixin, FormView):
 class PasswordChangeDoneView(PasswordContextMixin, TemplateView):
     template_name = 'login/password_change_done.html'
     title = _('Password change successful')
-    
+
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -534,7 +538,7 @@ def ReturnUnbrella(request):
 
 
 
-# POST의 각 Field들인 XXX를 정의해야함 
+# POST의 각 Field들인 XXX를 정의해야함
 def GetComplain(request):
     if request.method == "POST":
         anonymous_check  = request.POST['is_anonymous']
@@ -553,10 +557,13 @@ def GetComplain(request):
         else :
             updater_name = request.user.username
             updater_id = request.user.user_data.std_year
-        models.Complain.objects.create(username = updater_name, updated_text = request.POST['updated_text'], updated_date = current_time, is_anonymous = anonymous_check, number = updated_number)
-        logger.info('컴플레인 : [익명여부 :' + anonymous_check +'이름:'+updater_name+'| 학번:'+updater_id+'| 컴플레인 번호:' + str(updated_number) + '] 업로드 완료') # 담당자:{}
+        tmp_text = request.POST['updated_text']
+
+        if len(tmp_text) > 50 :
+            models.Complain.objects.create(username = updater_name, updated_text = tmp_text, updated_date = current_time, is_anonymous = anonymous_check, number = updated_number)
+            logger.info('컴플레인 : [익명여부 :' + anonymous_check +'이름:'+updater_name+'| 학번:'+updater_id+'| 컴플레인 번호:' + str(updated_number) + '] 업로드 완료') # 담당자:{}
         return redirect('login:main')
-    else : 
+    else :
         return redirect('login:main')
 
 def LendUn(request) :
@@ -569,7 +576,7 @@ def LendUn(request) :
     lan_count = lan_set.filter(Q(is_borrowed = True) | Q(is_reserved = True)).count()
     message = ""
     yes_no = False
-    manager = models.now_time_table.objects.all()    
+    manager = models.now_time_table.objects.all()
 
     if(models.Unbrella.objects.filter(borrowed_by = request.user.user_data.id).count() > 0) :
         message = "현재 예약하신 우산이 이미 존재합니다."
@@ -622,7 +629,7 @@ def create_all_password(request):
         player.set_password(player.email)
         player.date_joined = cur_time
         player.save()
-    return redirect('login:main') 
+    return redirect('login:main')
 
 
 def EveryHourStudyTable(request):
@@ -649,13 +656,13 @@ def GetNowManager(request) :
         num = num + 1
     now_manager = models.time_table.objects.all().filter(start_time = num).filter(week_day = cur_day)
     if now_manager.count() == 0 :
-        models.now_time_table.objects.create(name='blank', start_time = num, is_manager = False)    
+        models.now_time_table.objects.create(name='blank', start_time = num, is_manager = False)
 
     if now_manager.count() == 1 :
             models.now_time_table.objects.create(name=now_manager.name, start_time = num, is_manage = True)
 
     if  now_manager.count() > 1 or  now_manager.count() < 0  : ## 오류 상황
-        models.now_time_table.objects.create(name='blank', start_time = num, is_manager = False) 
+        models.now_time_table.objects.create(name='blank', start_time = num, is_manager = False)
     return redirect('login:main')
 
 
@@ -675,7 +682,7 @@ def EveryDayErrorCheck (request):
     studytable_time_count = 8
     studytable_count = studytable_day_count * studytable_table_count * studytable_time_count
 
-    
+
     # 우산 예약 레코드
     if unbrella_count != unbrella_q.count() :
         unbrella_arr= [0 for _ in range(unbrella_count + 1)]
@@ -690,7 +697,7 @@ def EveryDayErrorCheck (request):
                 unbrella_arr[i] = models.Unbrella.objects.all().filter(number=i).count()
 
             if unbrella_arr[i] == 0 :
-                p = models.Unbrella.objects.create(number = i, is_borrowed = False, borrowed_by = None, 
+                p = models.Unbrella.objects.create(number = i, is_borrowed = False, borrowed_by = None,
                 borrowed_time = timezone.localtime(), is_reserved = False, reservation_time = timezone.localtime() )
             i = i + 1
     if(unbrella_q.count() != unbrella_count):
@@ -710,7 +717,7 @@ def EveryDayErrorCheck (request):
                 battery_arr[i] = models.Battery.objects.all().filter(number=i).count()
 
             if battery_arr[i] == 0 :
-                p = models.Battery.objects.create(number = i, is_borrowed = False, borrowed_by = None, 
+                p = models.Battery.objects.create(number = i, is_borrowed = False, borrowed_by = None,
                 borrowed_time = timezone.localtime(), is_reserved = False, reservation_time = timezone.localtime() )
             i = i + 1
 
@@ -732,7 +739,7 @@ def EveryDayErrorCheck (request):
                 lan_arr[i] = models.Lan.objects.all().filter(number=i).count()
 
             if lan_arr[i] == 0 :
-                p = models.Lan.objects.create(number = i, is_borrowed = False, borrowed_by = None, 
+                p = models.Lan.objects.create(number = i, is_borrowed = False, borrowed_by = None,
                 borrowed_time = timezone.localtime(), is_reserved = False, reservation_time = timezone.localtime() )
             i = i + 1
 
@@ -795,7 +802,8 @@ def password_reset(request) :
             player = target.first()
             if player.email == tel_num :
                 player.set_password(player.email)
-                return redirect('login:change_done')
+                player.save()
+                return redirect('login:pass_changed')
             else :
                 status = 2
         else :
@@ -806,7 +814,7 @@ def password_reset(request) :
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
-def page_not_found(request) :
+def page_not_found(request, exception) :
     # response = render_to_response('login/404.html',context_instance=RequestContext(request))
     response = render(request, 'login/404.html', {})
     response.status_code = 404
@@ -817,3 +825,7 @@ def server_error_page(request) :
     response = render(request, 'login/404.html', {})
     response.status_code = 500
     return response
+
+
+def pass_changed(request) :
+    return render(request, 'login/password_change_done.html')

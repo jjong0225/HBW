@@ -97,6 +97,7 @@
 
         {% if form.errors %}
         <div class="alert alert-danger"style="margin-top:2.5%; margin-bottom:2.5%;">
+        <strong><i class="fas fa-exclamation-circle"></i>영문과 숫자를 포함한 8자리 이상 새 비밀번호를 설정해주세요</strong><br>
         {% for field in form %}
             {% for error in field.errors %}                        
                     <strong><i class="fas fa-exclamation-circle"></i>　{{ error|escape }}</strong><br>
@@ -109,7 +110,11 @@
                 <strong><i class="fas fa-exclamation-circle"></i>　{{ error|escape }}</strong>
             </div>
         {% endfor %}
-    {% endif %}
+        {% else %}
+          <div class="alert alert-danger"style="margin-top:2.5%; margin-bottom:2.5%;">
+          <strong><i class="fas fa-exclamation-circle"></i>　영문과 숫자를 포함한 8자리 이상 새 비밀번호를 설정해주세요</strong><br>  
+          </div>
+      {% endif %}
     
     <div class="row">
         <div class="input-field ">
