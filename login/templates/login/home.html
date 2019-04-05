@@ -84,7 +84,7 @@
           {% endif %}
         -->
         <form action="" method="POST">{% csrf_token %}
-          <p><button type="submit" name="unbrella" value="True" class="btn btn-theme">대여</button></p> <!-- 수정됨 -->
+          <p><button type="submit" name="unbrella" value="True" class="btn btn-theme">예약</button></p> <!-- 수정됨 -->
         </form>
       </div>
       <div class="col-lg-3">
@@ -92,7 +92,7 @@
         <h4>보조배터리</h4>
         <p>{{ battery_count }}　|　<b>{{ battery_total }}</b></p> <!-- 수정됨 -->
         <form action="" method="POST">{% csrf_token %}
-          <p><button type="submit" name="battery" value="True" class="btn btn-theme">대여</button></p> <!-- 수정됨 -->
+          <p><button type="submit" name="battery" value="True" class="btn btn-theme">예약</button></p> <!-- 수정됨 -->
         </form>
       </div>
       <div class="col-lg-3">
@@ -101,7 +101,7 @@
           <h4>랜선</h4>
           <p>{{ lan_count }}　|　<b>{{ lan_total }}</b></p> <!-- 수정됨 -->
           <form action="" method="POST">{% csrf_token %}
-            <p><button type="submit" name="lan" value="True" class="btn btn-theme">대여</button></p> <!-- 수정됨 -->
+            <p><button type="submit" name="lan" value="True" class="btn btn-theme">예약</button></p> <!-- 수정됨 -->
           </form>
         </div>
       </div>
@@ -111,12 +111,12 @@
           <h4>케이블</h4>
           <p>{{ cable_count }}　|　<b>{{ cable_total }}</b></p>
           <form action="" method="POST">{% csrf_token %}
-            <p><button type="submit" name="cable" value="True" class="btn btn-theme">대여</button></p> <!-- 수정됨 -->
+            <p><button type="submit" name="cable" value="True" class="btn btn-theme">예약</button></p> <!-- 수정됨 -->
           </form>
         </div>
       </div>
       <div class="col-lg-12">
-          <p><span class="fas fa-exclamation-circle" style="margin-top:5%;"></span>　예약 후 10분안에 학생회실에서 대여해주세요.</p>
+          <p><span class="fas fa-exclamation-circle" style="margin-top:5%;"></span>　예약 후 <b>10분</b>안에 학생회실에서 대여해주세요.</p>
         </div>
     </div>
  
@@ -169,8 +169,6 @@
             </tr>
             {% endif %}
             {% endfor %}
-            <!-- 표 하나하나 색깔 바꾸고 싶으면 bgcolor해서 바꾸면 됨! -->
-            <!-- style="background-color:rgb(233, 181, 49)" => class="occupied"-->
             <!-- 장고 DB를 받어서 확인하도록 함-->
           </tbody>
         </table>
