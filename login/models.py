@@ -58,14 +58,14 @@ class Student(models.Model):
         self.month_A4 = self.month_A4 + self.A4_count
         if self.month_A4 > 500:
             raise APIException("한달 대여량은 500장을 넘길 수 없습니다!")
-        self.A4_count = 0
+        
 
         Logging.objects.create(
             item = "today_A4", 
             manager = now_time_table.objects.first().name,
             user = self.user.username,
             message = "A4 "+str(self.A4_count)+"장 대여")
-        
+        self.A4_count = 0
         super().save(*args, **kwargs)
 
     objects = models.Manager()
