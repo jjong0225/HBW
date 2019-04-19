@@ -21,21 +21,29 @@ def ExpiredCheck():
     cur_time = timezone.now()
     for item in unbrella_set :
         if item.reservation_time+datetime.timedelta(minutes=10) < cur_time :
+            item.status = status_available
             item.is_reserved = False
             item.borrowed_by = None
             item.save()
+            
     for item in battery_set :
         if item.reservation_time+datetime.timedelta(minutes=10) < cur_time :
+            item.status = status_available
             item.is_reserved = False
             item.borrowed_by = None
             item.save()
+
+
     for item in lan_set :
         if item.reservation_time+datetime.timedelta(minutes=10) < cur_time :
+            item.status = status_available
             item.is_reserved = False
             item.borrowed_by = None
             item.save()
+
     for item in cable_set :
         if item.reservation_time+datetime.timedelta(minutes=10) < cur_time :
+            item.status = status_available
             item.is_reserved = False
             item.borrowed_by = None
             item.save()

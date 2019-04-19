@@ -58,14 +58,14 @@ class Student(models.Model):
         self.month_A4 = self.month_A4 + self.A4_count
         if self.month_A4 > 500:
             raise APIException("한달 대여량은 500장을 넘길 수 없습니다!")
-        
+        self.A4_count = 0
 
         Logging.objects.create(
             item = "today_A4", 
             manager = now_time_table.objects.first().name,
             user = self.user.username,
             message = "A4 "+str(self.A4_count)+"장 대여")
-        self.A4_count = 0
+        
         super().save(*args, **kwargs)
 
     objects = models.Manager()
@@ -91,46 +91,62 @@ class Unbrella(models.Model):
     is_reserved = models.BooleanField(default = False)
     reservation_time = models.DateTimeField(auto_now_add=True)
     status=models.CharField(max_length=5, choices=status_choices, default=status_available)
-    return_time = models.DateTimeField(auto_now_add=True)
+    ex_lender = models.CharField(max_length=9, default = "", null=True, blank=True)
 
     def save(self, *args, **kwargs):
-        if self.is_reserved :
+        if self.status == self.status_unavailable: # status 가 "대여불가"일 경우! -> 이를 먼저 풀어줘야 한다!
+            return
+
+        elif self.is_reserved == True and self.is_borrowed == False and self.borrowed_by is not None   or    self.ex_lender == "" and self.status == self.status_reserved and self.borrowed_by is not None: # "예약" 상태가 될 때 (조건1 : is_reserved 체크, is_borrowed 비체크, borrowed_by 존재!) or (조건2 : status가 "대여신청중"이고 borrowed_by가 존재!)
             self.status = self.status_reserved
-        else :
-            if self.status != self.status_unavailable:
-                if self.status == self.status_reserved and self.borrowed_by is not None:
-                    self.status = self.status_borrowed
-                    self.is_borrowed = True
-                    self.borrowed_time = timezone.localtime()
-                    Logging.objects.create(
-                        user = self.borrowed_by.user.username, 
-                        manager = now_time_table.objects.first().name,
-                        item = "unbrella",
-                        message = str(self.number)+"번 우산 대여"
-                        )
-                else :
-                    self.status = self.status_available
-                    try:
-                        Logging.objects.create(
-                            user = self.borrowed_by.user.username,
-                            manager = now_time_table.objects.first().name,
-                            item = "unbrella",
-                            message = str(self.number)+"번 우산 반납"
-                        )
-                    except:
-                         Logging.objects.create(
-                            user = "blank",
-                            manager = now_time_table.objects.first().name,
-                            item = "unbrella",
-                            message = str(self.number)+"번 우산 예약 시간초과"
-                        )
-                    self.borrowed_by = None
+            self.is_reserved = True
+            self.is_borrowed = False
+            self.ex_lender = self.borrowed_by.user.username
+            self.reservation_time = timezone.localtime()
+
+        elif self.is_reserved == False and self.is_borrowed == True and self.borrowed_by is not None   or    self.status == self.status_borrowed and self.borrowed_by is not None: # "대여" 상태가 될 때 (조건1 : is_reserved 비체크, is_borrowed 체크, borrowed_by 존재!) or (조건2 : status가 "대여중"이고 borrowed_by가 존재!)
+            if not self.ex_lender or self.ex_lender == self.borrowed_by.user.username :
+                self.status = self.status_borrowed
+                self.is_reserved = False
+                self.is_borrowed = True
+                self.borrowed_time = timezone.localtime()
+                Logging.objects.create(
+                    user = self.borrowed_by.user.username, 
+                    manager = now_time_table.objects.first().name,
+                    item = "unbrella",
+                    message = str(self.number)+"번 우산 대여"
+                    )
+            else : 
+                return 
+
+        else : # "대여가능" 상태가 될 때, 즉 반납할 때 (조건 : is_reserved = False, is_borrowed = False, status = 대여가능)
+            try:
+                Logging.objects.create(
+                    user = self.borrowed_by.user.username,
+                    manager = now_time_table.objects.first().name,
+                    item = "unbrella",
+                    message = str(self.number)+"번 우산 반납"
+                    )
+            except:
+                Logging.objects.create(
+                    user = "blank",
+                    manager = now_time_table.objects.first().name,
+                    item = "unbrella",
+                    message = str(self.number)+"번 우산 예약 시간초과"
+                    )            
+            self.is_reserved = False
+            self.is_borrowed = False
+            self.status = self.status_available
+            self.ex_lender = ""
+            self.borrowed_by = None
+
         try :
             super().save(*args, **kwargs)
         except IntegrityError:
             self.borrowed_by = None
             raise APIException("같은 종류의 대여사업을 2개 이상 사용하실 수 없습니다!")
-         
+
+
     def is_available(self):
         if self.status == self.status_available:
             return True
@@ -139,6 +155,11 @@ class Unbrella(models.Model):
 
     def __str__(self):
         return str(self.number)
+
+
+
+
+
 
 
 #배터리 모델
@@ -162,44 +183,61 @@ class Battery(models.Model):
     reservation_time = models.DateTimeField(auto_now_add=True)
     status=models.CharField(max_length=5, choices=status_choices, default=status_available)
     return_time = models.DateTimeField(auto_now_add=True)
+    ex_lender = models.CharField(max_length=9, default = "", null=True, blank=True)
 
     def save(self, *args, **kwargs):
-        if self.is_reserved :
+        if self.status == self.status_unavailable: # status 가 "대여불가"일 경우! -> 이를 먼저 풀어줘야 한다!
+            return
+
+        elif self.is_reserved == True and self.is_borrowed == False and self.borrowed_by is not None   or    self.ex_lender == "" and self.status == self.status_reserved and self.borrowed_by is not None: # "예약" 상태가 될 때 (조건1 : is_reserved 체크, is_borrowed 비체크, borrowed_by 존재!) or (조건2 : status가 "대여신청중"이고 borrowed_by가 존재!)
             self.status = self.status_reserved
-        else :
-            if self.status != self.status_unavailable:
-                if self.status == self.status_reserved and self.borrowed_by is not None:
-                    self.status = self.status_borrowed
-                    self.is_borrowed = True
-                    self.borrowed_time = timezone.localtime()
-                    Logging.objects.create(
-                        user = self.borrowed_by.user.username, 
-                        manager = now_time_table.objects.first().name,
-                        item = "battery",
-                        message = str(self.number)+"번 배터리 대여"
-                        )
-                else :
-                    self.status = self.status_available
-                    try:
-                        Logging.objects.create(
-                            user = self.borrowed_by.user.username, 
-                            manager = now_time_table.objects.first().name,
-                            item = "battery",
-                            message = str(self.number)+"번 배터리 반납"
-                            )
-                    except:
-                         Logging.objects.create(
-                            user = "blank",
-                            manager = now_time_table.objects.first().name,
-                            item = "battery",
-                            message = str(self.number)+"번 배터리 예약 시간초과"
-                        )
-                    self.borrowed_by = None
+            self.is_reserved = True
+            self.is_borrowed = False
+            self.ex_lender = self.borrowed_by.user.username
+            self.reservation_time = timezone.localtime()
+
+        elif self.is_reserved == False and self.is_borrowed == True and self.borrowed_by is not None   or    self.status == self.status_borrowed and self.borrowed_by is not None: # "대여" 상태가 될 때 (조건1 : is_reserved 비체크, is_borrowed 체크, borrowed_by 존재!) or (조건2 : status가 "대여중"이고 borrowed_by가 존재!)
+            if not self.ex_lender or self.ex_lender == self.borrowed_by.user.username :
+                self.status = self.status_borrowed
+                self.is_reserved = False
+                self.is_borrowed = True
+                self.borrowed_time = timezone.localtime()
+                Logging.objects.create(
+                    user = self.borrowed_by.user.username, 
+                    manager = now_time_table.objects.first().name,
+                    item = "battery",
+                    message = str(self.number)+"번 배터리 대여"
+                    )
+            else : 
+                return 
+
+        else : # "대여가능" 상태가 될 때, 즉 반납할 때 (조건 : is_reserved = False, is_borrowed = False, status = 대여가능)
+            try:
+                Logging.objects.create(
+                    user = self.borrowed_by.user.username, 
+                    manager = now_time_table.objects.first().name,
+                    item = "battery",
+                    message = str(self.number)+"번 배터리 반납"
+                    )
+            except:
+                Logging.objects.create(
+                    user = "blank",
+                    manager = now_time_table.objects.first().name,
+                    item = "battery",
+                    message = str(self.number)+"번 배터리 예약 시간초과"
+                    )            
+            self.is_reserved = False
+            self.is_borrowed = False
+            self.status = self.status_available
+            self.ex_lender = ""
+            self.borrowed_by = None
+
         try :
             super().save(*args, **kwargs)
         except IntegrityError:
             self.borrowed_by = None
             raise APIException("같은 종류의 대여사업을 2개 이상 사용하실 수 없습니다!")
+
             
     def is_available(self):
         if self.status == self.status_available:
@@ -232,39 +270,55 @@ class Lan(models.Model):
     reservation_time = models.DateTimeField(auto_now_add=True)
     status=models.CharField(max_length=5, choices=status_choices, default=status_available)
     return_time = models.DateTimeField(auto_now_add=True)
+    ex_lender = models.CharField(max_length=9, default = "", null=True, blank=True)
     
     def save(self, *args, **kwargs):
-        if self.is_reserved :
+        if self.status == self.status_unavailable: # status 가 "대여불가"일 경우! -> 이를 먼저 풀어줘야 한다!
+            return
+
+        elif self.is_reserved == True and self.is_borrowed == False and self.borrowed_by is not None   or    self.ex_lender == "" and self.status == self.status_reserved and self.borrowed_by is not None: # "예약" 상태가 될 때 (조건1 : is_reserved 체크, is_borrowed 비체크, borrowed_by 존재!) or (조건2 : status가 "대여신청중"이고 borrowed_by가 존재!)
             self.status = self.status_reserved
-        else :
-            if self.status != self.status_unavailable:
-                if self.status == self.status_reserved and self.borrowed_by is not None:
-                    self.status = self.status_borrowed
-                    self.is_borrowed = True
-                    self.borrowed_time = timezone.localtime()
-                    Logging.objects.create(
-                        user = self.borrowed_by.user.username, 
-                        manager = now_time_table.objects.first().name,
-                        item = "lan",
-                        message = str(self.number)+"번 랜선 대여"
-                        )
-                else :
-                    self.status = self.status_available
-                    try:
-                        Logging.objects.create(
-                            user = self.borrowed_by.user.username, 
-                            manager = now_time_table.objects.first().name,
-                            item = "lan",
-                            message = str(self.number)+"번 랜선 반납"
-                            )
-                    except:
-                         Logging.objects.create(
-                            user = "blank",
-                            manager = now_time_table.objects.first().name,
-                            item = "lan",
-                            message = str(self.number)+"번 랜선 예약 시간초과"
-                        )
-                    self.borrowed_by = None
+            self.is_reserved = True
+            self.is_borrowed = False
+            self.ex_lender = self.borrowed_by.user.username
+            self.reservation_time = timezone.localtime()
+
+        elif self.is_reserved == False and self.is_borrowed == True and self.borrowed_by is not None   or    self.status == self.status_borrowed and self.borrowed_by is not None: # "대여" 상태가 될 때 (조건1 : is_reserved 비체크, is_borrowed 체크, borrowed_by 존재!) or (조건2 : status가 "대여중"이고 borrowed_by가 존재!)
+            if not self.ex_lender or self.ex_lender == self.borrowed_by.user.username :
+                self.status = self.status_borrowed
+                self.is_reserved = False
+                self.is_borrowed = True
+                self.borrowed_time = timezone.localtime()
+                Logging.objects.create(
+                    user = self.borrowed_by.user.username, 
+                    manager = now_time_table.objects.first().name,
+                    item = "lan",
+                    message = str(self.number)+"번 랜선 대여"
+                    )
+            else : 
+                return 
+
+        else : # "대여가능" 상태가 될 때, 즉 반납할 때 (조건 : is_reserved = False, is_borrowed = False, status = 대여가능)
+            try:
+                Logging.objects.create(
+                    user = self.borrowed_by.user.username, 
+                    manager = now_time_table.objects.first().name,
+                    item = "lan",
+                    message = str(self.number)+"번 랜선 반납"
+                    )
+            except:
+                Logging.objects.create(
+                    user = "blank",
+                    manager = now_time_table.objects.first().name,
+                    item = "lan",
+                    message = str(self.number)+"번 랜선 예약 시간초과"
+                    )
+            self.is_reserved = False
+            self.is_borrowed = False
+            self.status = self.status_available
+            self.ex_lender = ""
+            self.borrowed_by = None
+
         try :
             super().save(*args, **kwargs)
         except IntegrityError:
@@ -279,6 +333,99 @@ class Lan(models.Model):
 
     def __str__(self):
         return str(self.number)+"th Lan"
+
+
+#케이블 모델, 오로지 하나의 케이블을 식별하기 위해선 number, cable_type이 필요하다 (차라리 타입말고, 번호로만 타입을 식별해본다?)
+class Cable(models.Model):
+    type_c = 'C타입 케이블'
+    type_5= '5핀 케이블'
+    type_8 = '8핀 케이블'
+    type_choices = (
+        (type_c, 'C타입 케이블'),
+        (type_5, '5핀 케이블'),
+        (type_8, '8핀 케이블'),
+    )
+    status_available = '대여가능'
+    status_borrowed = '대여중'
+    status_unavailable = '대여불가'
+    status_reserved = '대여신청중'
+    status_choices = (
+        (status_available, '대여가능'),
+        (status_borrowed, '대여중'),
+        (status_unavailable, '대여불가'),
+        (status_reserved, '대여신청중'),
+    )
+    
+    number = models.PositiveSmallIntegerField(primary_key=True, unique=True)
+    is_borrowed = models.BooleanField(default = False)
+    borrowed_by = models.OneToOneField(Student, related_name='ca', null=True, blank=True, on_delete=models.DO_NOTHING)
+    borrowed_time = models.DateTimeField(auto_now_add=True)
+    is_reserved = models.BooleanField(default = False)
+    reservation_time = models.DateTimeField(auto_now_add=True)
+    cable_type = models.CharField(max_length=10, choices=type_choices, default=type_5)
+    status=models.CharField(max_length=5, choices=status_choices, default=status_available)
+    ex_lender = models.CharField(max_length=9, default = "", null=True, blank=True)
+
+    def __str__(self):
+        return (str(self.number))+"th cable"
+
+    def is_available(self):
+        if self.status == self.status_available:
+            return True
+        else:
+            return False
+
+    def save(self, *args, **kwargs):
+        if self.status == self.status_unavailable: # status 가 "대여불가"일 경우! -> 이를 먼저 풀어줘야 한다!
+            return
+
+        elif self.is_reserved == True and self.is_borrowed == False and self.borrowed_by is not None   or    self.ex_lender == "" and self.status == self.status_reserved and self.borrowed_by is not None: # "예약" 상태가 될 때 (조건1 : is_reserved 체크, is_borrowed 비체크, borrowed_by 존재!) or (조건2 : status가 "대여신청중"이고 borrowed_by가 존재!)
+            self.status = self.status_reserved
+            self.is_reserved = True
+            self.is_borrowed = False
+            self.ex_lender = self.borrowed_by.user.username
+            self.reservation_time = timezone.localtime()
+
+        elif self.is_reserved == False and self.is_borrowed == True and self.borrowed_by is not None   or    self.status == self.status_borrowed and self.borrowed_by is not None: # "대여" 상태가 될 때 (조건1 : is_reserved 비체크, is_borrowed 체크, borrowed_by 존재!) or (조건2 : status가 "대여중"이고 borrowed_by가 존재!)
+            if not self.ex_lender or self.ex_lender == self.borrowed_by.user.username :
+                self.status = self.status_borrowed
+                self.is_reserved = False
+                self.is_borrowed = True
+                self.borrowed_time = timezone.localtime()
+                Logging.objects.create(
+                    user = self.borrowed_by.user.username, 
+                    manager = now_time_table.objects.first().name,
+                    item = "cable",
+                    message = str(self.number)+"번 " + self.cable_type + " 케이블 대여"
+                    )
+            else : 
+                return 
+
+        else : # "대여가능" 상태가 될 때, 즉 반납할 때 (조건 : is_reserved = False, is_borrowed = False, status = 대여가능)
+            try:
+                Logging.objects.create(
+                    user = self.borrowed_by.user.username, 
+                    manager = now_time_table.objects.first().name,
+                    item = "cable",
+                    message = str(self.number)+"번 " + self.cable_type + " 케이블 반납"
+                    )
+            except:
+                Logging.objects.create(
+                    user = "blank",
+                    manager = now_time_table.objects.first().name,
+                    item = "cable",
+                    message = str(self.number)+"번 " + self.cable_type + "케이블 예약 시간초과"
+                    )
+            self.is_reserved = False
+            self.is_borrowed = False
+            self.status = self.status_available
+            self.ex_lender = ""
+            self.borrowed_by = None
+        try :
+            super().save(*args, **kwargs)
+        except IntegrityError:
+            self.borrowed_by = None
+            raise APIException("같은 종류의 대여사업을 2개 이상 사용하실 수 없습니다!")
 
 
 class Poster(models.Model):  
@@ -315,83 +462,6 @@ class timetest(models.Model):
     timeb = models.DateTimeField(auto_now_add=True)
     diff = models.FloatField()
 
-
-#케이블 모델, 오로지 하나의 케이블을 식별하기 위해선 number, cable_type이 필요하다 (차라리 타입말고, 번호로만 타입을 식별해본다?)
-class Cable(models.Model):
-    type_c = 'C타입 케이블'
-    type_5= '5핀 케이블'
-    type_8 = '8핀 케이블'
-    type_choices = (
-        (type_c, 'C타입 케이블'),
-        (type_5, '5핀 케이블'),
-        (type_8, '8핀 케이블'),
-    )
-    status_available = '대여가능'
-    status_borrowed = '대여중'
-    status_unavailable = '대여불가'
-    status_reserved = '대여신청중'
-    status_choices = (
-        (status_available, '대여가능'),
-        (status_borrowed, '대여중'),
-        (status_unavailable, '대여불가'),
-        (status_reserved, '대여신청중'),
-    )
-    
-    number = models.PositiveSmallIntegerField(primary_key=True, unique=True)
-    is_borrowed = models.BooleanField(default = False)
-    borrowed_by = models.OneToOneField(Student, related_name='ca', null=True, blank=True, on_delete=models.DO_NOTHING)
-    borrowed_time = models.DateTimeField(auto_now_add=True)
-    is_reserved = models.BooleanField(default = False)
-    reservation_time = models.DateTimeField(auto_now_add=True)
-    cable_type = models.CharField(max_length=10, choices=type_choices, default=type_5)
-    status=models.CharField(max_length=5, choices=status_choices, default=status_available)
-
-    def __str__(self):
-        return (str(self.number))+"th cable"
-
-    def is_available(self):
-        if self.status == self.status_available:
-            return True
-        else:
-            return False
-
-    def save(self, *args, **kwargs):
-        if self.is_reserved :
-            self.status = self.status_reserved
-        else :
-            if self.status != self.status_unavailable:
-                if self.status == self.status_reserved and self.borrowed_by is not None:
-                    self.status = self.status_borrowed
-                    self.is_borrowed = True
-                    self.borrowed_time = timezone.localtime()
-                    Logging.objects.create(
-                        user = self.borrowed_by.user.username, 
-                        manager = now_time_table.objects.first().name,
-                        item = "cable",
-                        message = str(self.number)+"번 " + self.cable_type + " 케이블 대여"
-                        )
-                else :
-                    self.status = self.status_available
-                    try:
-                        Logging.objects.create(
-                            user = self.borrowed_by.user.username, 
-                            manager = now_time_table.objects.first().name,
-                            item = "cable",
-                            message = str(self.number)+"번 " + self.cable_type + " 케이블 반납"
-                            )
-                    except:
-                         Logging.objects.create(
-                            user = "blank",
-                            manager = now_time_table.objects.first().name,
-                            item = "cable",
-                            message = str(self.number)+"번 " + self.cable_type + "케이블 예약 시간초과"
-                        )
-                    self.borrowed_by = None
-        try :
-            super().save(*args, **kwargs)
-        except IntegrityError:
-            self.borrowed_by = None
-            raise APIException("같은 종류의 대여사업을 2개 이상 사용하실 수 없습니다!")
 
 class Complain(models.Model):
     number = models.CharField(max_length=1000)
