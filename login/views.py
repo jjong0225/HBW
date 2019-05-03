@@ -829,3 +829,42 @@ def server_error_page(request) :
 
 def pass_changed(request) :
     return render(request, 'login/password_change_done.html')
+
+
+
+def ExpiredCheck(request):
+    unbrella_set = models.Unbrella.objects.all().filter(is_reserved = True).filter(is_borrowed = False)
+    battery_set = models.Battery.objects.all().filter(is_reserved = True).filter(is_borrowed = False)
+    lan_set = models.Lan.objects.all().filter(is_reserved = True).filter(is_borrowed = False)
+    cable_set = models.Cable.objects.all().filter(is_reserved = True).filter(is_borrowed = False)
+    cur_time = timezone.now()
+    for item in unbrella_set :
+        if item.reservation_time+datetime.timedelta(minutes=10) < cur_time :
+            item.status = item.status_available
+            item.is_reserved = False
+            item.borrowed_by = None
+            item.save()
+            
+    for item in battery_set :
+        if item.reservation_time+datetime.timedelta(minutes=10) < cur_time :
+            item.status = item.status_available
+            item.is_reserved = False
+            item.borrowed_by = None
+            item.save()
+
+
+    for item in lan_set :
+        if item.reservation_time+datetime.timedelta(minutes=10) < cur_time :
+            item.status = item.status_available
+            item.is_reserved = False
+            item.borrowed_by = None
+            item.save()
+
+    for item in cable_set :
+        if item.reservation_time+datetime.timedelta(minutes=10) < cur_time :
+            item.status = item.status_available
+            item.is_reserved = False
+            item.borrowed_by = None
+            item.save()
+
+    return redirect('login:main')
