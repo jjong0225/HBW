@@ -84,7 +84,7 @@
           {% endif %}
         -->
         <form action="" method="POST">{% csrf_token %}
-          <p><button type="submit" name="unbrella" value="True" class="btn btn-theme">예약</button></p> <!-- 수정됨 -->
+          <p><button type="submit" name="unbrella" value="True" class="btn btn-theme" onclick="return confirm('정말로 우산을 대여하시겠습니까?')" >예약</button></p> <!-- 수정됨 -->
         </form>
       </div>
       <div class="col-lg-3">
@@ -92,7 +92,7 @@
         <h4>보조배터리</h4>
         <p>{{ battery_count }}　|　<b>{{ battery_total }}</b></p> <!-- 수정됨 -->
         <form action="" method="POST">{% csrf_token %}
-          <p><button type="submit" name="battery" value="True" class="btn btn-theme">예약</button></p> <!-- 수정됨 -->
+          <p><button type="submit" name="battery" value="True" class="btn btn-theme" onclick="return confirm('정말로 배터리를 대여하시겠습니까?')" >예약</button></p> <!-- 수정됨 -->
         </form>
       </div>
       <div class="col-lg-3">
@@ -101,7 +101,7 @@
           <h4>랜선</h4>
           <p>{{ lan_count }}　|　<b>{{ lan_total }}</b></p> <!-- 수정됨 -->
           <form action="" method="POST">{% csrf_token %}
-            <p><button type="submit" name="lan" value="True" class="btn btn-theme">예약</button></p> <!-- 수정됨 -->
+            <p><button type="submit" name="lan" value="True" class="btn btn-theme" onclick="return confirm('정말로 랜선을 대여하시겠습니까?')" >예약</button></p> <!-- 수정됨 -->
           </form>
         </div>
       </div>
@@ -111,7 +111,7 @@
           <h4>케이블</h4>
           <p>{{ cable_count }}　|　<b>{{ cable_total }}</b></p>
           <form action="" method="POST">{% csrf_token %}
-            <p><button type="submit" name="cable" value="True" class="btn btn-theme">예약</button></p> <!-- 수정됨 -->
+            <p><button type="submit" name="cable" value="True" class="btn btn-theme" onclick="return confirm('정말로 케이블을 대여하시겠습니까?')" >예약</button></p> <!-- 수정됨 -->
           </form>
         </div>
       </div>
@@ -225,7 +225,7 @@
   {% if unbrella_status != 0 %}
   {% if unbrella_status == 1 %}
   <script>
-    alert('{{ message_unbrella }}')
+    alert('{{ message_unbrella }}  10분 안에 학생회실을 방문해주세요')
   </script>
 
   {% else %}
@@ -245,7 +245,7 @@
   {% if battery_status != 0 %}
   {% if battery_status == 1 %}
   <script>
-    alert('{{ message_battery }}')
+    alert('{{ message_battery }}  10분 안에 학생회실을 방문해주세요')
   </script>
   {% else %}
   {% if battery_status == 2 %}
@@ -264,7 +264,7 @@
   {% if lan_status != 0 %}
   {% if lan_status == 1 %}
   <script>
-    alert('{{ message_lan }}')
+    alert('{{ message_lan }}  10분 안에 학생회실을 방문해주세요')
   </script>
   {% else %}
   {% if lan_status == 2 %}
@@ -283,7 +283,7 @@
   {% else %}
   {% if cable_status == 1 %}
   <script>
-    alert('{{ message_cable }}')
+    alert('{{ message_cable }}  10분 안에 학생회실을 방문해주세요')
   </script>
   {% else %}
   {% if cable_status == 2 %}
