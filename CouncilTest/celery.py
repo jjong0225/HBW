@@ -33,10 +33,6 @@ app.conf.beat_schedule = {
         'task' : 'a4_update',
         'schedule' : crontab(minute=0, hour=0),
     },
-    'error_check_every_day' : {
-        'task' : 'error_check_all',
-        'schedule' : crontab(minute=0, hour=0),
-    },
     'time_table_check_every_30_minutes' : {
         'task': 'get_now_manager',
         'schedule': crontab(minute='20, 50'),

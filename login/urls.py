@@ -25,7 +25,7 @@ urlpatterns = [
     path('complain/', views.GetComplain),
     path('jong1/',views.EveryHourStudyTable),
     path('jong2/',views.EveryDayStudyTable),
-    path('password_reset/',views.password_reset),
+    path('password_reset/',views.password_reset,name='password_reset'),
     path('pass_changed', views.pass_changed, name='pass_changed'),
     path('expired', views.ExpiredCheck),
 
