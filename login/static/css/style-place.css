@@ -381,6 +381,10 @@
         margin-left:2%;
         padding-top:0.02%;
     }
+    .place_image{
+        width:90%;
+        height:auto;
+    }
     .link_mypage{
         margin-top:15%;
         margin-left:18%;

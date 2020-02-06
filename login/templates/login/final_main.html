@@ -49,7 +49,7 @@
         <div class="header">
             <div class = "login_section">
                 <div class = "small_lgoin">
-                    <a href="signup.html">로그인</a>
+                    <a href="final_login.html">로그인</a>
                 </div>
             </div>
             <div class = "menu_section">             
@@ -71,16 +71,15 @@
                 </div> -->
             </div>
             {% if user.is_authenticated %}
-            <div class="login_button">
+            <!-- <div class="login_button">
                     <a href="{% url "login:logout" %}"><img for ="logout_button" src="{% static "images/logout.png" %}" alt=""></a>
             </div>
-            {% else %}
+            {% else %} -->
             <!-- <div class="login_button">
                 <a href="{% url "login:login" %}">
                     <img for ="login_button" src="{% static "images/login.png" %}" alt=""></a>
             </div>
             {% endif %} -->
-
         </div>
     </div>
         <div class="section">
@@ -95,11 +94,9 @@
                     <hr width="95%" color="black">
                     <div class="home_slider">
                         <div class="bxslider">
-                            {% for post in posts %}
-                                {% if post.photo %}
-                                    <div><img src="{{ post.photo.url }}" alt="그림2"></div>
-                                {% endif %}
-                            {% endfor %}
+                                <!-- <div><img src= "media/poster1.jpg" alt="그림1"></div>
+                                <div><img src= "media/poster2.jpg" alt="그림2"></div>
+                                <div><img src= "media/poster3.jpg" alt="그림3"></div> -->
                         </div>
                     </div>
                 </div>

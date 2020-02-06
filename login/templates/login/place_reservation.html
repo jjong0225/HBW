@@ -30,37 +30,43 @@
 
 <body>
 	<div class="container">
-		<div class="header">
-			<div class="logo">
-				<img for="logo" src="{% static "images/header_logo.png" %}" alt="" usemap="#main_logo">
-				<map name="main_logo">
-					<area shape="rect" coords="5,5,250,80" href="{% url "login:main" %}" alt="메인메뉴로 가기">
-				</map>
+			<div class="header">
+					<div class = "login_section">
+						<div class = "small_lgoin">
+							<a href="final_login.html">로그인</a>
+						</div>
+					</div>
+					<div class = "menu_section">             
+						<div class="logo">
+						<img for="logo" src="{% static "images/header_logo.png" %}" alt="" usemap="#main_logo">
+						<map name="main_logo">
+							<area shape="rect" coords="5,5,250,80" href="{% url "login:main" %}" alt="메인메뉴로 가기">
+						</map>
+					</div>
+					<div class="menu_bar">
+						<ul>
+							<li><a href="{% url "login:main" %}">홈</a></li>
+							<li><a href="{% url "login:seltable" %}">실습실 예약</a></li>
+							<li><a href="{% url "login:mypage" %}">마이페이지</a></li>
+						</ul>
+						<!-- <hr width="85%" color="black" 0.5px> -->
+						<!-- <div class ="menu_bar_line">
+						<img for="menu_bar" src="images/menu_bar.png" alt="">
+						</div> -->
+					</div>
+					{% if user.is_authenticated %}
+					<!-- <div class="login_button">
+							<a href="{% url "login:logout" %}"><img for ="logout_button" src="{% static "images/logout.png" %}" alt=""></a>
+					</div>
+					{% else %} -->
+					<!-- <div class="login_button">
+						<a href="{% url "login:login" %}">
+							<img for ="login_button" src="{% static "images/login.png" %}" alt=""></a>
+					</div>
+					{% endif %} -->
+				</div>
 			</div>
-            {% if user.is_authenticated %}
-            <div class="login_button">
-                    <a href="{% url "login:logout" %}"><img for ="logout_button" src="{% static "images/logout.png" %}" alt=""></a>
-            </div>
-            {% else %}
-            <div class="login_button">
-                <a href="{% url "login:login" %}">
-                    <img for ="login_button" src="{% static "images/login.png" %}" alt=""></a>
-            </div>
-            {% endif %}
-
-		</div>
-		<div class="section">
-			<div class="menu_bar">
-				<ul>
-					<li><a href="{% url "login:main" %}">홈</a></li>
-					<li><a href="{% url "login:seltable" %}">실습실 예약</a></li>
-					<li><a href="{% url "login:mypage" %}">마이페이지</a></li>
-				</ul>
-				<!-- <hr width="85%" color="black" 0.5px> -->
-				<!-- <div class ="menu_bar_line">
-							<img for="menu_bar" src="images/menu_bar.png" alt="">
-							</div> -->
-			</div>
+	
 			<div class="place_section">
 				<div class="left_click">
 					<div class="place">
@@ -69,7 +75,7 @@
 						</div>
 						<hr width="95%" color="black">
 						<div class="place_image">
-							<img for="place" src="{% static "images/place.png" %}" alt="">
+							<img for="place" src="{% static "images/desks.png" %}" alt="">
 						</div>
 					</div>
 					<div class="link_mypage">
@@ -109,8 +115,7 @@
 						<hr width="95%" color="black">
 						<form action="{% url "login:lendtable" %}" method="POST" onsubmit="_submit(this);">{% csrf_token %}
 							<div class="check_time">
-								<p>
-									<pre>			
+								<p>		
 										{% if tables %}
 											{% spaceless %}
 											{% for table in tables %}
@@ -124,7 +129,6 @@
 										{% else %}
 											<p>좌석을 선택해 주세요</p>
 										{% endif %}
-									</pre>
 								</p>
 							</div>								
 							<div class="btn_reservation">

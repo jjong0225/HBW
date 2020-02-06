@@ -290,6 +290,7 @@
 @media screen and (min-width:1063px){
     .container{
         margin : 0 auto;
+        background:e7e7e7;
     }
     .header{
         z-index: 99;
@@ -304,16 +305,16 @@
         font-family:'나눔고딕'
     }
     .login_section{
-        width:100%;
         height:30px;
-        background:#0C3C6D;
+        background:#70A7DF;
+        margin:-0.5%;
     }
     .login_section a{
         float:right;
-        color:white;
+        color:black;
         z-index:1;
         text-decoration:none;
-        margin-top:0.6%;
+        margin-top:0.5%;
         margin-right:2%;
         bottom:5%;
     }
@@ -436,7 +437,7 @@
     .slider{
         margin-left:2%;
         position:relative;
-        height:450px;
+        height:auto;
         width:95%;
         min-width:470px;
     }
@@ -548,6 +549,7 @@
     }
     .footer{
         margin:0 auto;
+        margin-top:5%;
         width:100.5%;
         height:120px;
         top:2%;
@@ -558,6 +560,7 @@
         position: relative;
         display:inline-block;
         color:#fff;
+        margin-bottom:-2%;
     }
     .left_footer{
         margin-top:0.2%;
