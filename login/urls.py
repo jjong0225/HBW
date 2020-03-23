@@ -6,6 +6,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from login.forms import custom_login_form
 from django.views.static import serve
+from . import models
 
 app_name = 'login'
 urlpatterns = [
@@ -28,7 +29,9 @@ urlpatterns = [
     path('password_reset/',views.password_reset,name='password_reset'),
     path('pass_changed', views.pass_changed, name='pass_changed'),
     path('expired', views.ExpiredCheck),
-
+    path('manage/rental/', views.ManageLentalView.as_view(), name='manage_rental'),
+    path('manage/rental/<str:model>/<int:pk>/', views.ItemDetailView.as_view(), name='item_detail'),
+    
     url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
 ]
 urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

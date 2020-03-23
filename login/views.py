@@ -1,4 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from . import models
+from django.views.generic import ListView, DetailView
+from django.core.paginator import Paginator
 from login.models import Student, StudyTable
 from login import models
 from login.forms import UserForm, TableForm, TimeForm, PasswordChangeForm
@@ -868,3 +871,79 @@ def ExpiredCheck(request):
             item.save()
 
     return redirect('login:main')
+
+class ManageLentalView(ListView):
+    context_object_name = 'item_list'
+    template_name = 'login/manage_rental.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        item_list = []
+        try:
+            id_from_url = self.request.GET.get('student_id')
+        except KeyError:
+            id_from_url = None
+        if id_from_url:
+            unbrella_list = models.Unbrella.objects.filter(borrowed_by__user__username__iexact=id_from_url)
+            battery_list = models.Battery.objects.filter(borrowed_by__user__username__iexact=id_from_url)
+            lan_list = models.Lan.objects.filter(borrowed_by__user__username__iexact=id_from_url)
+            cable_list = models.Cable.objects.filter(borrowed_by__user__username__iexact=id_from_url)
+        else:
+            unbrella_list = models.Unbrella.objects.all()
+            battery_list = models.Battery.objects.all()
+            lan_list = models.Lan.objects.all()
+            cable_list = models.Cable.objects.all()
+        tmp_queryset = (unbrella_list, battery_list, lan_list, cable_list)
+        for tmp_list in tmp_queryset:
+            for item in tmp_list:
+                item_list.append(item)
+        return item_list
+
+    def get_model_instance(self, request):
+        model_name = self.request.POST.get('model_name')
+        number = int(self.request.POST.get('model_number'))
+        if model_name == 'Umbrella':
+            obj_instance = get_object_or_404(models.Unbrella, pk = number)
+        elif model_name == 'Battery':
+            obj_instance = get_object_or_404(models.Battery, pk = number)
+        elif model_name == 'Lan':
+            obj_instance = get_object_or_404(models.Lan, pk = number)
+        elif model_name == 'Cable':
+            obj_instance = get_object_or_404(models.Cable, pk = number)
+        return obj_instance
+
+    def post(self, request, *args, **kwargs):
+        if self.request.POST.get('message') == 'accept':
+            obj_instance = self.get_model_instance(request)
+            obj_instance.is_reserved = False
+            obj_instance.is_borrowed = True
+            obj_instance.save()
+            return redirect('login:manage_rental')
+
+        elif self.request.POST.get('message') == 'return':
+            obj_instance = self.get_model_instance(request)
+            obj_instance.is_reserved = False
+            obj_instance.is_borrowed = False
+            obj_instance.status = '대여가능'
+            obj_instance.save()
+            return redirect('login:manage_rental')
+
+
+    
+   
+
+class ItemDetailView(DetailView):
+    model = None
+    template_name = "login/item_detail.html"
+    context_object_name = "item"
+
+    def get_object(self, queryset=None):
+        if self.kwargs['model'] == 'umbrella':
+            selected_model = models.Unbrella
+        elif self.kwargs['model'] == 'battery':
+            selected_model = models.Battery
+        elif self.kwargs['model'] == 'lan':
+            selected_model = models.Lan
+        elif self.kwargs['model'] == 'cable':
+            selected_model = models.Cable
+        return selected_model.objects.get(number=self.kwargs['pk']) 

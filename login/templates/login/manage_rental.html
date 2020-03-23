@@ -1,0 +1,92 @@
+{% extends 'login/layout.html' %}
+{% load staticfiles %}
+
+{% block header %}  
+{% endblock %}
+
+{% block content %}
+    <form action="{% url 'login:manage_rental' %}" method="GET">
+        <input name="student_id" id="student_id" type="text" value="{{ request.GET.student_id }}">
+        <input type="submit" value="검색" />
+    </form>
+    {% if item_list %}
+      <form id="formBorrow" name="formBorrow" action="{% url 'login:manage_rental' %}" method="POST">
+        {% csrf_token %}
+        <input name="message" id="message" type='hidden' value="accept">
+        <ul>
+          {% for item in item_list %}
+            <li>
+              <a href="{% url 'login:item_detail' item.item_name|lower item.number %}">{{ item }}</a> 
+              {% if item.borrowed_by %}
+                {{ item.borrowed_by }}
+              {% else %}
+                -
+              {% endif %}
+              {{item.status }}
+              {% if item.status == "대여신청중" %}
+                <input type="hidden" value="{{ item.number }}">
+                <input type="hidden" value="{{ item.item_name }}">
+                <input type="submit" value="승인" onclick="makeAccept(this)">
+              {% elif item.status == "대여중" %}
+                <input type="hidden" value="{{ item.number }}">
+                <input type="hidden" value="{{ item.item_name }}">
+                <input type="submit" value="반납" onclick="makeReturn(this)">
+              {% endif %}
+            </li>
+            {% endfor %}
+            {% else %}
+            <p> no Item found </p>
+          </ul>
+        </form>
+          {% endif %}
+    
+    {% if is_paginated %}
+      {% if page_obj.has_previous %}
+        <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">이전</a>
+      {% else %}
+        <a>이전</a>
+      {% endif %}
+      {% for i in paginator.page_range %}
+        {% if page_obj.number == i %}
+          <a>{{ i }}</a>
+        {% else %}
+          <a href="{{ request.path }}?page={{ i }}">{{ i }}</a>
+        {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+        <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">다음</a>
+      {% else %}
+        <a>다음</a>
+      {% endif %}
+    {% endif %}
+    <script>
+      function makeAccept(obj) {
+        if (confirm("승인하시겠습니까?")) {
+          document.getElementById('message').setAttribute('value', 'accept');
+          $(obj).prev().prev().get(0).setAttribute('name', 'model_number');
+          $(obj).prev().get(0).setAttribute('name', 'model_name');
+        }
+      }
+      function makeReturn(obj) {
+        if (confirm("반납하시겠습니까?")) {
+          document.getElementById('message').setAttribute('value', 'return');
+          $(obj).prev().prev().get(0).setAttribute('name', 'model_number');
+          $(obj).prev().get(0).setAttribute('name', 'model_name');
+        }
+      }
+    </script>
+{% endblock %}
+
+{% block copyrights %}
+<div id="copyrights">
+  <div class="container">
+    <p>
+      &copy; Copyrights <strong>Solid</strong>. All Rights Reserved
+    </p>
+    <div class="credits">
+      Created with Solid template by <a href="https://templatemag.com/">TemplateMag</a>
+    </div>
+  </div>
+</div>
+<!-- / copyrights -->
+{% endblock %}

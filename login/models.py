@@ -91,7 +91,14 @@ class RentalItem(models.Model):
     item_name = ""
 
     def __str__(self):
-        return str(self.number) + "th " + self.item_name
+        count = ""
+        if self.number == 1:
+            count = "st "
+        elif self.number == 2:
+            count = "nd "
+        else:
+            count = "rd "
+        return str(self.number) + count + self.item_name
 
     def save(self, *args, **kwargs):
         if self.status == self.status_unavailable: # status 가 "대여불가"일 경우! -> 이를 먼저 풀어줘야 한다!
@@ -197,7 +204,14 @@ class Cable(RentalItem):
     cable_type = models.CharField(max_length=10, choices=type_choices, default=type_5)
 
     def __str__(self):
-        return (str(self.number))+"th cable(" + self.cable_type + ")"
+        count = ""
+        if self.number == 1:
+            count = "st "
+        elif self.number == 2:
+            count = "nd "
+        else:
+            count = "rd "
+        return (str(self.number))+ count + "Cable(" + self.cable_type + ")"
 
     
 class Poster(models.Model):  
