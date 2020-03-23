@@ -26,11 +26,11 @@
               {% if item.status == "대여신청중" %}
                 <input type="hidden" value="{{ item.number }}">
                 <input type="hidden" value="{{ item.item_name }}">
-                <input type="submit" value="승인" onclick="makeAccept(this)">
+                <input type="button" value="승인" onclick="makeAccept(this)">
               {% elif item.status == "대여중" %}
                 <input type="hidden" value="{{ item.number }}">
                 <input type="hidden" value="{{ item.item_name }}">
-                <input type="submit" value="반납" onclick="makeReturn(this)">
+                <input type="button" value="반납" onclick="makeReturn(this)">
               {% endif %}
             </li>
             {% endfor %}
@@ -65,6 +65,7 @@
           document.getElementById('message').setAttribute('value', 'accept');
           $(obj).prev().prev().get(0).setAttribute('name', 'model_number');
           $(obj).prev().get(0).setAttribute('name', 'model_name');
+          document.getElementById('formBorrow').submit();
         }
       }
       function makeReturn(obj) {
@@ -72,6 +73,7 @@
           document.getElementById('message').setAttribute('value', 'return');
           $(obj).prev().prev().get(0).setAttribute('name', 'model_number');
           $(obj).prev().get(0).setAttribute('name', 'model_name');
+          document.getElementById('formBorrow').submit();
         }
       }
     </script>
