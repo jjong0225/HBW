@@ -1,0 +1,50 @@
+{% extends 'login/layout.html' %}
+{% load staticfiles %}
+
+{% block header %}
+  <script>
+    function deleteAccept(obj) {
+        if (confirm("해당 물품을 삭제하시겠습니까??")) {
+          txt = $('#deleteBtn').attr('href');
+          location.href = "{% url 'login:item_delete' item.item_name|lower item.number %}";
+        }
+      }
+  </script>
+{% endblock %}
+
+{% block content %}
+  <p>{{ item }}</p>
+  <ul>
+    <li>상태 : {{ item.status }}</li>
+    <li>대여자 : {{ item.borrowed_by }}</li>
+    <li>기존 대여자 : {{ item.ex_lender }}</li>
+    {% if item.cable_type %}
+      <li>타입 : {{ item.cable_type }}</li>
+    {% endif %}
+    <li>대여일자 : {{ item.borrowed_time }}</li>
+  </ul>
+  <button>
+    <a type="button" href="{% url 'login:item_update' item.item_name|lower item.number %}">수정</a>
+  </button>
+  <button>
+    <a type="button"  
+    name="deleteBtn" onclick="deleteAccept(this)" id="deleteBtn">삭제</a>
+  </button>
+
+  <form action="{% url 'login:item_update' item.item_name|lower item.number %}"
+    
+{% endblock %}
+
+{% block copyrights %}
+<div id="copyrights">
+  <div class="container">
+    <p>
+      &copy; Copyrights <strong>Solid</strong>. All Rights Reserved
+    </p>
+    <div class="credits">
+      Created with Solid template by <a href="https://templatemag.com/">TemplateMag</a>
+    </div>
+  </div>
+</div>
+<!-- / copyrights -->
+{% endblock %}

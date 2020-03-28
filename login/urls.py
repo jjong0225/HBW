@@ -29,9 +29,11 @@ urlpatterns = [
     path('password_reset/',views.password_reset,name='password_reset'),
     path('pass_changed', views.pass_changed, name='pass_changed'),
     path('expired', views.ExpiredCheck),
-    path('manage/rental/', views.ManageLentalView.as_view(), name='manage_rental'),
+    path('manage/rental/', views.ManageRentalView.as_view(), name='manage_rental'),
     path('manage/rental/<str:model>/<int:pk>/', views.ItemDetailView.as_view(), name='item_detail'),
-    
+    path('manage/rental/update/<str:model>/<int:pk>/', views.ItemUpdateView.as_view(), name='item_update'),
+    path('manage/rental/delete/<str:model>/<int:pk>/', views.item_delete, name="item_delete"),
+    path('manage/', views.manage_view, name='manage'),
     url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
 ]
 urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

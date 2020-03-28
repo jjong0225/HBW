@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.core.validators import MaxValueValidator
-from rest_framework.exceptions import APIException
+from rest_framework.exceptions import APIException, ValidationError
 from django.db import IntegrityError
 from django.contrib.auth.models import Group, Permission
 from django.contrib.auth.models import AbstractUser
@@ -107,15 +107,13 @@ class RentalItem(models.Model):
             self.is_borrowed = False
             if self.borrowed_by is not None:
                 self.ex_lender = self.borrowed_by.user.username
-            else:
-                self.ex_lender = ""
             self.borrowed_by = None
 
         elif self.is_reserved == True and self.is_borrowed == False and self.borrowed_by is not None   or    self.ex_lender == "" and self.status == self.status_reserved and self.borrowed_by is not None: # "예약" 상태가 될 때 (조건1 : is_reserved 체크, is_borrowed 비체크, borrowed_by 존재!) or (조건2 : status가 "대여신청중"이고 borrowed_by가 존재!)
             self.status = self.status_reserved
             self.is_reserved = True
             self.is_borrowed = False
-            self.ex_lender = self.borrowed_by.user.username
+            #self.ex_lender = self.borrowed_by.user.username
             self.reservation_time = timezone.localtime()
 
         elif self.is_reserved == False and self.is_borrowed == True and self.borrowed_by is not None   or    self.status == self.status_borrowed and self.borrowed_by is not None: # "대여" 상태가 될 때 (조건1 : is_reserved 비체크, is_borrowed 체크, borrowed_by 존재!) or (조건2 : status가 "대여중"이고 borrowed_by가 존재!)
@@ -151,7 +149,6 @@ class RentalItem(models.Model):
             self.is_reserved = False
             self.is_borrowed = False
             self.status = self.status_available
-            self.ex_lender = ""
             self.borrowed_by = None
 
         try :
@@ -159,6 +156,7 @@ class RentalItem(models.Model):
         except IntegrityError:
             self.borrowed_by = None
             raise APIException("같은 종류의 대여사업을 2개 이상 사용하실 수 없습니다!")
+        
 
     def is_available(self):
         if self.status == self.status_available:
@@ -171,6 +169,8 @@ class Unbrella(RentalItem):
     borrowed_by = models.OneToOneField(Student, null=True, related_name = "un", blank=True, on_delete=models.CASCADE)
     item_name = "Umbrella"
     number = models.PositiveSmallIntegerField(primary_key=True, unique=True)
+    class Meta:
+        ordering = ['number']
 
 
 #배터리 모델
@@ -213,6 +213,11 @@ class Cable(RentalItem):
             count = "rd "
         return (str(self.number))+ count + "Cable(" + self.cable_type + ")"
 
+class Hdmi(RentalItem):
+    borrowed_by = models.OneToOneField(Student, related_name='hdmi', null=True, blank=True, on_delete=models.DO_NOTHING)
+    return_time = models.DateTimeField(auto_now_add=True)
+    item_name = "Hdmi"
+    number = models.PositiveSmallIntegerField(primary_key=True, unique=True)
     
 class Poster(models.Model):  
     title = models.CharField(max_length=100)

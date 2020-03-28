@@ -22,7 +22,7 @@
               {% else %}
                 -
               {% endif %}
-              {{item.status }}
+              {{ item.status }}
               {% if item.status == "대여신청중" %}
                 <input type="hidden" value="{{ item.number }}">
                 <input type="hidden" value="{{ item.item_name }}">

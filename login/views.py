@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.core.exceptions import ValidationError
 from . import models
-from django.views.generic import ListView, DetailView
+from . import forms
+from django.views.generic import ListView, DetailView, UpdateView
 from django.core.paginator import Paginator
 from login.models import Student, StudyTable
 from login import models
@@ -9,7 +11,7 @@ from django.http import HttpResponse
 from django.contrib.auth import login, authenticate
 from django.template import RequestContext
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.decorators import permission_required
 from django.utils import timezone
 import datetime
@@ -872,7 +874,7 @@ def ExpiredCheck(request):
 
     return redirect('login:main')
 
-class ManageLentalView(ListView):
+class ManageRentalView(ListView):
     context_object_name = 'item_list'
     template_name = 'login/manage_rental.html'
     paginate_by = 10
@@ -888,12 +890,14 @@ class ManageLentalView(ListView):
             battery_list = models.Battery.objects.filter(borrowed_by__user__username__iexact=id_from_url)
             lan_list = models.Lan.objects.filter(borrowed_by__user__username__iexact=id_from_url)
             cable_list = models.Cable.objects.filter(borrowed_by__user__username__iexact=id_from_url)
+            hdmi_list = models.Hdmi.objects.filter(borrowed_by__user__username__iexact=id_from_url)
         else:
             unbrella_list = models.Unbrella.objects.all()
             battery_list = models.Battery.objects.all()
             lan_list = models.Lan.objects.all()
             cable_list = models.Cable.objects.all()
-        tmp_queryset = (unbrella_list, battery_list, lan_list, cable_list)
+            hdmi_list = models.Hdmi.objects.all()
+        tmp_queryset = (unbrella_list, battery_list, lan_list, cable_list, hdmi_list)
         for tmp_list in tmp_queryset:
             for item in tmp_list:
                 item_list.append(item)
@@ -910,6 +914,8 @@ class ManageLentalView(ListView):
             obj_instance = get_object_or_404(models.Lan, pk = number)
         elif model_name == 'Cable':
             obj_instance = get_object_or_404(models.Cable, pk = number)
+        elif model_name == 'Hdmi':
+            obj_instance = get_object_or_404(models.Hdmi, pk = number)
         return obj_instance
 
     def post(self, request, *args, **kwargs):
@@ -929,12 +935,9 @@ class ManageLentalView(ListView):
             return redirect('login:manage_rental')
 
 
-    
-   
-
 class ItemDetailView(DetailView):
     model = None
-    template_name = "login/item_detail.html"
+    template_name= "login/item_detail.html"
     context_object_name = "item"
 
     def get_object(self, queryset=None):
@@ -946,4 +949,91 @@ class ItemDetailView(DetailView):
             selected_model = models.Lan
         elif self.kwargs['model'] == 'cable':
             selected_model = models.Cable
+        elif self.kwargs['model'] == 'hdmi':
+            selected_model = models.Hdmi
         return selected_model.objects.get(number=self.kwargs['pk']) 
+
+
+class ItemUpdateView(UpdateView):
+    def get_initial(self):
+        obj = self.get_object()
+        values = {}
+        values['number'] = obj.number
+        values['status'] = obj.status
+        if obj.borrowed_by:
+            values['borrowed_by'] = obj.borrowed_by.user.username
+        values['ex_lender'] = obj.ex_lender
+        if obj.item_name == 'Cable':
+            values['cable_type'] = obj.cable_type
+        return values
+    
+    def post(self, request, *args, **kwargs):
+        if self.request.POST['borrowed_by']:
+            try:
+                borrowed_by_target = models.Student.objects.get(user__username = self.request.POST['borrowed_by'])
+                self.request.POST = self.request.POST.copy()
+                self.request.POST['borrowed_by'] = borrowed_by_target.pk
+            except:
+                pass
+        return super().post(self, request, *args, **kwargs)
+
+    def get_template_names(self):
+        return 'login/item_update.html'
+    
+    def get_form_class(self):
+        if self.kwargs['model'] == 'umbrella':
+            target_form = forms.UmbrellaForm
+        elif self.kwargs['model'] == 'battery':
+            target_form = forms.BatteryForm
+        elif self.kwargs['model'] == 'lan':
+            target_form = forms.LanForm
+        elif self.kwargs['model'] == 'cable':
+            target_form = forms.CableForm
+        elif self.kwargs['model'] == 'hdmi':
+            target_form = forms.HdmiForm
+        return target_form
+
+    def get_model(self):
+        if self.kwargs['model'] == 'umbrella':
+            selected_model = models.Unbrella
+        elif self.kwargs['model'] == 'battery':
+            selected_model = models.Battery
+        elif self.kwargs['model'] == 'lan':
+            selected_model = models.Lan
+        elif self.kwargs['model'] == 'cable':
+            selected_model = models.Cable
+        elif self.kwargs['model'] == 'hdmi':
+            selected_model = models.Hdmi
+        self.model = selected_model
+        return selected_model
+
+    def get_object(self, quersey=None):
+        selected_model = self.get_model()
+        return selected_model.objects.get(number=self.kwargs['pk']) 
+        
+    def get_success_url(self):
+        return reverse_lazy('login:item_detail', kwargs={
+            'model': self.kwargs['model'],
+            'pk': self.kwargs['pk'],
+        })  
+
+def manage_view(request):
+    return render(request, 'login/manage.html')
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def item_delete(request, model, pk):
+    if model == 'umbrella':
+        selected_model = models.Unbrella
+    elif model == 'battery':
+        selected_model = models.Battery
+    elif model == 'lan':
+        selected_model = models.Lan
+    elif model == 'cable':
+        selected_model = models.Cable
+    elif model== 'hdmi':
+        selected_model = models.Hdmi
+
+    item = get_object_or_404(selected_model, pk=pk)
+    item.delete()
+    return redirect("login:manage_rental")

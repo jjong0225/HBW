@@ -1,0 +1,51 @@
+{% extends 'login/layout.html' %}
+{% load staticfiles %}
+
+{% block header %}
+<!-- <select> 태그를 하면 웹상에서 보이지 않아서 <select>태그에 browser-default 클래스 추가해주는 스크립트. 다른 방식으로 보이게만 되면 지워도 됨-->
+  <script>
+    $(document).ready(function() {
+      $('#id_status').addClass('browser-default');
+      $('#id_cable_type').addClass('browser-default');
+    });
+  </script>
+{% endblock %}
+
+{% block content %}
+  <form method="POST">
+      {% csrf_token %}
+      {{ form.status.errors }}
+      <label for="{{ form.status.id_for_label }}">대여상태 : </label>
+      {{ form.status }}
+
+      {{ form.borrowed_by.errors }}
+      <label for="{{ form.borrowed_by.id_for_label }}">대여자 : </label>
+      {{ form.borrowed_by }}
+      
+      {{ form.ex_lender.errors }}
+      <label for="{{ form.ex_lender.id_for_label }}">기존 대여자 : </label>
+      {{ form.ex_lender }}
+      
+      {% if form.cable_type %}
+        {{ form.cable_type.errors }}
+        <label for="{{ form.cable_type.id_for_label }}">케이블 타입 : </label>
+        {{ form.cable_type }}
+      {% endif %}
+      <input type="submit" value="수정">
+  </form>
+    
+{% endblock %}
+
+{% block copyrights %}
+<div id="copyrights">
+  <div class="container">
+    <p>
+      &copy; Copyrights <strong>Solid</strong>. All Rights Reserved
+    </p>
+    <div class="credits">
+      Created with Solid template by <a href="https://templatemag.com/">TemplateMag</a>
+    </div>
+  </div>
+</div>
+<!-- / copyrights -->
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'login/layout.html' %}
+{% load staticfiles %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+  <a href="{% url 'login:manage_rental' %}">대여사업</a>
+  <a href="">포스터</a>
+  <a href="">건의사항</a>
+  <a href="">공지사항</a>
+    
+{% endblock %}
+
+{% block copyrights %}
+<div id="copyrights">
+  <div class="container">
+    <p>
+      &copy; Copyrights <strong>Solid</strong>. All Rights Reserved
+    </p>
+    <div class="credits">
+      Created with Solid template by <a href="https://templatemag.com/">TemplateMag</a>
+    </div>
+  </div>
+</div>
+<!-- / copyrights -->
+{% endblock %}

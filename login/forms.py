@@ -1,7 +1,7 @@
 from django import forms
 from .models import Student
 from django.contrib.auth.models import User
-
+from . import models
 
 import unicodedata
 from django.contrib.auth import (
@@ -149,3 +149,63 @@ class custom_login_form(AuthenticationForm) :
         ),
         'inactive': _("This account is inactive."),
     }
+
+
+class RentalItemForm(forms.ModelForm):
+    def save(self, commit=True):
+        if commit:
+            if self.instance.status == "대여중":
+                self.instance.is_borrowed = True
+                self.instance.is_reserved = False
+            elif self.instance.status == "대여신청중":
+                self.instance.is_borrowed = False
+                self.instance.is_reserved = True
+            elif self.instance.status == "대여가능":
+                if self.instance.is_borrowed == True and self.instance.borrowed_by:
+                    self.instance.ex_lender = self.instance.borrowed_by.user.username
+                self.instance.is_borrowed = False
+                self.instance.is_reserved = False
+        return super().save(commit)
+
+
+class UmbrellaForm(RentalItemForm):
+    class Meta:
+        model = models.Unbrella
+        fields = ['status', 'borrowed_by', 'ex_lender',]
+        widgets = {
+          'borrowed_by': forms.TextInput
+        }
+    
+
+    
+class BatteryForm(RentalItemForm):
+    class Meta:
+        model = models.Battery
+        fields = ['status', 'borrowed_by', 'ex_lender',]
+        widgets = {
+          'borrowed_by': forms.TextInput
+        }
+
+class LanForm(RentalItemForm):
+    class Meta:
+        model = models.Lan
+        fields = ['status', 'borrowed_by', 'ex_lender',]
+        widgets = {
+          'borrowed_by': forms.TextInput
+        }
+
+class CableForm(RentalItemForm):
+    class Meta:
+        model = models.Cable
+        fields = ['status', 'borrowed_by', 'ex_lender', 'cable_type']
+        widgets = {
+          'borrowed_by': forms.TextInput
+        }
+
+class HdmiForm(RentalItemForm):
+    class Meta:
+        model = models.Hdmi
+        fields = ['status', 'borrowed_by', 'ex_lender']
+        widgets = {
+          'borrowed_by': forms.TextInput
+        }
